@@ -68,27 +68,22 @@ pages.forEach((_, index) => {
     }, (index + 1) * 200 + 2100);
 });
 
-document.addEventListener("keydown", (e) => {
-    const nextBtns = document.querySelectorAll(".nextprev-btn:not(.back)");
-    const prevBtns = document.querySelectorAll(".nextprev-btn.back");
+let currentIndex = 0;
 
+document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowRight") {
-        // find first visible next button
-        for (let btn of nextBtns) {
-            if (btn.offsetParent !== null) {
-                btn.click();
-                break;
-            }
+        if (currentIndex < pageTurnBtn.length / 2) {
+            // click next button of current page
+            pageTurnBtn[currentIndex * 2].click();
+            currentIndex++;
         }
     }
 
     if (e.key === "ArrowLeft") {
-        // find first visible back button
-        for (let btn of prevBtns) {
-            if (btn.offsetParent !== null) {
-                btn.click();
-                break;
-            }
+        if (currentIndex > 0) {
+            currentIndex--;
+            // click back button of previous page
+            pageTurnBtn[currentIndex * 2 + 1].click();
         }
     }
 });
