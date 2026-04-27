@@ -470,3 +470,76 @@ body{
     transform: translateX(-50%) scale(1);
     top: -1.8rem;
 }
+
+
+
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .wrapper {
+    padding: 10px;
+  }
+
+  .book {
+    width: 100%;
+    height: auto;
+    transform: none !important;
+  }
+
+  .book-page {
+    position: relative;
+    width: 100%;
+    height: auto;
+    transform: none !important;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .cover {
+    display: none; /* hide 3D covers */
+  }
+
+  .profile-page img {
+    width: 120px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+
+  .btn-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .cover {
+    display: none;
+  }
+}
