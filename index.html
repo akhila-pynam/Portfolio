@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Portfolio Book</title>
+
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+
+  <style>
+    h1, h2, h3 {
+      font-family: "Times New Roman", serif;
+    }
+
+    p, li, span {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    ul {
+      padding-left: 15px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrapper">
+
+  <div class="cover cover-left"></div>
+  <div class="cover cover-right"></div>
+
+  <div class="book">
+
+    <!-- PROFILE -->
+    <div class="book-page page-left">
+      <div class="profile-page">
+        <img src="./Logo.png" alt=""/>
+        <h1>Akhila Pynam</h1>
+        <h3>Full Stack & AI Developer</h3>
+
+        <div class="social-media">
+          <a href="https://leetcode.com/u/akhila-pynam/" target="_blank">
+            <i class="bx bx-code"></i>
+          </a>
+          <a href="https://github.com/akhila-pynam">
+            <i class="bx bxl-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/akhila-pynam-ba0369338/">
+            <i class="bx bxl-linkedin-square"></i>
+          </a>
+        </div>
+
+        <p>
+          I’m a problem solver and continuous learner who believes in discipline and consistency.
+          I have hands-on experience in full-stack development, AI-based applications, and problem solving.
+          Solved 100+ problems on LeetCode and 200+ on TUF+.
+          I’m looking for opportunities to apply my skills and grow continuously.
+        </p>
+
+        <div class="btn-box">
+          <a href="#" class="btn">Download CV</a>
+          <a href="#" class="btn contact-me">Contact Me!</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 1 & 2 -->
+    <div class="book-page page-right turn" id="turn-1">
+
+      <!-- EDUCATION -->
+        <div class="page-front">
+        <h1 class="title">Education</h1>
+        
+        <br>
+
+        <h3>Vel Tech Technical University</h3>
+        <p>Bachelor of Technology (B.Tech), Computer Science</p>
+        <p>Jul 2025 – Jul 2029</p>
+
+        <br>
+
+        <h3>Birla Institute of Technology and Science, Pilani</h3>
+        <p>Bachelor of Science (B.Sc), Computer Science</p>
+        <span>Aug 2024 – Feb 2025</span>
+        <p>Grade: 8.0</p>
+
+        <br>
+
+        <h3>Narayana Institute</h3>
+        <p>MPC</p>
+        <span>Jun 2022 – Jun 2024</span>
+        <p>Grade: 9.2</p>
+
+        <span class="number-page">1</span>
+        <span class="nextprev-btn" data-page="turn-1">
+          <i class="bx bx-chevron-right"></i>
+        </span>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="page-back">
+        <h1 class="title">Skills</h1>
+
+        <ul>
+          <li>C++</li>
+          <li>Data Structures and Algorithms</li>
+          <li>Standard Template Library (STL)</li>
+          <li>Debugging</li>
+          <li>GitHub</li>
+          <li>Databases</li>
+          <li>Docker</li>
+          <li>HTML</li>
+          <li>JavaScript</li>
+          <li>CSS</li>
+          <li>Java</li>
+          <li>C</li>
+          <li>Python</li>
+          <li>Google Gemini API</li>
+          <li>Generative AI</li>
+          <li>REST API Integration</li>
+          <li>Natural Language Processing (NLP)</li>
+          <li>Python-dotenv</li>
+          <li>Machine Learning (Basics)</li>
+          <li>Web Designing</li>
+          <li>Machine Learning</li>
+          <li>Pandas</li>
+          <li>Streamlit</li>
+          <li>System Deployment</li>
+          <li>AI Prompting</li>
+          <li>Kaggle</li>
+          <li>Blogging</li>
+          <li>Communication</li>
+          <li>English</li>
+        </ul>
+
+        <span class="number-page">2</span>
+        <span class="nextprev-btn back" data-page="turn-1">
+          <i class="bx bx-chevron-left"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- PAGE 3 & 4 -->
+    <div class="book-page page-right turn" id="turn-2">
+
+      <!-- PROJECTS -->
+      <div class="page-front">
+        <h1 class="title">Projects</h1>
+
+        <h3>HashWriteMate AI</h3>
+        <ul>
+          <li>AI-powered grammar correction and writing assistant.</li>
+          <li>Uses NLP and Generative AI.</li>
+          <li>Integrated Google Gemini API.</li>
+        </ul>
+
+        <h3>Hash Hawk – Spam Message Detector</h3>
+        <ul>
+          <li>Machine Learning-based spam detection system.</li>
+          <li>Built with Python, Pandas, Streamlit.</li>
+          <li>Real-time deployment.</li>
+        </ul>
+
+        <span class="number-page">3</span>
+        <span class="nextprev-btn" data-page="turn-2">
+          <i class="bx bx-chevron-right"></i>
+        </span>
+      </div>
+
+      <!-- WORK EXPERIENCE -->
+      <div class="page-back">
+        <h1 class="title">Work Experience</h1>
+
+        <h3>Hash Write Mate AI</h3>
+        <span>Founder | May 2025 – Present</span>
+
+        <ul>
+          <li>Managing code uploads, debugging, and maintaining platform performance.</li>
+          <li>Improving system functionality and stability.</li>
+        </ul>
+
+        <span class="number-page">4</span>
+        <span class="nextprev-btn back" data-page="turn-2">
+          <i class="bx bx-chevron-left"></i>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- PAGE 5 & 6 -->
+    <div class="book-page page-right turn" id="turn-3">
+
+      <!-- SERVICES -->
+      <div class="page-front">
+        <h1 class="title">My Services</h1>
+
+        <ul>
+          <li>Full Stack Development</li>
+          <li>AI-based Applications</li>
+          <li>Debugging & Optimization</li>
+          <li>System Deployment</li>
+        </ul>
+
+        <span class="number-page">5</span>
+        <span class="nextprev-btn" data-page="turn-3">
+          <i class="bx bx-chevron-right"></i>
+        </span>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="page-back">
+        <h1 class="title">Contact Me!</h1>
+
+        <p>Email: akhilapynam@gmail.com</p>
+        
+        <div class="contact-box">
+          <form>
+            <input type="text" class="field" placeholder="Full Name" required>
+            <input type="email" class="field" placeholder="Email Address" required>
+            <textarea class="field" placeholder="Your Message"></textarea>
+            <input type="submit" value="Send Message" class="btn">
+          </form>
+        </div>
+
+        <span class="number-page">6</span>
+
+        <span class="nextprev-btn back" data-page="turn-3">
+          <i class="bx bx-chevron-left"></i>
+        </span>
+
+        <a href="#" class="back-profile">
+          <p>Profile</p>
+          <i class="bx bxs-user"></i>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
