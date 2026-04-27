@@ -67,3 +67,28 @@ pages.forEach((_, index) => {
         }, 500);
     }, (index + 1) * 200 + 2100);
 });
+
+document.addEventListener("keydown", (e) => {
+    const nextBtns = document.querySelectorAll(".nextprev-btn:not(.back)");
+    const prevBtns = document.querySelectorAll(".nextprev-btn.back");
+
+    if (e.key === "ArrowRight") {
+        // find first visible next button
+        for (let btn of nextBtns) {
+            if (btn.offsetParent !== null) {
+                btn.click();
+                break;
+            }
+        }
+    }
+
+    if (e.key === "ArrowLeft") {
+        // find first visible back button
+        for (let btn of prevBtns) {
+            if (btn.offsetParent !== null) {
+                btn.click();
+                break;
+            }
+        }
+    }
+});
