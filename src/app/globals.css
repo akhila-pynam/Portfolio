@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default: Dark GTA theme */
+  --midnight: #080808;
+  --charcoal: #141414;
+  --yellow-street: #FFD400;
+  --yellow-gold: #E5B800;
+  --soft-white: #F5F5F5;
+  --muted-gray: #A3A3A3;
+  --border-gray: #292929;
+}
+
+/* Light Mode: Vice City Sunlit Daylight theme with high contrast & yellow accents */
+html.light {
+  --midnight: #F4F4F6;
+  --charcoal: #FFFFFF;
+  --yellow-street: #D99B00;
+  --yellow-gold: #B28000;
+  --soft-white: #111113;
+  --muted-gray: #55555C;
+  --border-gray: #E0E0E6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hide default OS system cursor on fine pointer devices so only the sunflower cursor is visible */
+@media (hover: hover) and (pointer: fine) {
+  *, *::before, *::after, html, body, a, button, input, select, textarea, [role="button"] {
+    cursor: none !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+body {
+  background-color: var(--midnight);
+  color: var(--soft-white);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--midnight);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--yellow-street);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--yellow-gold);
+}
+
+/* Selection */
+::selection {
+  background: rgba(255, 212, 0, 0.3);
+  color: var(--soft-white);
+}
+
+/* Focus visible ring */
+:focus-visible {
+  outline: 2px solid var(--yellow-street);
+  outline-offset: 2px;
+}
+
+/* Grain texture overlay */
+.grain-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  pointer-events: none;
+  z-index: 9999;
+  animation: grain 8s steps(1) infinite;
+}
+
+html.light .grain-overlay {
+  opacity: 0.015;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+/* Yellow glow effect */
+.yellow-glow {
+  box-shadow: 0 0 20px rgba(255, 212, 0, 0.15), 0 0 40px rgba(255, 212, 0, 0.05);
+}
+
+.yellow-text-glow {
+  text-shadow: 0 0 30px rgba(255, 212, 0, 0.3);
+}
+
+html.light .yellow-text-glow {
+  text-shadow: 0 0 20px rgba(217, 155, 0, 0.25);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain-overlay {
+    display: none;
+  }
+}
+
+/* Utility classes */
+.font-grotesk {
+  font-family: var(--font-grotesk), 'Space Grotesk', sans-serif;
+}
+
+.font-mono-custom {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace;
+}
+
+/* Card hover border glow */
+.card-hover {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, background-color 0.25s ease;
+}
+
+.card-hover:hover {
+  border-color: var(--yellow-street) !important;
+  box-shadow: 0 0 20px rgba(255, 212, 0, 0.15), 0 4px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--yellow-street) 0%, var(--yellow-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Progress bar */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--yellow-street);
+  z-index: 9998;
+  transition: width 0.1s linear;
+}
