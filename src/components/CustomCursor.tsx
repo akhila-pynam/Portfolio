@@ -21,12 +21,16 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
+      if (curX === -100) {
+        curX = e.clientX;
+        curY = e.clientY;
+      }
       setIsVisible(true);
     };
 
     const animate = () => {
-      curX += (mouseX - curX) * 0.18;
-      curY += (mouseY - curY) * 0.18;
+      curX += (mouseX - curX) * 0.42;
+      curY += (mouseY - curY) * 0.42;
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
       }
