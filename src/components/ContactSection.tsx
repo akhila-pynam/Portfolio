@@ -14,7 +14,7 @@ const CONTACT_LINKS = [
     icon: <MessageSquareCode size={20} className="text-yellow-street" />,
     label: "WhatsApp",
     href: WHATSAPP_LINK,
-    description: "Request Resume",
+    description: "Get My Resume",
     highlight: true,
   },
   {
@@ -89,7 +89,7 @@ export default function ContactSection() {
           className="font-inter text-muted-gray text-base md:text-lg max-w-xl mx-auto leading-relaxed mb-6"
           {...fade(0.2)}
         >
-          To request my official resume, please message me directly on WhatsApp with the auto-filled message below.
+          Message me directly on WhatsApp to get a copy of my official resume.
         </motion.p>
 
         {/* Direct WhatsApp Callout Banner */}
@@ -102,10 +102,10 @@ export default function ContactSection() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => soundManager.playClick()}
-            className="inline-flex items-center gap-3 font-grotesk text-sm tracking-[0.12em] font-bold px-8 py-4 bg-yellow-street text-midnight hover:bg-yellow-gold transition-all rounded-sm cursor-pointer shadow-[0_0_25px_rgba(255,212,0,0.35)]"
+            className="inline-flex items-center gap-3 font-grotesk text-sm tracking-[0.14em] font-bold px-8 py-4 bg-yellow-street text-midnight hover:bg-yellow-gold transition-all rounded-sm cursor-pointer shadow-[0_0_25px_rgba(255,212,0,0.35)]"
           >
             <MessageSquareCode size={20} />
-            REQUEST RESUME ON WHATSAPP (+91 8341743003)
+            GET MY RESUME
           </a>
         </motion.div>
 
