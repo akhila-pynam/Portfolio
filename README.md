@@ -75,7 +75,7 @@ A GTA-inspired, high-performance developer portfolio featuring:
 - **LinkedIn**: [akhila-pynam](https://www.linkedin.com/in/akhila-pynam-ba0369338/)
 - **GitHub**: [@akhila-pynam](https://github.com/akhila-pynam)
 - **LeetCode**: [akhila-pynam](https://leetcode.com/u/akhila-pynam/)
-- **Email**: [akhilapynam@gmail.com](mailto:akhilapynam@gmail.com)
+- **Email**: [akhilapynam@gmail.com](mailto:akhilapynam07@gmail.com)
 - **WhatsApp**: [+91 8341743003](https://wa.me/918341743003)
 
 ---
