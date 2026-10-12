@@ -1,7 +1,7 @@
 # Akhila Pynam — Portfolio 🌻
 
 > **Software Engineer in the Making**  
-> Computer Science and Engineering student at Vel Tech High Tech (2025–2029). Builder, problem solver, and explorer in software engineering, AI, and interactive web experiences.
+> Computer Science and Engineering student at Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology (2025–2029). Builder, problem solver, and explorer in software engineering, AI, and interactive web experiences.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=flat&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)

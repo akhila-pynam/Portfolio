@@ -10,7 +10,7 @@ const INFO_CARDS = [
   {
     icon: <GraduationCap size={18} className="text-yellow-street" />,
     label: "EDUCATION",
-    value: "Vel Tech High Tech Dr. Rangarajan Dr. Sakunthala Engineering College",
+    value: "Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology",
     sub: "B.Tech in Computer Science and Engineering (2025 – 2029) · Chennai",
   },
   {
@@ -74,7 +74,7 @@ export default function AboutSection() {
               <span className="text-yellow-street font-semibold">Akhila Pynam</span>, a
               Computer Science and Engineering undergraduate student at{" "}
               <span className="text-soft-white font-medium">
-                Vel Tech High Tech Dr. Rangarajan Dr. Sakunthala Engineering College, Chennai (2025 – 2029)
+                Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology, Chennai (2025 – 2029)
               </span>
               .
             </p>
