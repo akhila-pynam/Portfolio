@@ -73,70 +73,81 @@ export default function HeroSection() {
           className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center"
           {...fade(0.1)}
         >
-          <div
-            onClick={handlePhotoClick}
-            className="relative group cursor-pointer select-none"
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                handlePhotoClick();
-              }
-            }}
-            aria-label={isRevealed ? "Profile photo revealed" : "Click to reveal profile photo"}
-          >
-            {/* Outer GTA yellow accent border brackets */}
+          <div className="relative w-64 sm:w-72 md:w-80">
+            {/* The clickable photo */}
             <div
-              className={`absolute -inset-2 border-2 rounded-sm pointer-events-none transition-all duration-300 ${
-                isRevealed
-                  ? "border-yellow-street shadow-[0_0_20px_rgba(255,212,0,0.35)]"
-                  : "border-yellow-street/40 group-hover:border-yellow-street"
-              }`}
-            />
-            <div className="absolute -top-3 -left-3 w-4 h-4 border-t-2 border-l-2 border-yellow-street" />
-            <div className="absolute -top-3 -right-3 w-4 h-4 border-t-2 border-r-2 border-yellow-street" />
-            <div className="absolute -bottom-3 -left-3 w-4 h-4 border-b-2 border-l-2 border-yellow-street" />
-            <div className="absolute -bottom-3 -right-3 w-4 h-4 border-b-2 border-r-2 border-yellow-street" />
-
-            {/* Glowing background halo */}
-            <div
-              className={`absolute -inset-1 bg-gradient-to-r from-yellow-street/25 to-yellow-gold/25 rounded-sm blur-md transition-opacity duration-300 ${
-                isRevealed ? "opacity-100" : "opacity-40 group-hover:opacity-100"
-              }`}
-            />
-
-            {/* Image container */}
-            <div
-              className={`relative w-64 sm:w-72 md:w-80 h-80 sm:h-96 rounded-sm overflow-hidden border bg-charcoal shadow-2xl transition-all duration-500 ${
-                isRevealed
-                  ? "border-yellow-street shadow-[0_0_30px_rgba(255,212,0,0.25)]"
-                  : "border-border-gray group-hover:border-yellow-street/60"
-              }`}
+              onClick={handlePhotoClick}
+              className="relative group cursor-pointer select-none"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handlePhotoClick();
+                }
+              }}
+              aria-label={isRevealed ? "Profile photo revealed" : "Click to reveal profile photo"}
             >
-              <Image
-                src="/profile.jpg"
-                alt="Akhila Pynam portrait"
-                fill
-                priority
-                className={`object-cover object-top transition-all duration-700 ease-out scale-100 group-hover:scale-105 ${
+              {/* Outer GTA yellow accent border brackets */}
+              <div
+                className={`absolute -inset-2 border-2 rounded-sm pointer-events-none transition-all duration-300 ${
                   isRevealed
-                    ? "filter-none grayscale-0 contrast-100"
-                    : "filter grayscale contrast-110"
+                    ? "border-yellow-street shadow-[0_0_20px_rgba(255,212,0,0.35)]"
+                    : "border-yellow-street/40 group-hover:border-yellow-street"
                 }`}
-                sizes="(max-width: 640px) 256px, (max-width: 768px) 288px, 320px"
               />
-              {/* Subtle vignette scanlines */}
-              <div className="absolute inset-0 bg-gradient-to-t from-midnight/40 via-transparent to-transparent pointer-events-none" />
-            </div>
-          </div>
+              <div className="absolute -top-3 -left-3 w-4 h-4 border-t-2 border-l-2 border-yellow-street" />
+              <div className="absolute -top-3 -right-3 w-4 h-4 border-t-2 border-r-2 border-yellow-street" />
+              <div className="absolute -bottom-3 -left-3 w-4 h-4 border-b-2 border-l-2 border-yellow-street" />
+              <div className="absolute -bottom-3 -right-3 w-4 h-4 border-b-2 border-r-2 border-yellow-street" />
 
-          {/* Tiny text UNDER the profile that disappears after tapping */}
-          {!isRevealed && (
-            <p className="mt-3 font-mono-custom text-[10px] text-yellow-street/80 tracking-[0.25em] text-center pointer-events-none animate-pulse w-64 sm:w-72 md:w-80">
-              ▶ TAP TO REVEAL
-            </p>
-          )}
+              {/* Glowing background halo */}
+              <div
+                className={`absolute -inset-1 bg-gradient-to-r from-yellow-street/25 to-yellow-gold/25 rounded-sm blur-md transition-opacity duration-300 ${
+                  isRevealed ? "opacity-100" : "opacity-40 group-hover:opacity-100"
+                }`}
+              />
+
+              {/* Image container */}
+              <div
+                className={`relative w-full h-80 sm:h-96 rounded-sm overflow-hidden border bg-charcoal shadow-2xl transition-all duration-500 ${
+                  isRevealed
+                    ? "border-yellow-street shadow-[0_0_30px_rgba(255,212,0,0.25)]"
+                    : "border-border-gray group-hover:border-yellow-street/60"
+                }`}
+              >
+                <Image
+                  src="/profile.jpg"
+                  alt="Akhila Pynam portrait"
+                  fill
+                  priority
+                  className={`object-cover object-top transition-all duration-700 ease-out scale-100 group-hover:scale-105 ${
+                    isRevealed
+                      ? "filter-none grayscale-0 contrast-100"
+                      : "filter grayscale contrast-110"
+                  }`}
+                  sizes="(max-width: 640px) 256px, (max-width: 768px) 288px, 320px"
+                />
+                {/* Subtle vignette scanlines */}
+                <div className="absolute inset-0 bg-gradient-to-t from-midnight/40 via-transparent to-transparent pointer-events-none" />
+              </div>
+            </div>
+
+            {/* Very tiny tap to reveal button positioned at bottom right where cursor was placed */}
+            {!isRevealed && (
+              <div className="flex justify-end mt-2.5">
+                <button
+                  type="button"
+                  onClick={handlePhotoClick}
+                  className="inline-flex items-center gap-1.5 px-2 py-0.5 font-mono-custom text-[9px] text-yellow-street bg-charcoal/90 border border-yellow-street/40 hover:border-yellow-street rounded-sm tracking-[0.2em] shadow-sm hover:shadow-[0_0_10px_rgba(255,212,0,0.3)] transition-all cursor-pointer animate-pulse"
+                  aria-label="Tap to reveal profile photo colors"
+                >
+                  <span>▶</span>
+                  <span>TAP TO REVEAL</span>
+                </button>
+              </div>
+            )}
+          </div>
         </motion.div>
 
         {/* Right Side: Name & Info */}
