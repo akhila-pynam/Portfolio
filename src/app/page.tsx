@@ -12,6 +12,7 @@ import ContactSection from "@/components/ContactSection";
 import ScrollProgress from "@/components/ScrollProgress";
 import CustomCursor from "@/components/CustomCursor";
 import TerminalEasterEgg from "@/components/TerminalEasterEgg";
+import { soundManager } from "@/lib/sound";
 
 const INTRO_SEEN_KEY = "ap_intro_seen";
 
@@ -26,6 +27,17 @@ export default function Home() {
     } else {
       setReady(true);
     }
+
+    // Ensure audio works universally on mobile taps and desktop clicks
+    const handleGlobalClick = () => {
+      soundManager.unlock();
+      soundManager.playClick();
+    };
+
+    window.addEventListener("click", handleGlobalClick);
+    return () => {
+      window.removeEventListener("click", handleGlobalClick);
+    };
   }, []);
 
   const handleIntroComplete = useCallback(() => {

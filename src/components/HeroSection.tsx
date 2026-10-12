@@ -1,12 +1,30 @@
 "use client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import { soundManager } from "@/lib/sound";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 export default function HeroSection() {
   const reduced = useReducedMotion();
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem("ap_profile_photo_revealed") === "true";
+      if (saved) setIsRevealed(true);
+    }
+  }, []);
+
+  const handlePhotoClick = () => {
+    if (!isRevealed) {
+      setIsRevealed(true);
+      sessionStorage.setItem("ap_profile_photo_revealed", "true");
+    }
+    soundManager.playClick();
+  };
 
   const fade = (delay = 0) =>
     reduced
@@ -65,29 +83,74 @@ export default function HeroSection() {
           className="lg:col-span-5 flex justify-center lg:justify-end"
           {...fade(0.1)}
         >
-          <div className="relative group">
+          <div
+            onClick={handlePhotoClick}
+            className="relative group cursor-pointer select-none"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handlePhotoClick();
+              }
+            }}
+            aria-label={isRevealed ? "Profile photo revealed" : "Click to reveal profile photo"}
+          >
             {/* Outer GTA yellow accent border brackets */}
-            <div className="absolute -inset-2 border-2 border-yellow-street/40 rounded-sm pointer-events-none group-hover:border-yellow-street transition-colors duration-300" />
+            <div
+              className={`absolute -inset-2 border-2 rounded-sm pointer-events-none transition-all duration-300 ${
+                isRevealed
+                  ? "border-yellow-street shadow-[0_0_20px_rgba(255,212,0,0.35)]"
+                  : "border-yellow-street/40 group-hover:border-yellow-street"
+              }`}
+            />
             <div className="absolute -top-3 -left-3 w-4 h-4 border-t-2 border-l-2 border-yellow-street" />
             <div className="absolute -top-3 -right-3 w-4 h-4 border-t-2 border-r-2 border-yellow-street" />
             <div className="absolute -bottom-3 -left-3 w-4 h-4 border-b-2 border-l-2 border-yellow-street" />
             <div className="absolute -bottom-3 -right-3 w-4 h-4 border-b-2 border-r-2 border-yellow-street" />
 
             {/* Glowing background halo */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-yellow-street/20 to-yellow-gold/20 rounded-sm blur-md opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
+            <div
+              className={`absolute -inset-1 bg-gradient-to-r from-yellow-street/25 to-yellow-gold/25 rounded-sm blur-md transition-opacity duration-300 ${
+                isRevealed ? "opacity-100" : "opacity-40 group-hover:opacity-100"
+              }`}
+            />
 
             {/* Image container */}
-            <div className="relative w-64 sm:w-72 md:w-80 h-80 sm:h-96 rounded-sm overflow-hidden border border-border-gray bg-charcoal shadow-2xl">
+            <div
+              className={`relative w-64 sm:w-72 md:w-80 h-80 sm:h-96 rounded-sm overflow-hidden border bg-charcoal shadow-2xl transition-all duration-500 ${
+                isRevealed
+                  ? "border-yellow-street shadow-[0_0_30px_rgba(255,212,0,0.25)]"
+                  : "border-border-gray group-hover:border-yellow-street/60"
+              }`}
+            >
               <Image
                 src="/profile.jpg"
                 alt="Akhila Pynam portrait"
                 fill
                 priority
-                className="object-cover object-top filter grayscale contrast-110 hover:grayscale-0 transition-all duration-500 ease-out scale-100 group-hover:scale-105"
+                className={`object-cover object-top transition-all duration-700 ease-out scale-100 group-hover:scale-105 ${
+                  isRevealed
+                    ? "filter-none grayscale-0 contrast-100"
+                    : "filter grayscale contrast-110 group-hover:grayscale-0"
+                }`}
                 sizes="(max-width: 640px) 256px, (max-width: 768px) 288px, 320px"
               />
               {/* Subtle vignette scanlines */}
               <div className="absolute inset-0 bg-gradient-to-t from-midnight/40 via-transparent to-transparent pointer-events-none" />
+
+              {/* Reveal HUD indicator tag */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+                <span
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-sm font-mono-custom text-[10px] tracking-[0.2em] font-semibold transition-all duration-300 ${
+                    isRevealed
+                      ? "bg-midnight/90 text-yellow-street border border-yellow-street/70 shadow-[0_0_12px_rgba(255,212,0,0.3)]"
+                      : "bg-midnight/90 text-yellow-street/90 border border-yellow-street/40 animate-pulse group-hover:border-yellow-street"
+                  }`}
+                >
+                  {isRevealed ? "✦ PHOTO REVEALED" : "▶ TAP TO REVEAL"}
+                </span>
+              </div>
             </div>
           </div>
         </motion.div>

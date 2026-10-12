@@ -5,6 +5,8 @@ class SoundManager {
   private enabled: boolean = true;
   private lastPlayTime: number = 0;
   private isPreloading: boolean = false;
+  private htmlAudio: HTMLAudioElement | null = null;
+  private isUnlocked: boolean = false;
 
   constructor() {
     if (typeof window !== "undefined") {
@@ -12,8 +14,38 @@ class SoundManager {
       if (stored !== null) {
         this.enabled = stored === "true";
       }
+      this.initMobileUnlockListeners();
       this.loadAudio();
     }
+  }
+
+  private initMobileUnlockListeners() {
+    if (typeof window === "undefined") return;
+    const unlockHandler = () => {
+      this.unlock();
+    };
+    window.addEventListener("touchstart", unlockHandler, { capture: true, passive: true });
+    window.addEventListener("touchend", unlockHandler, { capture: true, passive: true });
+    window.addEventListener("pointerdown", unlockHandler, { capture: true, passive: true });
+    window.addEventListener("click", unlockHandler, { capture: true, passive: true });
+  }
+
+  public unlock() {
+    if (typeof window === "undefined" || this.isUnlocked) return;
+    this.initCtx();
+    if (this.ctx && this.ctx.state === "suspended") {
+      this.ctx.resume().catch(() => {});
+    }
+    // Prepare HTML5 Audio fallback for mobile environments
+    if (!this.htmlAudio) {
+      try {
+        this.htmlAudio = new Audio("/gta_sound.mp3");
+        this.htmlAudio.volume = 0.22;
+        this.htmlAudio.preload = "auto";
+        this.htmlAudio.load();
+      } catch {}
+    }
+    this.isUnlocked = true;
   }
 
   private initCtx() {
@@ -26,7 +58,7 @@ class SoundManager {
       }
     }
     if (this.ctx && this.ctx.state === "suspended") {
-      this.ctx.resume();
+      this.ctx.resume().catch(() => {});
     }
   }
 
@@ -62,17 +94,30 @@ class SoundManager {
   // Play ONLY the authentic user-provided audio file
   private playSound(volume = 0.22) {
     if (!this.enabled || typeof window === "undefined") return;
+
     this.initCtx();
 
-    if (!this.audioBuffer) {
-      const fallbackAudio = new Audio("/gta_sound.mp3");
-      fallbackAudio.volume = volume;
-      fallbackAudio.play().catch(() => {});
-      this.loadAudio();
+    // If AudioBuffer is ready and context is running
+    if (this.ctx && this.audioBuffer) {
+      if (this.ctx.state === "suspended") {
+        this.ctx.resume().then(() => {
+          this.playBufferSource(volume);
+        }).catch(() => {
+          this.playHtmlAudioFallback(volume);
+        });
+        return;
+      }
+      this.playBufferSource(volume);
       return;
     }
 
-    if (!this.ctx) return;
+    // Fallback: HTML Audio playback
+    this.playHtmlAudioFallback(volume);
+    this.loadAudio();
+  }
+
+  private playBufferSource(volume = 0.22) {
+    if (!this.ctx || !this.audioBuffer) return;
     try {
       const source = this.ctx.createBufferSource();
       source.buffer = this.audioBuffer;
@@ -82,8 +127,19 @@ class SoundManager {
       gainNode.connect(this.ctx.destination);
       source.start(0);
     } catch {
-      // Audio play error
+      this.playHtmlAudioFallback(volume);
     }
+  }
+
+  private playHtmlAudioFallback(volume = 0.22) {
+    try {
+      const audio = new Audio("/gta_sound.mp3");
+      audio.volume = volume;
+      const p = audio.play();
+      if (p !== undefined) {
+        p.catch(() => {});
+      }
+    } catch {}
   }
 
   // The ONLY active sound in the portfolio: plays your provided audio on button/cursor clicks
@@ -96,14 +152,10 @@ class SoundManager {
   }
 
   // Completely silenced (all synthetic hover noises removed)
-  public playHover() {
-    // Disabled per user request
-  }
+  public playHover() {}
 
   // Completely silenced (all synthetic milestone sounds removed)
-  public playAchievement() {
-    // Disabled per user request
-  }
+  public playAchievement() {}
 }
 
 export const soundManager = new SoundManager();
