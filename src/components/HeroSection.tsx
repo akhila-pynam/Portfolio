@@ -83,11 +83,18 @@ export default function HeroSection() {
           className="lg:col-span-5 flex justify-center lg:justify-end"
           {...fade(0.1)}
         >
-          <button
-            type="button"
+          <div
             onClick={handlePhotoClick}
-            className="relative group cursor-pointer select-none text-left p-0 border-0 bg-transparent block focus:outline-none"
-            aria-label={isRevealed ? "Profile photo revealed in color" : "Tap photo to reveal color"}
+            className="relative group cursor-pointer select-none"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handlePhotoClick();
+              }
+            }}
+            aria-label={isRevealed ? "Profile photo revealed" : "Click to reveal profile photo"}
           >
             {/* Outer GTA yellow accent border brackets */}
             <div
@@ -122,21 +129,17 @@ export default function HeroSection() {
                 alt="Akhila Pynam portrait"
                 fill
                 priority
-                style={{
-                  filter: isRevealed ? "none" : "grayscale(100%) contrast(110%)",
-                  WebkitFilter: isRevealed ? "none" : "grayscale(100%) contrast(110%)",
-                }}
                 className={`object-cover object-top transition-all duration-700 ease-out scale-100 group-hover:scale-105 ${
                   isRevealed
-                    ? "grayscale-0 contrast-100"
-                    : "grayscale contrast-110"
+                    ? "filter-none grayscale-0 contrast-100"
+                    : "filter grayscale contrast-110 group-hover:grayscale-0"
                 }`}
                 sizes="(max-width: 640px) 256px, (max-width: 768px) 288px, 320px"
               />
               {/* Subtle vignette scanlines */}
               <div className="absolute inset-0 bg-gradient-to-t from-midnight/40 via-transparent to-transparent pointer-events-none" />
             </div>
-          </button>
+          </div>
         </motion.div>
 
         {/* Right Side: Name & Info */}
