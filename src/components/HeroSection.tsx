@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
@@ -11,18 +11,8 @@ export default function HeroSection() {
   const reduced = useReducedMotion();
   const [isRevealed, setIsRevealed] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = sessionStorage.getItem("ap_profile_photo_revealed") === "true";
-      if (saved) setIsRevealed(true);
-    }
-  }, []);
-
   const handlePhotoClick = () => {
-    if (!isRevealed) {
-      setIsRevealed(true);
-      sessionStorage.setItem("ap_profile_photo_revealed", "true");
-    }
+    setIsRevealed(true);
     soundManager.playClick();
   };
 
@@ -80,7 +70,7 @@ export default function HeroSection() {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
         {/* Left Side: Photo */}
         <motion.div
-          className="lg:col-span-5 flex justify-center lg:justify-end"
+          className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center"
           {...fade(0.1)}
         >
           <div
@@ -132,7 +122,7 @@ export default function HeroSection() {
                 className={`object-cover object-top transition-all duration-700 ease-out scale-100 group-hover:scale-105 ${
                   isRevealed
                     ? "filter-none grayscale-0 contrast-100"
-                    : "filter grayscale contrast-110 group-hover:grayscale-0"
+                    : "filter grayscale contrast-110"
                 }`}
                 sizes="(max-width: 640px) 256px, (max-width: 768px) 288px, 320px"
               />
@@ -140,6 +130,13 @@ export default function HeroSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-midnight/40 via-transparent to-transparent pointer-events-none" />
             </div>
           </div>
+
+          {/* Tiny text UNDER the profile that disappears after tapping */}
+          {!isRevealed && (
+            <p className="mt-3 font-mono-custom text-[10px] text-yellow-street/80 tracking-[0.25em] text-center pointer-events-none animate-pulse w-64 sm:w-72 md:w-80">
+              ▶ TAP TO REVEAL
+            </p>
+          )}
         </motion.div>
 
         {/* Right Side: Name & Info */}
