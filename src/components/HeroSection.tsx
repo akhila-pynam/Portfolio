@@ -135,19 +135,6 @@ export default function HeroSection() {
               />
               {/* Subtle vignette scanlines */}
               <div className="absolute inset-0 bg-gradient-to-t from-midnight/40 via-transparent to-transparent pointer-events-none" />
-
-              {/* Reveal HUD indicator tag */}
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-                <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-sm font-mono-custom text-[10px] tracking-[0.2em] font-semibold transition-all duration-300 ${
-                    isRevealed
-                      ? "bg-midnight/90 text-yellow-street border border-yellow-street/70 shadow-[0_0_12px_rgba(255,212,0,0.3)]"
-                      : "bg-midnight/90 text-yellow-street/90 border border-yellow-street/40 animate-pulse group-hover:border-yellow-street"
-                  }`}
-                >
-                  {isRevealed ? "✦ PHOTO REVEALED" : "▶ TAP TO REVEAL"}
-                </span>
-              </div>
             </div>
           </button>
         </motion.div>
