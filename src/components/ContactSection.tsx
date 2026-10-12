@@ -11,13 +11,6 @@ const WHATSAPP_LINK =
 
 const CONTACT_LINKS = [
   {
-    icon: <MessageSquareCode size={20} className="text-yellow-street" />,
-    label: "WhatsApp",
-    href: WHATSAPP_LINK,
-    description: "Get My Resume",
-    highlight: true,
-  },
-  {
     icon: <Mail size={20} />,
     label: "Email Me",
     href: "mailto:akhilapynam@gmail.com",
@@ -111,7 +104,7 @@ export default function ContactSection() {
 
         {/* Profiles Grid */}
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 mb-14"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-14 max-w-3xl mx-auto"
           {...fade(0.35)}
         >
           {CONTACT_LINKS.map((link) => (
