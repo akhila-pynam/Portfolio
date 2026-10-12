@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { soundManager } from "@/lib/sound";
 
@@ -70,14 +70,15 @@ export default function HeroSection() {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
         {/* Left Side: Photo */}
         <motion.div
-          className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center"
+          className="lg:col-span-5 flex justify-center lg:justify-end"
           {...fade(0.1)}
         >
-          <div className="relative w-64 sm:w-72 md:w-80">
+          {/* Fixed-size wrapper anchoring both photo and absolute button */}
+          <div className="relative w-64 sm:w-72 md:w-80 h-80 sm:h-96">
             {/* The clickable photo */}
             <div
               onClick={handlePhotoClick}
-              className="relative group cursor-pointer select-none"
+              className="relative w-full h-full group cursor-pointer select-none"
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
@@ -110,7 +111,7 @@ export default function HeroSection() {
 
               {/* Image container */}
               <div
-                className={`relative w-full h-80 sm:h-96 rounded-sm overflow-hidden border bg-charcoal shadow-2xl transition-all duration-500 ${
+                className={`relative w-full h-full rounded-sm overflow-hidden border bg-charcoal shadow-2xl transition-all duration-500 ${
                   isRevealed
                     ? "border-yellow-street shadow-[0_0_30px_rgba(255,212,0,0.25)]"
                     : "border-border-gray group-hover:border-yellow-street/60"
@@ -133,20 +134,27 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Very tiny tap to reveal button positioned at bottom right where cursor was placed */}
-            {!isRevealed && (
-              <div className="flex justify-end mt-2.5">
-                <button
-                  type="button"
-                  onClick={handlePhotoClick}
-                  className="inline-flex items-center gap-1.5 px-2 py-0.5 font-mono-custom text-[9px] text-yellow-street bg-charcoal/90 border border-yellow-street/40 hover:border-yellow-street rounded-sm tracking-[0.2em] shadow-sm hover:shadow-[0_0_10px_rgba(255,212,0,0.3)] transition-all cursor-pointer animate-pulse"
-                  aria-label="Tap to reveal profile photo colors"
+            {/* Very tiny tap to reveal button positioned ABSOLUTELY so photo never shifts */}
+            <AnimatePresence>
+              {!isRevealed && (
+                <motion.div
+                  initial={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -4 }}
+                  transition={{ duration: 0.28, ease: "easeInOut" }}
+                  className="absolute top-[calc(100%+10px)] right-0 z-30"
                 >
-                  <span>▶</span>
-                  <span>TAP TO REVEAL</span>
-                </button>
-              </div>
-            )}
+                  <button
+                    type="button"
+                    onClick={handlePhotoClick}
+                    className="inline-flex items-center gap-1.5 px-2 py-0.5 font-mono-custom text-[9px] text-yellow-street bg-charcoal/95 border border-yellow-street/40 hover:border-yellow-street hover:bg-yellow-street/10 rounded-sm tracking-[0.2em] shadow-sm hover:shadow-[0_0_10px_rgba(255,212,0,0.3)] transition-all cursor-pointer animate-pulse"
+                    aria-label="Tap to reveal profile photo colors"
+                  >
+                    <span>▶</span>
+                    <span>TAP TO REVEAL</span>
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
 
