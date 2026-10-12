@@ -2,13 +2,9 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Code2, GraduationCap, Zap, Target, MessageSquareCode, Heart } from "lucide-react";
-import { soundManager } from "@/lib/sound";
+import { GraduationCap, Zap, Target, Heart } from "lucide-react";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
-
-const WHATSAPP_LINK =
-  "https://wa.me/918341743003?text=Hello%20Akhila%20Pynam%2C%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20request%20a%20copy%20of%20your%20resume.";
 
 const INFO_CARDS = [
   {
@@ -104,23 +100,6 @@ export default function AboutSection() {
               decoding Taylor Swift&apos;s lyrics, uncovering album easter eggs, and exploring
               intricate storylines.
             </p>
-
-            {/* WhatsApp Request Resume Action */}
-            <div className="pt-2">
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => soundManager.playClick()}
-                className="inline-flex items-center gap-3 font-grotesk text-xs tracking-[0.14em] font-bold px-6 py-3.5 bg-yellow-street text-midnight hover:bg-yellow-gold transition-all rounded-sm cursor-pointer shadow-[0_0_20px_rgba(255,212,0,0.3)]"
-              >
-                <MessageSquareCode size={18} />
-                REQUEST RESUME ON WHATSAPP
-              </a>
-              <p className="font-mono-custom text-[11px] text-muted-gray mt-2 tracking-wide">
-                Auto-fills message: &quot;Hello Akhila Pynam, I reviewed your portfolio and would like to request a copy of your resume.&quot;
-              </p>
-            </div>
           </motion.div>
 
           {/* Right: info cards including Taylor Swift hobby */}
