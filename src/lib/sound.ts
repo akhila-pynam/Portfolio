@@ -146,7 +146,7 @@ class SoundManager {
   public playClick() {
     if (!this.enabled) return;
     const now = Date.now();
-    if (now - this.lastPlayTime < 60) return;
+    if (now - this.lastPlayTime < 300) return;
     this.lastPlayTime = now;
     this.playSound(0.22);
   }

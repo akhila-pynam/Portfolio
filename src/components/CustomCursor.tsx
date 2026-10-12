@@ -54,7 +54,6 @@ export default function CustomCursor() {
 
     const onMouseDown = () => {
       setIsTapping(true);
-      soundManager.playClick();
     };
 
     const onMouseUp = () => {
