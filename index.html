@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Akhila Pynam — GTA: Vice City 2D Open World Portfolio (1986 Edition)</title>
-  <meta name="description" content="Drive a 1980s white Testarossa down Ocean Drive, Vice City to explore Akhila Pynam's software engineering portfolio.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akhila Pynam — GTA: Vice City Gamified Portfolio (1986 / 2002 Edition)</title>
+  <meta name="description" content="Gamified GTA Vice City portfolio for Akhila Pynam — Computer Science student, software engineer, and AI developer.">
   
-  <!-- Google Fonts: Anton (Pricedown-style headers), Yellowtail (Vice City script), Chakra Petch (PS2 HUD & radar) -->
+  <!-- Google Fonts: Anton (Pricedown-style bold HUD), Yellowtail (Vice City cursive neon), Chakra Petch (PS2 HUD & digital clock) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Yellowtail&display=swap" rel="stylesheet">
@@ -42,42 +42,29 @@
   </script>
 
   <style>
-    * {
-      box-sizing: border-box;
-      user-select: none;
-      -webkit-user-select: none;
+    /* Custom CRT scanline & retro glow styling */
+    body {
+      background-color: #120822;
+      color: #fef5ff;
+      font-family: '"Chakra Petch"', monospace, sans-serif;
+      overflow-x: hidden;
       margin: 0;
       padding: 0;
     }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #0b0117;
-      color: #fef5ff;
-      font-family: '"Chakra Petch"', monospace, sans-serif;
-    }
-    #game-canvas {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      background: #0b0117;
-      cursor: crosshair;
-    }
 
-    /* CRT scanlines effect */
+    /* Subtle CRT Scanline overlay */
     .crt-overlay {
-      background: linear-gradient(rgba(18, 8, 34, 0) 50%, rgba(0, 0, 0, 0.22) 50%);
+      background: linear-gradient(rgba(18, 8, 34, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
       background-size: 100% 4px;
       pointer-events: none;
     }
 
-    /* Neon glows */
+    /* Neon glow utilities */
     .neon-pink-text {
-      text-shadow: 0 0 6px rgba(255, 110, 199, 0.9), 0 0 18px rgba(255, 22, 235, 0.7);
+      text-shadow: 0 0 6px rgba(255, 110, 199, 0.9), 0 0 18px rgba(255, 22, 235, 0.7), 0 0 35px rgba(255, 22, 235, 0.4);
     }
     .neon-cyan-text {
-      text-shadow: 0 0 6px rgba(0, 255, 255, 0.9), 0 0 18px rgba(0, 240, 255, 0.7);
+      text-shadow: 0 0 6px rgba(0, 255, 255, 0.9), 0 0 18px rgba(0, 240, 255, 0.7), 0 0 35px rgba(0, 240, 255, 0.4);
     }
     .neon-gold-text {
       text-shadow: 0 0 6px rgba(255, 215, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.6);
@@ -87,93 +74,180 @@
     }
 
     .neon-pink-box {
-      box-shadow: 0 0 15px rgba(255, 22, 235, 0.45), inset 0 0 10px rgba(255, 22, 235, 0.2);
+      box-shadow: 0 0 15px rgba(255, 22, 235, 0.4), inset 0 0 10px rgba(255, 22, 235, 0.2);
     }
     .neon-cyan-box {
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.45), inset 0 0 10px rgba(0, 255, 255, 0.2);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
+    /* Radar sweep animation */
+    @keyframes radarSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .radar-line {
+      animation: radarSweep 3.5s linear infinite;
+      transform-origin: bottom center;
+    }
+
+    /* Palm tree wind animation */
+    @keyframes palmSway {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(1.2deg); }
+    }
+    .palm-sway-left {
+      animation: palmSway 5s ease-in-out infinite;
+      transform-origin: bottom left;
+    }
+    .palm-sway-right {
+      animation: palmSway 5.5s ease-in-out infinite reverse;
+      transform-origin: bottom right;
     }
 
     /* Slanted Pause Menu Tabs */
     .pause-tab {
-      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
       transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .pause-tab.active {
       background: linear-gradient(135deg, #FF16EB 0%, #00FFFF 100%);
       color: #120822;
       font-weight: 700;
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 0 18px rgba(255, 22, 235, 0.6);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 0 20px rgba(255, 22, 235, 0.6);
     }
 
-    /* Radar scanline animation */
-    @keyframes radarSweep {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    /* Custom Vice City Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
     }
-    .radar-line {
-      animation: radarSweep 3s linear infinite;
-      transform-origin: bottom center;
-    }
-
-    /* Custom scrollbar for modal */
-    .modal-scroll::-webkit-scrollbar {
-      width: 5px;
-    }
-    .modal-scroll::-webkit-scrollbar-track {
+    ::-webkit-scrollbar-track {
       background: #120822;
     }
-    .modal-scroll::-webkit-scrollbar-thumb {
+    ::-webkit-scrollbar-thumb {
       background: #FF16EB;
       border-radius: 3px;
     }
-    .modal-scroll::-webkit-scrollbar-thumb:hover {
+    ::-webkit-scrollbar-thumb:hover {
       background: #00FFFF;
     }
 
+    /* Tank animation for cheat code PANZER */
+    @keyframes tankRoll {
+      0% { transform: translateX(-150px); }
+      100% { transform: translateX(calc(100vw + 200px)); }
+    }
+    .tank-animate {
+      animation: tankRoll 7s linear forwards;
+    }
+
     /* Screen shake */
-    @keyframes shake {
+    @keyframes screenShake {
       0%, 100% { transform: translate(0, 0); }
-      20% { transform: translate(-8px, 6px); }
-      40% { transform: translate(8px, -6px); }
-      60% { transform: translate(-6px, -4px); }
-      80% { transform: translate(6px, 4px); }
+      20% { transform: translate(-10px, 8px); }
+      40% { transform: translate(10px, -8px); }
+      60% { transform: translate(-8px, -6px); }
+      80% { transform: translate(8px, 6px); }
     }
     .screen-shake {
-      animation: shake 0.4s ease-in-out;
+      animation: screenShake 0.5s ease-in-out;
     }
   </style>
 </head>
 
-<body class="relative w-screen h-screen overflow-hidden bg-[#0b0117] selection:bg-[#FF16EB]/40">
+<body class="relative min-h-screen bg-[#120822] text-[#fef5ff] selection:bg-[#FF16EB]/40 selection:text-[#fef5ff]">
 
-  <!-- CRT Scanline Overlay -->
-  <div class="crt-overlay fixed inset-0 z-20 pointer-events-none opacity-40"></div>
-
-  <!-- HTML5 Game Canvas (2D Open World Engine) -->
-  <canvas id="game-canvas" class="relative z-0"></canvas>
+  <!-- CRT Scanline Texture Overlay -->
+  <div class="crt-overlay fixed inset-0 z-40 pointer-events-none opacity-40"></div>
 
   <!-- ========================================================================= -->
-  <!-- 1. TOP-LEFT HUD: Back to Classic Site, Radio & Quick-Travel Button -->
+  <!-- 1. BOOT-UP / LOADING SCREEN (2-Second PS2 Vice City Intro) -->
   <!-- ========================================================================= -->
-  <header class="fixed top-3 left-3 sm:top-5 sm:left-6 z-30 flex flex-col gap-2">
-    <div class="flex items-center gap-2">
-      <!-- Return to Standard Site -->
-      <a href="/" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#170025]/90 hover:bg-[#FF16EB] border border-[#00FFFF] hover:border-[#FF16EB] text-[#00FFFF] hover:text-[#120822] font-hud text-[11px] sm:text-xs font-bold tracking-wider rounded-sm transition-all duration-200 shadow-[0_0_12px_rgba(0,255,255,0.3)]">
-        <span>⬅</span>
-        <span>MAIN SITE</span>
-      </a>
+  <div id="loading-screen" class="fixed inset-0 z-50 bg-[#120822] flex flex-col items-center justify-center p-6 transition-opacity duration-700">
+    <div class="relative z-10 text-center max-w-lg w-full">
+      <!-- Vice City Neon Title -->
+      <h2 class="font-script text-4xl sm:text-5xl md:text-6xl text-[#FF6EC7] neon-pink-text mb-1 tracking-wider">
+        Akhila Pynam&apos;s
+      </h2>
+      <h1 class="font-anton text-6xl sm:text-7xl md:text-8xl text-[#fef5ff] tracking-wider leading-none uppercase drop-shadow-[0_0_25px_rgba(0,255,255,0.7)] mb-4">
+        VICE CITY
+      </h1>
+      <p class="font-hud text-xs sm:text-sm text-[#00FFFF] tracking-[0.3em] uppercase mb-8 neon-cyan-text">
+        PORTFOLIO EDITION • 1986 / 2002 PS2
+      </p>
 
-      <!-- Quick-Travel / Recruiter Pause Menu -->
-      <button id="quick-travel-btn" onclick="openPauseMenu('vercetti')" 
-              class="px-3 py-1.5 bg-[#240438]/90 hover:bg-[#00FFFF] border border-[#FF6EC7] hover:border-[#00FFFF] text-[#FF6EC7] hover:text-[#120822] font-hud text-[11px] sm:text-xs font-bold tracking-wider rounded-sm transition-all duration-200 neon-pink-box cursor-pointer"
-              title="Quick-Travel Menu (ESC)">
-        ⚡ QUICK TRAVEL [ESC]
+      <!-- Progress Bar -->
+      <div class="w-full bg-[#240438] h-3.5 rounded-sm p-0.5 border border-[#FF16EB]/60 neon-pink-box mb-4 overflow-hidden">
+        <div id="loading-bar" class="h-full bg-gradient-to-r from-[#FF16EB] via-[#FF6EC7] to-[#00FFFF] w-0 transition-all duration-200"></div>
+      </div>
+      <div class="flex justify-between items-center font-hud text-xs text-[#d99de7] px-1">
+        <span id="loading-text">LOADING ASSETS &amp; WEAPONS...</span>
+        <span id="loading-pct" class="text-[#00FFFF] font-bold">0%</span>
+      </div>
+
+      <!-- Skip Button -->
+      <button id="skip-load-btn" class="mt-8 px-6 py-2 bg-[#240438] hover:bg-[#FF16EB] text-[#00FFFF] hover:text-[#120822] border border-[#00FFFF] hover:border-[#FF16EB] font-hud text-xs font-bold tracking-widest uppercase transition-all duration-200 cursor-pointer">
+        START GAME (SKIP) ▶
       </button>
     </div>
+  </div>
 
-    <!-- Radio Station Switcher -->
-    <div class="flex items-center gap-2 bg-[#1e0836]/90 border border-[#FF6EC7]/60 px-3 py-1.5 rounded-sm neon-pink-box w-max">
+  <!-- ========================================================================= -->
+  <!-- 2. BACKGROUND ART (Miami Sunset Skyline & Palm Trees Inline SVG) -->
+  <!-- ========================================================================= -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <!-- Sunset Gradient Sky -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#090117] via-[#1f053a] via-[#3a0654] via-[#651062] to-[#120822] opacity-80"></div>
+
+    <!-- Synthwave Horizon Grid -->
+    <div class="absolute bottom-0 left-0 right-0 h-72 opacity-25" 
+         style="background-image: linear-gradient(rgba(255, 22, 235, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px); background-size: 40px 40px; transform: perspective(300px) rotateX(65deg); transform-origin: bottom center;">
+    </div>
+
+    <!-- Distant Miami Ocean Drive Skyline Silhouette SVG -->
+    <svg class="absolute bottom-16 sm:bottom-20 left-0 w-full h-44 sm:h-56 opacity-35" viewBox="0 0 1440 260" preserveAspectRatio="none" fill="none">
+      <path d="M0,260 L0,200 L40,200 L40,160 L70,160 L70,200 L110,200 L110,130 L150,130 L150,210 L190,210 L190,100 L210,80 L230,100 L230,220 L280,220 L280,150 L320,150 L320,190 L380,190 L380,120 L420,120 L420,230 L480,230 L480,90 L510,70 L540,90 L540,220 L600,220 L600,140 L650,140 L650,210 L720,210 L720,110 L760,110 L760,200 L820,200 L820,80 L850,50 L880,80 L880,220 L940,220 L940,160 L980,160 L980,200 L1040,200 L1040,130 L1090,130 L1090,230 L1160,230 L1160,100 L1200,100 L1200,190 L1260,190 L1260,150 L1320,150 L1320,210 L1380,210 L1380,120 L1440,120 L1440,260 Z" fill="#0b0217" />
+      <!-- Neon Window Highlights -->
+      <circle cx="210" cy="80" r="3" fill="#00FFFF" />
+      <circle cx="510" cy="70" r="3" fill="#FF16EB" />
+      <circle cx="850" cy="50" r="4" fill="#00FFFF" />
+    </svg>
+
+    <!-- Left Palm Tree SVG -->
+    <svg class="palm-sway-left absolute -bottom-10 -left-12 sm:-left-6 w-52 sm:w-80 h-80 sm:h-[480px] opacity-40" viewBox="0 0 300 450" fill="#080112">
+      <path d="M40,450 Q70,300 90,150 Q110,80 130,50 Q120,85 100,170 Q80,290 60,450 Z" />
+      <path d="M130,50 Q160,30 240,40 Q180,60 130,50 Z" />
+      <path d="M130,50 Q180,10 270,-10 Q200,40 130,50 Z" />
+      <path d="M130,50 Q140,-20 200,-80 Q160,-20 130,50 Z" />
+      <path d="M130,50 Q100,-30 80,-70 Q90,-10 130,50 Z" />
+      <path d="M130,50 Q70,0 20,-10 Q70,25 130,50 Z" />
+      <path d="M130,50 Q70,50 10,70 Q70,55 130,50 Z" />
+    </svg>
+
+    <!-- Right Palm Tree SVG -->
+    <svg class="palm-sway-right absolute -bottom-10 -right-12 sm:-right-6 w-52 sm:w-80 h-80 sm:h-[480px] opacity-40" viewBox="0 0 300 450" fill="#080112">
+      <path d="M260,450 Q230,300 210,150 Q190,80 170,50 Q180,85 200,170 Q220,290 240,450 Z" />
+      <path d="M170,50 Q140,30 60,40 Q120,60 170,50 Z" />
+      <path d="M170,50 Q120,10 30,-10 Q100,40 170,50 Z" />
+      <path d="M170,50 Q160,-20 100,-80 Q140,-20 170,50 Z" />
+      <path d="M170,50 Q200,-30 220,-70 Q210,-10 170,50 Z" />
+      <path d="M170,50 Q230,0 280,-10 Q230,25 170,50 Z" />
+      <path d="M170,50 Q230,50 290,70 Q230,55 170,50 Z" />
+    </svg>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. TOP-LEFT HUD: Radio Station & Back to Main Portfolio Button -->
+  <!-- ========================================================================= -->
+  <header class="fixed top-3 left-3 sm:top-5 sm:left-6 z-30 flex flex-col gap-2">
+    <!-- Return to Classic Portfolio -->
+    <a href="/" class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#170025]/90 hover:bg-[#FF16EB] border border-[#00FFFF] hover:border-[#FF16EB] text-[#00FFFF] hover:text-[#120822] font-hud text-[11px] sm:text-xs font-bold tracking-wider rounded-sm transition-all duration-200 shadow-[0_0_12px_rgba(0,255,255,0.3)]">
+      <span>⬅</span>
+      <span>BACK TO MAIN SITE</span>
+    </a>
+
+    <!-- Radio Station Selector -->
+    <div class="flex items-center gap-2 bg-[#1e0836]/90 border border-[#FF6EC7]/60 px-3 py-1.5 rounded-sm neon-pink-box">
       <span class="text-sm">📻</span>
       <div class="flex flex-col">
         <span class="font-hud text-[9px] text-[#d99de7] tracking-widest leading-none">VICE CITY RADIO</span>
@@ -188,7 +262,7 @@
   </header>
 
   <!-- ========================================================================= -->
-  <!-- 2. TOP-RIGHT HUD: Weapon/Skill Box, Clock, Cash Odometer, Health, Armor & Stars -->
+  <!-- 4. TOP-RIGHT HUD: Vice City Weapon Box, Clock, Cash, Health, Armor & Stars -->
   <!-- ========================================================================= -->
   <aside class="fixed top-3 right-3 sm:top-5 sm:right-6 z-30 flex flex-col items-end gap-2.5">
     
@@ -206,10 +280,10 @@
         </div>
       </div>
 
-      <!-- Weapon / Skill Box (Click to cycle skills) -->
+      <!-- Weapon Box (Skill Switcher & Filter) -->
       <button id="weapon-box" 
               class="w-16 h-16 sm:w-20 sm:h-20 bg-[#1e0836]/90 border-2 border-[#FF6EC7] rounded-sm p-1 flex flex-col items-center justify-between neon-pink-box cursor-pointer hover:border-[#00FFFF] hover:scale-105 transition-all duration-200"
-              title="Click to cycle weapon / skill">
+              title="Click to cycle weapon / filter skill">
         <div class="w-full flex justify-between items-center text-[9px] text-[#00FFFF] font-hud px-1">
           <span id="weapon-ammo">999</span>
           <span class="text-[8px] text-[#d99de7]">TAP</span>
@@ -223,7 +297,7 @@
 
     <!-- Health Bar (Pink) & Armor Bar (Cyan) -->
     <div class="w-36 sm:w-44 flex flex-col gap-1.5 font-hud">
-      <!-- Health Bar (Status: Open to Work) -->
+      <!-- Health Bar (Open to Work Status) -->
       <div class="flex items-center gap-2">
         <span class="text-[#FF6EC7] text-xs font-bold tracking-wider">♥ 100</span>
         <div class="flex-1 bg-[#240438] h-2.5 rounded-sm p-0.5 border border-[#FF6EC7]/60 overflow-hidden">
@@ -239,7 +313,7 @@
       </div>
     </div>
 
-    <!-- 5 Wanted Stars -->
+    <!-- Wanted Stars (5 Stars) -->
     <div id="wanted-stars-container" class="flex items-center gap-1 text-sm sm:text-base text-gray-700 select-none">
       <span class="star-item transition-all duration-300">★</span>
       <span class="star-item transition-all duration-300">★</span>
@@ -250,26 +324,46 @@
   </aside>
 
   <!-- ========================================================================= -->
-  <!-- 3. BOTTOM-LEFT LIVE CIRCULAR RADAR (Minimap with Real-Time Blips) -->
+  <!-- 5. BOTTOM-LEFT CIRCULAR MINIMAP (Radar with Clickable Blips) -->
   <!-- ========================================================================= -->
-  <div class="fixed bottom-4 left-4 z-30">
-    <div class="relative w-36 h-36 rounded-full border-2 border-[#00FFFF] bg-[#0c001f]/95 overflow-hidden neon-cyan-box flex items-center justify-center">
-      <!-- Radar Canvas -->
-      <canvas id="radar-canvas" width="144" height="144" class="absolute inset-0"></canvas>
+  <div class="fixed bottom-24 sm:bottom-28 left-4 sm:left-6 z-30 hidden sm:block">
+    <div class="relative w-32 h-32 rounded-full border-2 border-[#00FFFF] bg-[#0d011f]/95 overflow-hidden neon-cyan-box flex items-center justify-center">
+      <!-- Concentric Range Circles -->
+      <div class="absolute inset-2 rounded-full border border-[#00FFFF]/20"></div>
+      <div class="absolute inset-6 rounded-full border border-[#00FFFF]/20"></div>
+      <div class="absolute inset-10 rounded-full border border-[#00FFFF]/30"></div>
 
       <!-- Rotating Scanner Line -->
-      <div class="radar-line absolute top-0 left-1/2 w-0.5 h-18 bg-gradient-to-t from-transparent via-[#00FFFF]/50 to-[#00FFFF] pointer-events-none"></div>
+      <div class="radar-line absolute top-0 left-1/2 w-0.5 h-16 bg-gradient-to-t from-transparent via-[#00FFFF]/60 to-[#00FFFF]"></div>
 
-      <!-- Cardinal Compass -->
-      <span class="absolute top-1 text-[9px] font-bold text-[#00FFFF] pointer-events-none">N</span>
-      <span class="absolute bottom-1 text-[9px] font-bold text-[#d99de7]/60 pointer-events-none">S</span>
-      <span class="absolute right-1.5 text-[9px] font-bold text-[#d99de7]/60 pointer-events-none">E</span>
-      <span class="absolute left-1.5 text-[9px] font-bold text-[#d99de7]/60 pointer-events-none">W</span>
+      <!-- Cardinal Directions -->
+      <span class="absolute top-1 text-[9px] font-bold text-[#00FFFF]">N</span>
+      <span class="absolute bottom-1 text-[9px] font-bold text-[#d99de7]/60">S</span>
+      <span class="absolute right-1.5 text-[9px] font-bold text-[#d99de7]/60">E</span>
+      <span class="absolute left-1.5 text-[9px] font-bold text-[#d99de7]/60">W</span>
 
-      <!-- Player Car Marker in Center -->
-      <div id="radar-player-marker" class="absolute text-xs text-[#FF16EB] drop-shadow-[0_0_6px_#FF16EB] pointer-events-none">
+      <!-- Player Marker (Center Pink Arrow) -->
+      <div class="absolute text-xs text-[#FF16EB] drop-shadow-[0_0_6px_#FF16EB] animate-pulse">
         ▲
       </div>
+
+      <!-- Clickable Radar Blips -->
+      <!-- V: Brief (Top-Right) -->
+      <button onclick="switchTab('brief')" class="absolute top-5 right-6 w-5 h-5 rounded-full bg-[#FF16EB] text-[#120822] font-anton text-[10px] font-bold flex items-center justify-center shadow-[0_0_8px_#FF16EB] hover:scale-125 transition-transform cursor-pointer" title="Radar Blip: BRIEF">
+        V
+      </button>
+      <!-- M: Missions (Bottom-Right) -->
+      <button onclick="switchTab('missions')" class="absolute bottom-6 right-6 w-5 h-5 rounded-full bg-[#FFD700] text-[#120822] font-anton text-[10px] font-bold flex items-center justify-center shadow-[0_0_8px_#FFD700] hover:scale-125 transition-transform cursor-pointer" title="Radar Blip: MISSIONS">
+        M
+      </button>
+      <!-- S: Stats (Bottom-Left) -->
+      <button onclick="switchTab('stats')" class="absolute bottom-6 left-6 w-5 h-5 rounded-full bg-[#00FFFF] text-[#120822] font-anton text-[10px] font-bold flex items-center justify-center shadow-[0_0_8px_#00FFFF] hover:scale-125 transition-transform cursor-pointer" title="Radar Blip: STATS">
+        S
+      </button>
+      <!-- C: Contact (Top-Left) -->
+      <button onclick="switchTab('contact')" class="absolute top-5 left-6 w-5 h-5 rounded-full bg-[#2ECC71] text-[#120822] font-anton text-[10px] font-bold flex items-center justify-center shadow-[0_0_8px_#2ECC71] hover:scale-125 transition-transform cursor-pointer" title="Radar Blip: CONTACT">
+        C
+      </button>
     </div>
     <div class="font-hud text-[9px] text-[#00FFFF] tracking-widest text-center mt-1 uppercase">
       VICE CITY RADAR
@@ -277,453 +371,561 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 4. ON-SCREEN MOBILE DRIVE CONTROLS (Only visible on touch / small screens) -->
+  <!-- 6. MAIN CONTENT AREA (The 4 Switchable Pause Views) -->
   <!-- ========================================================================= -->
-  <div id="mobile-controls" class="fixed bottom-5 right-5 z-30 md:hidden flex flex-col gap-2 pointer-events-auto">
-    <!-- D-pad / Drive Buttons -->
-    <div class="flex justify-center">
-      <button id="btn-up" class="w-14 h-14 bg-[#1e0836]/90 border border-[#00FFFF] text-[#00FFFF] text-xl font-bold rounded-sm active:bg-[#00FFFF] active:text-[#120822] shadow-[0_0_10px_rgba(0,255,255,0.3)] flex items-center justify-center">
-        ▲
-      </button>
-    </div>
-    <div class="flex items-center gap-2">
-      <button id="btn-left" class="w-14 h-14 bg-[#1e0836]/90 border border-[#00FFFF] text-[#00FFFF] text-xl font-bold rounded-sm active:bg-[#00FFFF] active:text-[#120822] shadow-[0_0_10px_rgba(0,255,255,0.3)] flex items-center justify-center">
-        ◀
-      </button>
-      <button id="btn-down" class="w-14 h-14 bg-[#1e0836]/90 border border-[#FF6EC7] text-[#FF6EC7] text-xl font-bold rounded-sm active:bg-[#FF6EC7] active:text-[#120822] shadow-[0_0_10px_rgba(255,110,199,0.3)] flex items-center justify-center">
-        ▼
-      </button>
-      <button id="btn-right" class="w-14 h-14 bg-[#1e0836]/90 border border-[#00FFFF] text-[#00FFFF] text-xl font-bold rounded-sm active:bg-[#00FFFF] active:text-[#120822] shadow-[0_0_10px_rgba(0,255,255,0.3)] flex items-center justify-center">
-        ▶
-      </button>
-    </div>
-  </div>
+  <main class="relative z-10 pt-32 sm:pt-36 pb-36 px-4 sm:px-8 max-w-6xl mx-auto min-h-screen">
 
-  <!-- Drive-Into Marker Prompt Overlay -->
-  <div id="marker-prompt" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-30 hidden pointer-events-auto">
-    <button id="enter-mission-btn" onclick="triggerCurrentMarkerModal()" 
-            class="px-6 py-3 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-base sm:text-lg tracking-wider uppercase rounded-sm shadow-[0_0_25px_rgba(255,22,235,0.8)] animate-pulse transition-all cursor-pointer flex items-center gap-2">
-      <span>▶ PRESS [ENTER] OR TAP TO ENTER</span>
-      <span id="marker-name-display" class="font-bold underline">VERCETTI ESTATE</span>
-    </button>
-  </div>
-
-  <!-- Bottom Driving & Cheat Hint -->
-  <div class="fixed bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-center font-hud text-[11px] text-[#d99de7]/90 tracking-widest uppercase hidden sm:block">
-    🏎 DRIVE WITH [W,A,S,D] OR [ARROWS] • CHEATS: &ldquo;PANZER&rdquo;, &ldquo;LEAVEMEALONE&rdquo;, &ldquo;ASPIRINE&rdquo;
-  </div>
-
-  <!-- ========================================================================= -->
-  <!-- 5. 2002 VICE CITY PAUSE-MENU MODAL (The 5 Portfolio Landmarks) -->
-  <!-- ========================================================================= -->
-  <div id="pause-modal" class="fixed inset-0 z-50 bg-[#120822]/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 hidden">
-    <div class="relative w-full max-w-4xl bg-[#170025] border-2 border-[#FF16EB] rounded-sm neon-pink-box flex flex-col max-h-[92vh] overflow-hidden">
-      
-      <!-- Modal Top Bar -->
-      <div class="flex items-center justify-between px-4 sm:px-6 py-3 bg-[#240438] border-b border-[#4A0E6B]">
-        <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-[#00FFFF] animate-ping"></span>
-          <span class="font-hud text-xs font-bold text-[#00FFFF] tracking-widest uppercase">
-            VICE CITY PAUSE MENU // DOSSIER ARCHIVE
-          </span>
-        </div>
-        <button onclick="closePauseMenu()" class="px-3 py-1 bg-[#120822] hover:bg-[#FF16EB] text-[#00FFFF] hover:text-[#120822] border border-[#00FFFF] hover:border-[#FF16EB] font-hud text-xs font-bold tracking-wider rounded-sm transition-all cursor-pointer">
-          ✕ RESUME DRIVING [ESC]
-        </button>
-      </div>
-
-      <!-- Slanted Tabs Header -->
-      <div class="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 pt-3 bg-[#170025] border-b border-[#4A0E6B] overflow-x-auto">
-        <button onclick="switchModalTab('vercetti')" id="tab-btn-vercetti" class="pause-tab active px-3 sm:px-4 py-2 font-hud text-xs sm:text-sm uppercase tracking-wider bg-[#240438] text-[#fef5ff] hover:bg-[#38065f] cursor-pointer whitespace-nowrap">
-          [1] VERCETTI ESTATE
-        </button>
-        <button onclick="switchModalTab('malibu')" id="tab-btn-malibu" class="pause-tab px-3 sm:px-4 py-2 font-hud text-xs sm:text-sm uppercase tracking-wider bg-[#240438] text-[#fef5ff] hover:bg-[#38065f] cursor-pointer whitespace-nowrap">
-          [2] MALIBU CLUB
-        </button>
-        <button onclick="switchModalTab('ammunation')" id="tab-btn-ammunation" class="pause-tab px-3 sm:px-4 py-2 font-hud text-xs sm:text-sm uppercase tracking-wider bg-[#240438] text-[#fef5ff] hover:bg-[#38065f] cursor-pointer whitespace-nowrap">
-          [3] AMMU-NATION
-        </button>
-        <button onclick="switchModalTab('hotel')" id="tab-btn-hotel" class="pause-tab px-3 sm:px-4 py-2 font-hud text-xs sm:text-sm uppercase tracking-wider bg-[#240438] text-[#fef5ff] hover:bg-[#38065f] cursor-pointer whitespace-nowrap">
-          [4] OCEAN VIEW HOTEL
-        </button>
-        <button onclick="switchModalTab('payphone')" id="tab-btn-payphone" class="pause-tab px-3 sm:px-4 py-2 font-hud text-xs sm:text-sm uppercase tracking-wider bg-[#240438] text-[#fef5ff] hover:bg-[#38065f] cursor-pointer whitespace-nowrap">
-          [5] PAYPHONE
-        </button>
-      </div>
-
-      <!-- Scrollable Tab Content Container -->
-      <div class="p-4 sm:p-8 overflow-y-auto modal-scroll flex-1">
-
-        <!-- =================================================================== -->
-        <!-- TAB 1: VERCETTI ESTATE (About Me) -->
-        <!-- =================================================================== -->
-        <div id="modal-tab-vercetti" class="modal-section block space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#4A0E6B] pb-4 gap-2">
-            <div>
-              <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">HEADQUARTERS // STARFISH ISLAND</span>
-              <h2 class="font-anton text-3xl sm:text-5xl text-[#fef5ff] tracking-wide uppercase">
-                AKHILA <span class="text-[#FF16EB] neon-pink-text">PYNAM</span>
-              </h2>
-            </div>
-            <div class="font-hud text-xs sm:text-right">
-              <span class="px-2.5 py-1 bg-[#2ECC71]/20 text-[#2ECC71] border border-[#2ECC71]/40 rounded-sm font-bold tracking-wider">
-                CRIMINAL RATING: KINGPIN
-              </span>
-              <p class="text-[#d99de7] text-[11px] mt-1">CHENNAI SECTOR • VEL TECH UNIVERSITY</p>
-            </div>
+    <!-- ======================================================================= -->
+    <!-- TAB 1: BRIEF (Origin Story, Intel & Verified Bio) -->
+    <!-- ======================================================================= -->
+    <section id="tab-brief" class="tab-content block">
+      <div class="bg-[#1e0836]/90 border border-[#4A0E6B] rounded-sm p-6 sm:p-10 backdrop-blur-md neon-pink-box">
+        
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#4A0E6B] pb-4 mb-6 gap-2">
+          <div>
+            <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">MISSION BRIEFING // DOSSIER</span>
+            <h2 class="font-anton text-3xl sm:text-5xl text-[#fef5ff] tracking-wide uppercase">
+              AKHILA <span class="text-[#FF16EB] neon-pink-text">PYNAM</span>
+            </h2>
           </div>
-
-          <div class="p-4 bg-[#140226] border-l-4 border-[#FF16EB] rounded-r-sm font-hud text-sm sm:text-base leading-relaxed text-[#fef5ff]/90">
-            <span class="text-xs text-[#FF6EC7] font-bold tracking-widest uppercase block mb-1">
-              ▶ INCOMING TRANSMISSION — VERCETTI ESTATE DOSSIER
+          <div class="font-hud text-xs text-right">
+            <span class="px-2.5 py-1 bg-[#2ecc71]/20 text-[#2ECC71] border border-[#2ecc71]/40 rounded-sm font-bold tracking-wider">
+              CRIMINAL RATING: KINGPIN
             </span>
-            <p>
-              &ldquo;I&apos;m <strong class="text-[#FF16EB]">Akhila Pynam</strong>, a Computer Science and Engineering undergraduate at 
-              <strong class="text-[#fef5ff]">Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology, Chennai (2025 &ndash; 2029)</strong>. 
-              I specialize in architecting modern full-stack systems and exploring production Generative AI solutions.&rdquo;
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-hud text-xs">
-            <div class="p-3.5 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <span class="text-[#FF16EB] font-bold block mb-1">🎓 EDUCATION</span>
-              <p class="text-[#fef5ff] font-semibold">Vel Tech R&amp;D Institute</p>
-              <p class="text-[#d99de7]">B.Tech in CSE (2025 &ndash; 2029)</p>
-            </div>
-            <div class="p-3.5 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <span class="text-[#00FFFF] font-bold block mb-1">⚔️ CORE WEAPONRY</span>
-              <p class="text-[#fef5ff]">DSA, STL, OOP, DBMS, SQL, REST</p>
-              <p class="text-[#d99de7]">350+ Problems on TUF+ &amp; LeetCode</p>
-            </div>
-            <div class="p-3.5 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <span class="text-[#FFD700] font-bold block mb-1">⚡ AI &amp; INNOVATION</span>
-              <p class="text-[#fef5ff]">Google Gemini API &amp; Scikit-learn</p>
-              <p class="text-[#d99de7]">Streamlit, Pandas, Prompt Engineering</p>
-            </div>
-          </div>
-
-          <div class="flex gap-4 pt-2">
-            <button onclick="switchModalTab('malibu')" class="px-6 py-2.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-sm tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
-              VIEW MALIBU MISSIONS ▶
-            </button>
-            <button onclick="closePauseMenu()" class="px-6 py-2.5 bg-[#240438] hover:bg-[#38065f] text-[#00FFFF] border border-[#00FFFF] font-anton text-sm tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
-              DRIVE THE TESTAROSSA 🏎
-            </button>
+            <p class="text-[#d99de7] text-[11px] mt-1">CHENNAI SECTOR • VEL TECH UNIVERSITY</p>
           </div>
         </div>
 
-        <!-- =================================================================== -->
-        <!-- TAB 2: MALIBU CLUB (Projects / Missions) -->
-        <!-- =================================================================== -->
-        <div id="modal-tab-malibu" class="modal-section hidden space-y-6">
-          <div class="border-b border-[#4A0E6B] pb-3">
-            <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">MALIBU CLUB // SYNDICATE CONTRACTS</span>
-            <h2 class="font-anton text-3xl sm:text-4xl text-[#fef5ff] tracking-wide uppercase">
-              ACTIVE <span class="text-[#FF16EB] neon-pink-text">MISSIONS</span>
-            </h2>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            <!-- Mission 1: HashWriteMate AI -->
-            <article class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm flex flex-col justify-between hover:border-[#FF16EB] transition-colors">
-              <div>
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-xs text-[#FFD700] font-bold">★★★★★</span>
-                  <span class="font-anton text-base text-[#2ECC71] neon-green-text">+$25,000</span>
-                </div>
-                <h3 class="font-anton text-xl text-[#fef5ff]">HASHWRITEMATE AI</h3>
-                <p class="font-hud text-xs text-[#00FFFF] mb-2">AI Grammar &amp; Dynamic Paragraph Writer</p>
-                <p class="font-hud text-xs text-[#d99de7] mb-3 leading-relaxed">
-                  Contextual AI writing assistant with prompt chaining and real-time grammar repair via Google Gemini API.
-                </p>
-                <div class="flex flex-wrap gap-1 mb-3">
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#00FFFF] font-hud rounded">Next.js</span>
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#00FFFF] font-hud rounded">TypeScript</span>
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#FF16EB] font-hud rounded">Gemini API</span>
-                </div>
-              </div>
-              <a href="https://github.com/akhila-pynam/hash-write-ai" target="_blank" rel="noopener noreferrer"
-                 onclick="completeGameMission('HashWriteMate AI', 25000)"
-                 class="px-4 py-1.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-xs tracking-wider uppercase rounded text-center transition-colors">
-                START MISSION ▶
-              </a>
-            </article>
-
-            <!-- Mission 2: Hash Hawk -->
-            <article class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm flex flex-col justify-between hover:border-[#00FFFF] transition-colors">
-              <div>
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-xs text-[#FFD700] font-bold">★★★★☆</span>
-                  <span class="font-anton text-base text-[#2ECC71] neon-green-text">+$15,000</span>
-                </div>
-                <h3 class="font-anton text-xl text-[#fef5ff]">HASH HAWK</h3>
-                <p class="font-hud text-xs text-[#00FFFF] mb-2">Real-Time ML Spam Message Detector</p>
-                <p class="font-hud text-xs text-[#d99de7] mb-3 leading-relaxed">
-                  Supervised ML classification pipeline using Scikit-learn, NLP, and Streamlit to quarantine spam messages.
-                </p>
-                <div class="flex flex-wrap gap-1 mb-3">
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#00FFFF] font-hud rounded">Python</span>
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#00FFFF] font-hud rounded">Scikit-learn</span>
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#FF16EB] font-hud rounded">Streamlit</span>
-                </div>
-              </div>
-              <a href="https://github.com/akhila-pynam/hash-hawk-spam-message-detector" target="_blank" rel="noopener noreferrer"
-                 onclick="completeGameMission('Hash Hawk', 15000)"
-                 class="px-4 py-1.5 bg-[#00FFFF] hover:bg-[#FF16EB] text-[#120822] font-anton text-xs tracking-wider uppercase rounded text-center transition-colors">
-                START MISSION ▶
-              </a>
-            </article>
-
-            <!-- Mission 3: EcoPulse AI -->
-            <article class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm flex flex-col justify-between hover:border-[#FF16EB] transition-colors">
-              <div>
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-xs text-[#FFD700] font-bold">★★★★★</span>
-                  <span class="font-anton text-base text-[#2ECC71] neon-green-text">+$20,000</span>
-                </div>
-                <h3 class="font-anton text-xl text-[#fef5ff]">ECOPULSE AI</h3>
-                <p class="font-hud text-xs text-[#00FFFF] mb-2">Carbon Footprint Awareness Platform</p>
-                <p class="font-hud text-xs text-[#d99de7] mb-3 leading-relaxed">
-                  Interactive carbon calculator, activity analytics, and Gemini AI personalized reduction recommendations.
-                </p>
-                <div class="flex flex-wrap gap-1 mb-3">
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#00FFFF] font-hud rounded">Next.js</span>
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#00FFFF] font-hud rounded">Gemini API</span>
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#d99de7] font-hud rounded">Recharts</span>
-                </div>
-              </div>
-              <a href="https://eco-pulse-ai-nu.vercel.app/" target="_blank" rel="noopener noreferrer"
-                 onclick="completeGameMission('EcoPulse AI', 20000)"
-                 class="px-4 py-1.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-xs tracking-wider uppercase rounded text-center transition-colors">
-                START MISSION ▶
-              </a>
-            </article>
-
-            <!-- Mission 4: #Hashy.cs -->
-            <article class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm flex flex-col justify-between hover:border-[#00FFFF] transition-colors">
-              <div>
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-xs text-[#FFD700] font-bold">★★★★★</span>
-                  <span class="font-anton text-base text-[#2ECC71] neon-green-text">+$35,000</span>
-                </div>
-                <h3 class="font-anton text-xl text-[#fef5ff]">#HASHY.CS</h3>
-                <p class="font-hud text-xs text-[#00FFFF] mb-2">3D Interactive CS Algorithm Simulator</p>
-                <p class="font-hud text-xs text-[#d99de7] mb-3 leading-relaxed">
-                  Interactive Three.js simulation canvas for operating system scheduling, memory, deadlocks, and algorithms.
-                </p>
-                <div class="flex flex-wrap gap-1 mb-3">
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#00FFFF] font-hud rounded">React</span>
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#FF16EB] font-hud rounded">Three.js</span>
-                  <span class="px-1.5 py-0.5 bg-[#120822] text-[10px] text-[#00FFFF] font-hud rounded">TypeScript</span>
-                </div>
-              </div>
-              <a href="https://github.com/akhila-pynam/hashy-cs" target="_blank" rel="noopener noreferrer"
-                 onclick="completeGameMission('Hashy.cs', 35000)"
-                 class="px-4 py-1.5 bg-[#00FFFF] hover:bg-[#FF16EB] text-[#120822] font-anton text-xs tracking-wider uppercase rounded text-center transition-colors">
-                START MISSION ▶
-              </a>
-            </article>
-
-          </div>
-        </div>
-
-        <!-- =================================================================== -->
-        <!-- TAB 3: AMMU-NATION (Weapons / Tech Stack & Skills) -->
-        <!-- =================================================================== -->
-        <div id="modal-tab-ammunation" class="modal-section hidden space-y-6">
-          <div class="border-b border-[#4A0E6B] pb-3">
-            <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">AMMU-NATION // WEAPONS &amp; FIREPOWER</span>
-            <h2 class="font-anton text-3xl sm:text-4xl text-[#fef5ff] tracking-wide uppercase">
-              TECH <span class="text-[#FF16EB] neon-pink-text">ARSENAL</span>
-            </h2>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 font-hud text-xs">
-            <div class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <div class="flex justify-between items-center mb-1.5">
-                <span class="font-bold text-[#fef5ff]">🔫 Next.js &amp; React (Uzi)</span>
-                <span class="text-[#00FFFF] font-bold">95%</span>
-              </div>
-              <div class="w-full bg-[#120822] h-2.5 rounded-sm p-0.5 border border-[#4A0E6B]">
-                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[95%]"></div>
-              </div>
-              <p class="text-[11px] text-[#d99de7] mt-1.5">Rapid full-stack deployment, SSR, client-side state</p>
-            </div>
-
-            <div class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <div class="flex justify-between items-center mb-1.5">
-                <span class="font-bold text-[#fef5ff]">🗡️ TypeScript &amp; JS (Katana)</span>
-                <span class="text-[#00FFFF] font-bold">92%</span>
-              </div>
-              <div class="w-full bg-[#120822] h-2.5 rounded-sm p-0.5 border border-[#4A0E6B]">
-                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[92%]"></div>
-              </div>
-              <p class="text-[11px] text-[#d99de7] mt-1.5">Type safety, modular architecture, async programming</p>
-            </div>
-
-            <div class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <div class="flex justify-between items-center mb-1.5">
-                <span class="font-bold text-[#fef5ff]">🚀 C++ &amp; DSA (Rocket Launcher)</span>
-                <span class="text-[#00FFFF] font-bold">90%</span>
-              </div>
-              <div class="w-full bg-[#120822] h-2.5 rounded-sm p-0.5 border border-[#4A0E6B]">
-                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[90%]"></div>
-              </div>
-              <p class="text-[11px] text-[#d99de7] mt-1.5">Competitive programming, STL, memory optimization</p>
-            </div>
-
-            <div class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <div class="flex justify-between items-center mb-1.5">
-                <span class="font-bold text-[#fef5ff]">⚡ Gemini AI &amp; LLMs (Laser Cannon)</span>
-                <span class="text-[#00FFFF] font-bold">94%</span>
-              </div>
-              <div class="w-full bg-[#120822] h-2.5 rounded-sm p-0.5 border border-[#4A0E6B]">
-                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[94%]"></div>
-              </div>
-              <p class="text-[11px] text-[#d99de7] mt-1.5">Google Gemini API, multi-turn chat, prompt chains</p>
-            </div>
-
-            <div class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <div class="flex justify-between items-center mb-1.5">
-                <span class="font-bold text-[#fef5ff]">🎯 Python &amp; Scikit-learn (Sniper)</span>
-                <span class="text-[#00FFFF] font-bold">88%</span>
-              </div>
-              <div class="w-full bg-[#120822] h-2.5 rounded-sm p-0.5 border border-[#4A0E6B]">
-                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[88%]"></div>
-              </div>
-              <p class="text-[11px] text-[#d99de7] mt-1.5">NLP pipelines, classification models, Pandas analytics</p>
-            </div>
-
-            <div class="p-4 bg-[#1e0836] border border-[#4A0E6B] rounded-sm">
-              <div class="flex justify-between items-center mb-1.5">
-                <span class="font-bold text-[#fef5ff]">🎨 Three.js &amp; Tailwind (Spray Can)</span>
-                <span class="text-[#00FFFF] font-bold">85%</span>
-              </div>
-              <div class="w-full bg-[#120822] h-2.5 rounded-sm p-0.5 border border-[#4A0E6B]">
-                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[85%]"></div>
-              </div>
-              <p class="text-[11px] text-[#d99de7] mt-1.5">Interactive 3D viewports, canvas graphics, responsive UI</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- =================================================================== -->
-        <!-- TAB 4: OCEAN VIEW HOTEL (Experience & Resume) -->
-        <!-- =================================================================== -->
-        <div id="modal-tab-hotel" class="modal-section hidden space-y-6">
-          <div class="border-b border-[#4A0E6B] pb-3">
-            <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">OCEAN VIEW HOTEL // RESUME &amp; ACADEMICS</span>
-            <h2 class="font-anton text-3xl sm:text-4xl text-[#fef5ff] tracking-wide uppercase">
-              OFFICIAL <span class="text-[#FF16EB] neon-pink-text">DOSSIER</span>
-            </h2>
-          </div>
-
-          <div class="space-y-4 font-hud text-xs sm:text-sm">
-            <div class="p-4 bg-[#1e0836] border-l-4 border-[#00FFFF] rounded-r-sm">
-              <span class="text-xs text-[#00FFFF] font-bold tracking-widest uppercase block mb-1">
-                ACADEMIC OPERATIONS (2025 &ndash; 2029)
+        <!-- Two Column Intel Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          
+          <!-- Left Column: Character Dialogue & Overview -->
+          <div class="lg:col-span-2 space-y-4 font-hud text-sm sm:text-base leading-relaxed text-[#fef5ff]/90">
+            <div class="p-4 bg-[#140226] border-l-4 border-[#FF16EB] rounded-r-sm">
+              <span class="text-xs text-[#FF6EC7] font-bold tracking-widest uppercase block mb-1">
+                ▶ INCOMING TRANSMISSION — VICE CITY INTELLIGENCE
               </span>
-              <h4 class="font-bold text-base text-[#fef5ff]">
-                Vel Tech Rangarajan Dr.Sagunthala R&amp;D Institute of Science and Technology
-              </h4>
-              <p class="text-[#d99de7]">B.Tech in Computer Science and Engineering • Chennai, India</p>
-              <p class="text-[#d99de7] mt-2">
-                Focused on Data Structures, Algorithms, Computer Systems, Operating Systems, and Machine Learning.
+              <p>
+                &ldquo;I&apos;m <strong class="text-[#FF16EB]">Akhila Pynam</strong>, a Computer Science and Engineering undergraduate at 
+                <strong class="text-[#fef5ff]">Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology, Chennai (2025 &ndash; 2029)</strong>. 
+                I operate at the intersection of robust systems engineering and cutting-edge Generative AI.&rdquo;
               </p>
             </div>
 
-            <div class="p-4 bg-[#1e0836] border-l-4 border-[#FF16EB] rounded-r-sm">
-              <span class="text-xs text-[#FF6EC7] font-bold tracking-widest uppercase block mb-1">
-                INDEPENDENT SOFTWARE ENGINEERING
-              </span>
-              <h4 class="font-bold text-base text-[#fef5ff]">
-                Full-Stack &amp; AI System Builder (2023 &ndash; Present)
-              </h4>
-              <p class="text-[#d99de7]">Shipped 12+ production web and ML applications with Next.js, Gemini API, and TypeScript.</p>
+            <p class="text-[#d99de7]">
+              My operational weapons span daily competitive problem-solving across 
+              <strong class="text-[#00FFFF]">TUF+, Codeforces, and LeetCode</strong>, backed by foundational mastery in 
+              <strong class="text-[#fef5ff]">C, C++, Java, Python, and TypeScript</strong>. On the full-stack frontline, I construct high-performance web systems using 
+              <strong class="text-[#FF16EB]">Next.js, React, Tailwind CSS, Three.js, and Google Gemini API</strong>.
+            </p>
+
+            <p class="text-[#d99de7]">
+              When I&apos;m not architecting software or training ML pipelines, I&apos;m decoding Taylor Swift&apos;s lyrics, uncovering album easter eggs, and exploring creative synthwave designs.
+            </p>
+
+            <!-- Actions: Download Resume / Request on WhatsApp -->
+            <div class="pt-4 flex flex-wrap gap-4">
+              <a href="https://wa.me/918341743003?text=Hello%20Akhila%20Pynam%2C%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20request%20a%20copy%20of%20your%20resume." 
+                 target="_blank" rel="noopener noreferrer"
+                 onclick="addCash(2500); playCashSound();"
+                 class="px-6 py-3 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-sm sm:text-base tracking-wider uppercase rounded-sm transition-all duration-200 shadow-[0_0_15px_rgba(255,22,235,0.6)] cursor-pointer">
+                📄 GET MY RESUME (+$2,500)
+              </a>
+              <button onclick="switchTab('missions')" 
+                      class="px-6 py-3 bg-[#240438] hover:bg-[#340752] text-[#00FFFF] border border-[#00FFFF] font-anton text-sm sm:text-base tracking-wider uppercase rounded-sm transition-all duration-200 cursor-pointer">
+                VIEW MISSIONS LIST ▶
+              </button>
             </div>
           </div>
 
-          <!-- Get Resume Action Button -->
-          <div class="p-5 bg-[#140226] border border-[#FF16EB] rounded-sm text-center">
-            <h4 class="font-anton text-2xl text-[#fef5ff] mb-2">LOOKING FOR MY OFFICIAL RESUME?</h4>
-            <p class="font-hud text-xs text-[#d99de7] mb-4">
-              Click below to request my full resume instantly via WhatsApp with pre-filled message text.
+          <!-- Right Column: Mission Cards Intel -->
+          <div class="space-y-3 font-hud text-xs">
+            <div class="p-3.5 bg-[#170025] border border-[#4A0E6B] rounded-sm">
+              <span class="text-[#FF16EB] font-bold block mb-1">🎓 EDUCATION INTEL</span>
+              <p class="text-[#fef5ff] font-semibold">Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology</p>
+              <p class="text-[#d99de7]">B.Tech in CSE (2025 &ndash; 2029) • Chennai</p>
+            </div>
+
+            <div class="p-3.5 bg-[#170025] border border-[#4A0E6B] rounded-sm">
+              <span class="text-[#00FFFF] font-bold block mb-1">⚔️ CORE DISCIPLINES</span>
+              <p class="text-[#fef5ff]">DSA, STL, OOP, DBMS, SQL, REST APIs</p>
+              <p class="text-[#d99de7]">350+ Problems Solved on TUF+ &amp; LeetCode</p>
+            </div>
+
+            <div class="p-3.5 bg-[#170025] border border-[#4A0E6B] rounded-sm">
+              <span class="text-[#FFD700] font-bold block mb-1">⚡ AI &amp; MACHINE LEARNING</span>
+              <p class="text-[#fef5ff]">Google Gemini API, NLP, Prompt Engineering</p>
+              <p class="text-[#d99de7]">Pandas, Scikit-learn, Streamlit</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 2: MISSIONS (Projects Dossier with Payouts & Start Buttons) -->
+    <!-- ======================================================================= -->
+    <section id="tab-missions" class="tab-content hidden">
+      <!-- Section Header & Filter Status -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
+        <div>
+          <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">VICE CITY COMMISSIONS // AVAILABLE CONTRACTS</span>
+          <h2 class="font-anton text-3xl sm:text-4xl text-[#fef5ff] tracking-wide uppercase">
+            ACTIVE <span class="text-[#FF16EB] neon-pink-text">MISSIONS</span>
+          </h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-hud text-xs text-[#d99de7]">FILTER:</span>
+          <span id="active-filter-badge" class="font-hud text-xs font-bold px-2.5 py-1 bg-[#FF16EB]/20 text-[#FF16EB] border border-[#FF16EB]/40 rounded-sm uppercase">
+            ALL MISSIONS
+          </span>
+          <button onclick="resetWeaponFilter()" class="font-hud text-[11px] text-[#00FFFF] hover:underline cursor-pointer">
+            (RESET)
+          </button>
+        </div>
+      </div>
+
+      <!-- Missions Grid -->
+      <div id="missions-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Mission 1: HashWriteMate AI -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#FF16EB] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,22,235,0.4)] flex flex-col justify-between"
+                 data-weapon="Next.js,TypeScript,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★★</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$25,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              HASHWRITEMATE AI
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">AI Grammar &amp; Dynamic Paragraph Assistant</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              AI-powered writing platform featuring real-time contextual grammar feedback, multi-tone expansion, and intelligent prompt chaining powered by Google Gemini API.
             </p>
-            <a href="https://wa.me/918341743003?text=Hello%20Akhila%20Pynam%2C%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20request%20a%20copy%20of%20your%20resume." 
-               target="_blank" rel="noopener noreferrer"
-               onclick="addGameCash(2500); playRealGtaSound();"
-               class="inline-block px-8 py-3 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-base tracking-wider uppercase rounded-sm transition-all duration-200 shadow-[0_0_20px_rgba(255,22,235,0.7)] cursor-pointer">
-              📄 GET MY RESUME (+$2,500)
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Next.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Gemini API</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">Tailwind CSS</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#2ECC71] font-bold">STATUS: LIVE</span>
+            <a href="https://github.com/akhila-pynam/hash-write-ai" target="_blank" rel="noopener noreferrer"
+               onclick="completeMission('HashWriteMate AI', 25000)"
+               class="px-4 py-1.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+              START MISSION ▶
             </a>
+          </div>
+        </article>
+
+        <!-- Mission 2: Hash Hawk -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#00FFFF] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] flex flex-col justify-between"
+                 data-weapon="Python,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★☆</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$15,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              HASH HAWK
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">Real-Time Machine Learning Spam Message Detector</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              End-to-end ML classification pipeline utilizing natural language processing, vectorization, and supervised models to quarantine spam from legitimate inboxes.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Python</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Scikit-learn</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Streamlit</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">Pandas</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#2ECC71] font-bold">STATUS: LIVE</span>
+            <a href="https://github.com/akhila-pynam/hash-hawk-spam-message-detector" target="_blank" rel="noopener noreferrer"
+               onclick="completeMission('Hash Hawk', 15000)"
+               class="px-4 py-1.5 bg-[#00FFFF] hover:bg-[#FF16EB] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+              START MISSION ▶
+            </a>
+          </div>
+        </article>
+
+        <!-- Mission 3: EcoPulse AI -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#FF16EB] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,22,235,0.4)] flex flex-col justify-between"
+                 data-weapon="Next.js,TypeScript,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★★</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$20,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              ECOPULSE AI
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">Carbon Footprint Awareness &amp; Reduction Platform</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              Environmental awareness engine with an interactive carbon calculator, Gemini-driven personalized sustainability roadmap, and live visual analytics.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Next.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Gemini API</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">Recharts</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#2ECC71] font-bold">STATUS: LIVE</span>
+            <div class="flex gap-2">
+              <a href="https://eco-pulse-ai-nu.vercel.app/" target="_blank" rel="noopener noreferrer"
+                 onclick="completeMission('EcoPulse AI', 20000)"
+                 class="px-3.5 py-1.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+                DEMO ▶
+              </a>
+              <a href="https://github.com/akhila-pynam/EcoPulse-AI" target="_blank" rel="noopener noreferrer"
+                 class="px-2.5 py-1.5 bg-[#240438] text-[#00FFFF] border border-[#00FFFF] text-xs font-hud rounded-sm hover:bg-[#00FFFF] hover:text-[#120822]">
+                GIT
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Mission 4: GrowEasy AI CSV Importer -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#00FFFF] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] flex flex-col justify-between"
+                 data-weapon="Next.js,TypeScript,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★☆</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$18,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              GROWEASY AI CSV IMPORTER
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">Intelligent Schema Ingestion &amp; Error Correction</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              AI-assisted CSV validator that automatically detects column mismatches, cleans corrupt rows, and maps datasets with client-side zero-latency parsing.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Next.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">AI Engine</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">Tailwind</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#2ECC71] font-bold">STATUS: LIVE</span>
+            <div class="flex gap-2">
+              <a href="https://groweasy-ai-csv-importer-front.vercel.app/" target="_blank" rel="noopener noreferrer"
+                 onclick="completeMission('GrowEasy AI', 18000)"
+                 class="px-3.5 py-1.5 bg-[#00FFFF] hover:bg-[#FF16EB] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+                DEMO ▶
+              </a>
+              <a href="https://github.com/akhila-pynam/groweasy-ai-csv-importer" target="_blank" rel="noopener noreferrer"
+                 class="px-2.5 py-1.5 bg-[#240438] text-[#00FFFF] border border-[#00FFFF] text-xs font-hud rounded-sm hover:bg-[#00FFFF] hover:text-[#120822]">
+                GIT
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Mission 5: #Hashy.cs -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#FF16EB] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,22,235,0.4)] flex flex-col justify-between"
+                 data-weapon="Three.js,TypeScript,React">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★★</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$35,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              #HASHY.CS
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">3D Interactive Computer Science Algorithm Engine</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              Real-time 3D simulation canvas allowing students to visually step through operating system CPU scheduling, deadlock resolution, virtual memory, and SQL pipelines.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">React</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Three.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">React Flow</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#f39c12] font-bold">STATUS: IN PROGRESS</span>
+            <a href="https://github.com/akhila-pynam/hashy-cs" target="_blank" rel="noopener noreferrer"
+               onclick="completeMission('Hashy.cs', 35000)"
+               class="px-4 py-1.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+              START MISSION ▶
+            </a>
+          </div>
+        </article>
+
+        <!-- Mission 6: AspireOS -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#00FFFF] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] flex flex-col justify-between"
+                 data-weapon="Next.js,TypeScript,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★★★</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$50,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              ASPIREOS
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">AI-Powered Virtual Desktop &amp; Automation Platform</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              Browser-native operating system desktop environment featuring an integrated AI command shell, multi-task window manager, and background task automations.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Next.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Bun</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">AI Shell</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#f39c12] font-bold">STATUS: IN PROGRESS</span>
+            <a href="https://github.com/akhila-pynam/aspire-os" target="_blank" rel="noopener noreferrer"
+               onclick="completeMission('AspireOS', 50000)"
+               class="px-4 py-1.5 bg-[#00FFFF] hover:bg-[#FF16EB] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+              START MISSION ▶
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 3: STATS (Criminal Rating, PS2 Weapon Skills & Record) -->
+    <!-- ======================================================================= -->
+    <section id="tab-stats" class="tab-content hidden">
+      <div class="bg-[#1e0836]/90 border border-[#4A0E6B] rounded-sm p-6 sm:p-10 backdrop-blur-md neon-pink-box">
+        
+        <!-- Header -->
+        <div class="border-b border-[#4A0E6B] pb-4 mb-6">
+          <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">VICE CITY POLICE DEPT // CRIMINAL RECORD</span>
+          <h2 class="font-anton text-3xl sm:text-5xl text-[#fef5ff] tracking-wide uppercase">
+            CAREER <span class="text-[#FF16EB] neon-pink-text">STATS</span>
+          </h2>
+          <div class="mt-2 flex flex-wrap items-center gap-4 text-xs font-hud">
+            <span class="text-[#FFD700] font-bold">CRIMINAL RATING: KINGPIN (3+ YEARS EXPERIENCE)</span>
+            <span class="text-[#2ECC71]">NET WORTH: $158,000+</span>
           </div>
         </div>
 
-        <!-- =================================================================== -->
-        <!-- TAB 5: PAYPHONE (Contact Me) -->
-        <!-- =================================================================== -->
-        <div id="modal-tab-payphone" class="modal-section hidden space-y-6">
-          <div class="border-b border-[#4A0E6B] pb-3">
-            <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">OCEAN DRIVE PAYPHONE // SECURE COMMS</span>
-            <h2 class="font-anton text-3xl sm:text-4xl text-[#fef5ff] tracking-wide uppercase">
-              DIRECT <span class="text-[#FF16EB] neon-pink-text">DISPATCH</span>
-            </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Column 1: PS2 Metric Log -->
+          <div class="space-y-3 font-hud text-xs sm:text-sm">
+            <h3 class="font-anton text-xl text-[#00FFFF] tracking-wider uppercase border-b border-[#4A0E6B] pb-2">
+              POLICE RECORD &amp; ACCOMPLISHMENTS
+            </h3>
+            
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Operating Base:</span>
+              <span class="text-[#fef5ff] font-bold">Chennai, Tamil Nadu, India</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Academic Syndicate:</span>
+              <span class="text-[#fef5ff] font-bold">Vel Tech R&amp;D Institute (2025&ndash;2029)</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Missions / Projects Shipped:</span>
+              <span class="text-[#2ECC71] font-bold">12+ Production Builds</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Algorithmic Targets Neutralized:</span>
+              <span class="text-[#00FFFF] font-bold">350+ Problems (TUF+ &amp; LeetCode)</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Software Bugs Busted:</span>
+              <span class="text-[#FF16EB] font-bold">487 Confirmed</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Late Night Commits:</span>
+              <span class="text-[#fef5ff] font-bold">1,240+ Commits</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Caffeine Armor Units:</span>
+              <span class="text-[#00FFFF] font-bold">890 Cups</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Taylor Swift Storylines Decoded:</span>
+              <span class="text-[#FFD700] font-bold">1,989 Easter Eggs</span>
+            </div>
           </div>
 
-          <!-- Direct Channels -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-hud text-xs">
-            <a href="https://wa.me/918341743003?text=Hello%20Akhila%20Pynam%2C%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20request%20a%20copy%20of%20your%20resume." 
-               target="_blank" rel="noopener noreferrer"
-               class="p-2.5 bg-[#1e0836] hover:bg-[#2ECC71] text-[#2ECC71] hover:text-[#120822] border border-[#2ECC71]/40 rounded text-center font-bold transition-all">
-              💬 WhatsApp
-            </a>
-            <a href="mailto:akhilapynam@gmail.com" 
-               class="p-2.5 bg-[#1e0836] hover:bg-[#00FFFF] text-[#00FFFF] hover:text-[#120822] border border-[#00FFFF]/40 rounded text-center font-bold transition-all">
-              ✉️ Email Me
-            </a>
-            <a href="https://www.linkedin.com/in/akhila-pynam-ba0369338/" target="_blank" rel="noopener noreferrer"
-               class="p-2.5 bg-[#1e0836] hover:bg-[#FF16EB] text-[#FF16EB] hover:text-[#120822] border border-[#FF16EB]/40 rounded text-center font-bold transition-all">
-              💼 LinkedIn
-            </a>
-            <a href="https://github.com/akhila-pynam" target="_blank" rel="noopener noreferrer"
-               class="p-2.5 bg-[#1e0836] hover:bg-[#FFD700] text-[#FFD700] hover:text-[#120822] border border-[#FFD700]/40 rounded text-center font-bold transition-all">
-              🐙 GitHub
-            </a>
-          </div>
+          <!-- Column 2: Weapon Skill Proficiency Bars -->
+          <div class="space-y-4 font-hud text-xs sm:text-sm">
+            <h3 class="font-anton text-xl text-[#FF16EB] tracking-wider uppercase border-b border-[#4A0E6B] pb-2">
+              WEAPON &amp; COMBAT PROFICIENCY
+            </h3>
 
-          <!-- Contact Form -->
-          <form onsubmit="handleGameContactSubmit(event)" class="space-y-4 font-hud text-xs sm:text-sm">
+            <!-- Skill 1 -->
             <div>
-              <label class="block text-[#00FFFF] font-bold uppercase mb-1">CALLER IDENTITY</label>
-              <input type="text" id="contact-name" required placeholder="e.g. Tommy Vercetti / Recruiter"
-                     class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3 py-2 rounded outline-none transition-colors">
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">Next.js &amp; React (Uzi)</span>
+                <span class="text-[#00FFFF] font-bold">95%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[95%]"></div>
+              </div>
             </div>
+
+            <!-- Skill 2 -->
             <div>
-              <label class="block text-[#00FFFF] font-bold uppercase mb-1">RETURN FREQUENCY / EMAIL</label>
-              <input type="email" id="contact-email" required placeholder="your.email@vicecity.com"
-                     class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3 py-2 rounded outline-none transition-colors">
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">TypeScript &amp; JavaScript (Katana)</span>
+                <span class="text-[#00FFFF] font-bold">92%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[92%]"></div>
+              </div>
             </div>
+
+            <!-- Skill 3 -->
             <div>
-              <label class="block text-[#00FFFF] font-bold uppercase mb-1">TRANSMISSION INTEL / MESSAGE</label>
-              <textarea id="contact-msg" rows="3" required placeholder="Let's build an impactful software mission together..."
-                        class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3 py-2 rounded outline-none transition-colors resize-none"></textarea>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">C++ &amp; Data Structures (Rocket Launcher)</span>
+                <span class="text-[#00FFFF] font-bold">90%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[90%]"></div>
+              </div>
             </div>
-            <button type="submit" 
-                    class="w-full py-3 bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] hover:from-[#00FFFF] hover:to-[#FF16EB] text-[#120822] font-anton text-base tracking-wider uppercase rounded transition-all duration-300 shadow-[0_0_20px_rgba(255,22,235,0.6)] cursor-pointer">
-              TRANSMIT DISPATCH (+$5,000 PAYOUT) 📟
-            </button>
-          </form>
+
+            <!-- Skill 4 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">Google Gemini AI &amp; Prompt Engineering (Laser Cannon)</span>
+                <span class="text-[#00FFFF] font-bold">94%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[94%]"></div>
+              </div>
+            </div>
+
+            <!-- Skill 5 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">Python &amp; Machine Learning / NLP (Sniper Rifle)</span>
+                <span class="text-[#00FFFF] font-bold">88%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[88%]"></div>
+              </div>
+            </div>
+
+            <!-- Skill 6 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">Three.js &amp; Tailwind CSS (Spray Paint Can)</span>
+                <span class="text-[#00FFFF] font-bold">85%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[85%]"></div>
+              </div>
+            </div>
+
+          </div>
         </div>
 
       </div>
-    </div>
-  </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 4: CONTACT (1980s Retro Vice City Pager) -->
+    <!-- ======================================================================= -->
+    <section id="tab-contact" class="tab-content hidden">
+      <div class="max-w-2xl mx-auto bg-[#170025] border-2 border-[#FF16EB] rounded-lg p-6 sm:p-8 neon-pink-box">
+        
+        <!-- Pager Shell Header -->
+        <div class="flex items-center justify-between border-b border-[#4A0E6B] pb-3 mb-6">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-[#2ECC71] animate-ping"></div>
+            <span class="font-hud text-xs font-bold text-[#00FFFF] tracking-widest uppercase">
+              VICE CITY MOTOROLA-86 PAGER // LIVE COMMS
+            </span>
+          </div>
+          <span class="font-hud text-[11px] text-[#d99de7]">FREQ: 98.3 MHZ</span>
+        </div>
+
+        <!-- LCD Screen Simulation -->
+        <div class="bg-[#0b1f14] border-2 border-[#1c4b2f] rounded p-4 mb-6 shadow-inner">
+          <div class="font-hud text-xs text-[#2ECC71] tracking-widest uppercase flex items-center justify-between mb-1">
+            <span>● 1 UNREAD TRANSMISSION</span>
+            <span id="pager-time">12:00 PM</span>
+          </div>
+          <div class="font-hud text-sm sm:text-base text-[#2ECC71] neon-green-text tracking-wider">
+            &ldquo;DIRECT MESSAGE: AKHILA PYNAM IS READY FOR SOFTWARE ENGINEERING &amp; AI MISSIONS.&rdquo;
+          </div>
+        </div>
+
+        <!-- Direct Socials Channels -->
+        <div class="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-hud text-xs">
+          <a href="https://wa.me/918341743003?text=Hello%20Akhila%20Pynam%2C%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20request%20a%20copy%20of%20your%20resume." 
+             target="_blank" rel="noopener noreferrer"
+             class="p-2.5 bg-[#1e0836] hover:bg-[#2ECC71] text-[#2ECC71] hover:text-[#120822] border border-[#2ECC71]/40 rounded-sm text-center font-bold transition-all">
+            💬 WhatsApp
+          </a>
+          <a href="mailto:akhilapynam@gmail.com" 
+             class="p-2.5 bg-[#1e0836] hover:bg-[#00FFFF] text-[#00FFFF] hover:text-[#120822] border border-[#00FFFF]/40 rounded-sm text-center font-bold transition-all">
+            ✉️ Email Me
+          </a>
+          <a href="https://www.linkedin.com/in/akhila-pynam-ba0369338/" target="_blank" rel="noopener noreferrer"
+             class="p-2.5 bg-[#1e0836] hover:bg-[#FF16EB] text-[#FF16EB] hover:text-[#120822] border border-[#FF16EB]/40 rounded-sm text-center font-bold transition-all">
+            💼 LinkedIn
+          </a>
+          <a href="https://github.com/akhila-pynam" target="_blank" rel="noopener noreferrer"
+             class="p-2.5 bg-[#1e0836] hover:bg-[#FFD700] text-[#FFD700] hover:text-[#120822] border border-[#FFD700]/40 rounded-sm text-center font-bold transition-all">
+            🐙 GitHub
+          </a>
+        </div>
+
+        <!-- Interactive Pager Message Form -->
+        <form id="pager-form" onsubmit="handlePagerSubmit(event)" class="space-y-4 font-hud text-xs sm:text-sm">
+          <div>
+            <label class="block text-[#00FFFF] font-bold uppercase tracking-wider mb-1">
+              DISPATCHER NAME / COMPANY
+            </label>
+            <input type="text" id="pager-name" required placeholder="e.g. Ken Rosenberg / Tommy Vercetti" 
+                   class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3.5 py-2.5 rounded-sm outline-none transition-colors">
+          </div>
+
+          <div>
+            <label class="block text-[#00FFFF] font-bold uppercase tracking-wider mb-1">
+              RETURN FREQUENCY / EMAIL
+            </label>
+            <input type="email" id="pager-email" required placeholder="your.email@vicecity.com" 
+                   class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3.5 py-2.5 rounded-sm outline-none transition-colors">
+          </div>
+
+          <div>
+            <label class="block text-[#00FFFF] font-bold uppercase tracking-wider mb-1">
+              MISSION BRIEFING / MESSAGE INTEL
+            </label>
+            <textarea id="pager-msg" rows="3" required placeholder="Let's build an impactful software mission together..." 
+                      class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3.5 py-2.5 rounded-sm outline-none transition-colors resize-none"></textarea>
+          </div>
+
+          <button type="submit" 
+                  class="w-full py-3.5 bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] hover:from-[#00FFFF] hover:to-[#FF16EB] text-[#120822] font-anton text-base tracking-wider uppercase rounded-sm transition-all duration-300 shadow-[0_0_20px_rgba(255,22,235,0.6)] cursor-pointer">
+            TRANSMIT PAGE (+$5,000 PAYOUT) 📟
+          </button>
+        </form>
+
+      </div>
+    </section>
+
+  </main>
 
   <!-- ========================================================================= -->
-  <!-- 6. MISSION PASSED! +$5000 FULL-SCREEN SLANTED BANNER -->
+  <!-- 7. MISSION PASSED BANNER (Full-Screen Overlay on Form Submit / Cheats) -->
   <!-- ========================================================================= -->
   <div id="mission-passed-banner" class="fixed inset-0 z-50 pointer-events-none flex flex-col items-center justify-center opacity-0 transition-opacity duration-300 bg-[#120822]/80 backdrop-blur-sm">
-    <div class="relative transform -rotate-3 text-center px-8 py-6 bg-[#170025]/95 border-y-4 border-[#FFD700] w-full max-w-2xl shadow-[0_0_50px_rgba(255,215,0,0.7)]">
+    <div class="relative transform -rotate-3 text-center px-8 py-6 bg-[#170025]/95 border-y-4 border-[#FFD700] w-full max-w-2xl shadow-[0_0_50px_rgba(255,215,0,0.6)]">
       <h2 class="font-anton text-5xl sm:text-7xl md:text-8xl text-[#FFD700] neon-gold-text tracking-wider uppercase mb-2">
         MISSION PASSED!
       </h2>
@@ -736,44 +938,100 @@
     </div>
   </div>
 
-  <!-- Cheat Code Alert Notification -->
-  <div id="cheat-alert" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-300 px-6 py-2 bg-[#170025] border-2 border-[#00FFFF] rounded-sm text-[#00FFFF] font-anton text-xl tracking-wider uppercase shadow-[0_0_20px_rgba(0,255,255,0.8)]">
+  <!-- Animated Panzer Tank SVG Container for Cheat -->
+  <div id="tank-container" class="fixed bottom-12 left-0 z-40 pointer-events-none hidden">
+    <svg class="w-32 h-20 text-[#00FFFF]" viewBox="0 0 160 80" fill="currentColor">
+      <!-- Tank Body -->
+      <rect x="20" y="45" width="120" height="25" rx="5" fill="#38065f" stroke="#00FFFF" stroke-width="2"/>
+      <rect x="40" y="25" width="70" height="22" rx="3" fill="#240438" stroke="#FF16EB" stroke-width="2"/>
+      <!-- Turret Gun -->
+      <rect x="100" y="32" width="55" height="6" fill="#00FFFF"/>
+      <!-- Wheels / Treads -->
+      <circle cx="35" cy="70" r="8" fill="#FF16EB"/>
+      <circle cx="60" cy="70" r="8" fill="#FF16EB"/>
+      <circle cx="85" cy="70" r="8" fill="#FF16EB"/>
+      <circle cx="110" cy="70" r="8" fill="#FF16EB"/>
+      <circle cx="130" cy="70" r="8" fill="#FF16EB"/>
+    </svg>
+  </div>
+
+  <!-- Cheat Code Alert Banner -->
+  <div id="cheat-alert" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-300 px-6 py-2 bg-[#170025] border-2 border-[#00FFFF] rounded-sm text-[#00FFFF] font-anton text-xl tracking-wider uppercase shadow-[0_0_20px_rgba(0,255,255,0.7)]">
     CHEAT ACTIVATED!
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 7. PLAYABLE 2D TOP-DOWN CANVAS GAME ENGINE SCRIPT -->
+  <!-- 8. THE 2002 PAUSE MENU NAVIGATION TABS (Fixed Bottom Bar) -->
+  <!-- ========================================================================= -->
+  <footer class="fixed bottom-0 left-0 right-0 z-40 bg-[#140226]/95 border-t border-[#4A0E6B] backdrop-blur-md px-3 sm:px-6 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between gap-1 sm:gap-4">
+      
+      <!-- Tab 1: Brief -->
+      <button onclick="switchTab('brief')" id="tab-btn-brief" 
+              class="pause-tab active flex-1 py-2 sm:py-2.5 px-2 bg-[#240438] hover:bg-[#340752] text-center font-hud text-xs sm:text-sm tracking-wider uppercase cursor-pointer">
+        [1] BRIEF
+      </button>
+
+      <!-- Tab 2: Missions -->
+      <button onclick="switchTab('missions')" id="tab-btn-missions" 
+              class="pause-tab flex-1 py-2 sm:py-2.5 px-2 bg-[#240438] hover:bg-[#340752] text-center font-hud text-xs sm:text-sm tracking-wider uppercase cursor-pointer">
+        [2] MISSIONS
+      </button>
+
+      <!-- Tab 3: Stats -->
+      <button onclick="switchTab('stats')" id="tab-btn-stats" 
+              class="pause-tab flex-1 py-2 sm:py-2.5 px-2 bg-[#240438] hover:bg-[#340752] text-center font-hud text-xs sm:text-sm tracking-wider uppercase cursor-pointer">
+        [3] STATS
+      </button>
+
+      <!-- Tab 4: Contact -->
+      <button onclick="switchTab('contact')" id="tab-btn-contact" 
+              class="pause-tab flex-1 py-2 sm:py-2.5 px-2 bg-[#240438] hover:bg-[#340752] text-center font-hud text-xs sm:text-sm tracking-wider uppercase cursor-pointer">
+        [4] PAGER
+      </button>
+
+    </div>
+
+    <!-- Subtle Cheat Codes Hint at the Bottom -->
+    <div class="text-center font-hud text-[10px] text-[#d99de7]/80 tracking-widest mt-1.5 uppercase">
+      ⌨ PS2 CHEAT CODES ENABLED: Try typing &ldquo;ASPIRINE&rdquo;, &ldquo;PANZER&rdquo;, or &ldquo;LEAVEMEALONE&rdquo;
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- 9. VANILLA JAVASCRIPT: State, Audio Synthesis, Cheat Codes & Navigation -->
   <!-- ========================================================================= -->
   <script>
-    // Embedded Real GTA Sound (base64)
+    // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // Authentic Real GTA Audio Engine (Embedded Base64 + Fallback)
+    // ---------------------------------------------------------------------------
     const REAL_GTA_CLICK_B64 = "data:audio/mpeg;base64,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VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5BkQQ/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
 
-    // ---------------------------------------------------------------------------
-    // Real GTA & Game Audio Engine
-    // ---------------------------------------------------------------------------
-    class ViceGameAudio {
+    class ViceAudioEngine {
       constructor() {
         this.ctx = null;
         this.audioBuffer = null;
+        this.htmlAudio = null;
         this.muted = false;
         this.lastPlayTime = 0;
-        this.engineOsc = null;
-        this.engineGain = null;
         this.station = 'Flash FM';
-        this.radioPlaying = false;
         this.radioInterval = null;
+        this.radioPlaying = false;
+        this.isUnlocked = false;
 
-        this.initUnlock();
+        this.initUnlockListeners();
+        this.preloadAudio();
       }
 
-      initUnlock() {
+      initUnlockListeners() {
         const unlock = () => {
           this.init();
           if (this.ctx && this.ctx.state === 'suspended') {
             this.ctx.resume().catch(() => {});
           }
         };
-        ['click', 'keydown', 'touchstart', 'touchend'].forEach(evt => {
+        ['click', 'touchstart', 'touchend', 'keydown'].forEach(evt => {
           window.addEventListener(evt, unlock, { once: true, passive: true });
         });
       }
@@ -786,137 +1044,169 @@
         if (this.ctx && this.ctx.state === 'suspended') {
           this.ctx.resume().catch(() => {});
         }
-        if (this.ctx && !this.audioBuffer) {
-          this.preloadRealAudio();
-        }
       }
 
-      async preloadRealAudio() {
+      async preloadAudio() {
         try {
+          this.init();
+          if (!this.ctx) return;
           const res = await fetch(REAL_GTA_CLICK_B64);
-          const buf = await res.arrayBuffer();
-          if (this.ctx) this.audioBuffer = await this.ctx.decodeAudioData(buf);
+          const arrayBuffer = await res.arrayBuffer();
+          this.audioBuffer = await this.ctx.decodeAudioData(arrayBuffer);
         } catch (e) {
           try {
             const res = await fetch('/gta_sound.mp3');
-            const buf = await res.arrayBuffer();
-            if (this.ctx) this.audioBuffer = await this.ctx.decodeAudioData(buf);
+            const arrayBuffer = await res.arrayBuffer();
+            if (this.ctx) this.audioBuffer = await this.ctx.decodeAudioData(arrayBuffer);
           } catch (err) {}
         }
       }
 
+      // Authentic Real GTA UI Sound (plays real GTA audio file)
       playClick() {
         if (this.muted) return;
         const now = Date.now();
+        // Prevent double sound repeats
         if (now - this.lastPlayTime < 220) return;
         this.lastPlayTime = now;
+
         this.init();
 
         if (this.ctx && this.audioBuffer) {
-          try {
-            const src = this.ctx.createBufferSource();
-            src.buffer = this.audioBuffer;
-            const gain = this.ctx.createGain();
-            gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-            src.connect(gain);
-            gain.connect(this.ctx.destination);
-            src.start(0);
+          if (this.ctx.state === 'suspended') {
+            this.ctx.resume().then(() => this.playBuffer(0.25)).catch(() => this.playFallback(0.25));
             return;
-          } catch (e) {}
+          }
+          this.playBuffer(0.25);
+          return;
         }
 
-        try {
-          const a = new Audio(REAL_GTA_CLICK_B64);
-          a.volume = 0.25;
-          a.play().catch(() => {});
-        } catch (err) {}
+        this.playFallback(0.25);
       }
 
-      // Tire skid screech
-      playSkid() {
+      playBuffer(volume = 0.25) {
+        if (!this.ctx || !this.audioBuffer) return;
+        try {
+          const source = this.ctx.createBufferSource();
+          source.buffer = this.audioBuffer;
+          const gain = this.ctx.createGain();
+          gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+          source.connect(gain);
+          gain.connect(this.ctx.destination);
+          source.start(0);
+        } catch (e) {
+          this.playFallback(volume);
+        }
+      }
+
+      playFallback(volume = 0.25) {
+        try {
+          const audio = new Audio(REAL_GTA_CLICK_B64);
+          audio.volume = volume;
+          const p = audio.play();
+          if (p !== undefined) p.catch(() => {});
+        } catch (e) {
+          try {
+            const audio = new Audio('/gta_sound.mp3');
+            audio.volume = volume;
+            audio.play().catch(() => {});
+          } catch (err) {}
+        }
+      }
+
+      playHover() {
+        // Very subtle soft tick for PS2 menu selection
         if (this.muted) return;
         this.init();
         if (!this.ctx) return;
         try {
-          const bufSize = this.ctx.sampleRate * 0.08;
-          const noiseBuffer = this.ctx.createBuffer(1, bufSize, this.ctx.sampleRate);
-          const output = noiseBuffer.getChannelData(0);
-          for (let i = 0; i < bufSize; i++) output[i] = Math.random() * 2 - 1;
-          const whiteNoise = this.ctx.createBufferSource();
-          whiteNoise.buffer = noiseBuffer;
-          const filter = this.ctx.createBiquadFilter();
-          filter.type = 'bandpass';
-          filter.frequency.value = 1600;
+          const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
-          whiteNoise.connect(filter);
-          filter.connect(gain);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(750, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.02);
+          osc.connect(gain);
           gain.connect(this.ctx.destination);
-          whiteNoise.start();
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.02);
         } catch (e) {}
       }
 
-      // Cash pickup sound
+      // Authentic GTA Cash Register Sound
       playCash() {
         if (this.muted) return;
         this.init();
         if (!this.ctx) return;
+        // Two-tone bell cash register sound
         [987.77, 1318.51].forEach((freq, idx) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.07);
           gain.gain.setValueAtTime(0.09, this.ctx.currentTime + idx * 0.07);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.07 + 0.22);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.07 + 0.25);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(this.ctx.currentTime + idx * 0.07);
-          osc.stop(this.ctx.currentTime + idx * 0.07 + 0.22);
+          osc.stop(this.ctx.currentTime + idx * 0.07 + 0.25);
         });
       }
 
-      // Mission passed fanfare
+      // Authentic GTA Brass Fanfare for Mission Passed
       playMissionPassed() {
         if (this.muted) return;
         this.init();
         if (!this.ctx) return;
+        
+        // Classic GTA Vice City Brass Horn progression
         const fanfareNotes = [
-          { f: 233.08, d: 0.15, t: 0.0 },
-          { f: 293.66, d: 0.15, t: 0.16 },
-          { f: 349.23, d: 0.18, t: 0.32 },
-          { f: 392.00, d: 0.18, t: 0.50 },
-          { f: 466.16, d: 0.25, t: 0.68 },
-          { f: 523.25, d: 0.22, t: 0.95 },
-          { f: 466.16, d: 0.22, t: 1.18 },
-          { f: 587.33, d: 0.65, t: 1.40 },
+          { f: 233.08, d: 0.15, t: 0.0 },   // Bb3
+          { f: 293.66, d: 0.15, t: 0.16 },  // D4
+          { f: 349.23, d: 0.18, t: 0.32 },  // F4
+          { f: 392.00, d: 0.18, t: 0.50 },  // G4
+          { f: 466.16, d: 0.25, t: 0.68 },  // Bb4
+          { f: 523.25, d: 0.22, t: 0.95 },  // C5
+          { f: 466.16, d: 0.22, t: 1.18 },  // Bb4
+          { f: 587.33, d: 0.65, t: 1.40 },  // D5 (Triumphant sustained chord)
         ];
+
         fanfareNotes.forEach(note => {
+          // Dual sawtooth for rich brass timbre
           [-5, 5].forEach(detune => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
             const filter = this.ctx.createBiquadFilter();
+
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(note.f, this.ctx.currentTime + note.t);
             osc.detune.setValueAtTime(detune, this.ctx.currentTime + note.t);
+
             filter.type = 'lowpass';
             filter.frequency.setValueAtTime(1800, this.ctx.currentTime + note.t);
             filter.frequency.exponentialRampToValueAtTime(3200, this.ctx.currentTime + note.t + 0.05);
-            gain.gain.setValueAtTime(0.06, this.ctx.currentTime + note.t);
+            filter.frequency.exponentialRampToValueAtTime(1400, this.ctx.currentTime + note.t + note.d);
+
+            gain.gain.setValueAtTime(0.07, this.ctx.currentTime + note.t);
             gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + note.t + note.d + 0.1);
+
             osc.connect(filter);
             filter.connect(gain);
             gain.connect(this.ctx.destination);
+
             osc.start(this.ctx.currentTime + note.t);
             osc.stop(this.ctx.currentTime + note.t + note.d + 0.1);
           });
         });
       }
 
-      playCheat() {
+      // Authentic GTA Cheat Code Activation Tone
+      playCheatSound() {
         if (this.muted) return;
         this.init();
         if (!this.ctx) return;
+        
+        // Classic metallic GTA chime ring
         [1046.50, 1318.51, 1567.98].forEach((f, i) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
@@ -931,9 +1221,9 @@
         });
       }
 
-      startRadio(name) {
-        this.station = name;
-        if (this.muted || name === 'MUTE') {
+      startRadio(stationName) {
+        this.station = stationName;
+        if (this.muted || stationName === 'MUTE') {
           this.stopRadio();
           return;
         }
@@ -941,20 +1231,25 @@
         this.stopRadio();
         this.radioPlaying = true;
         let step = 0;
+        
+        // 80s Synthwave Radio Chord Progressions (Flash FM / Emotion / Fever)
         const chords = [
-          [220, 261.63, 329.63],
-          [174.61, 220, 261.63],
-          [261.63, 329.63, 392],
-          [196, 246.94, 293.66],
+          [220, 261.63, 329.63], // Am
+          [174.61, 220, 261.63], // F
+          [261.63, 329.63, 392], // C
+          [196, 246.94, 293.66], // G
         ];
-        const play = () => {
+        
+        const playBar = () => {
           if (!this.radioPlaying || this.muted || !this.ctx) return;
           const currentChord = chords[step % chords.length];
-          currentChord.forEach(f => {
+          
+          // Synth pad
+          currentChord.forEach(freq => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(f, this.ctx.currentTime);
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
             gain.gain.setValueAtTime(0.012, this.ctx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 1.7);
             osc.connect(gain);
@@ -962,10 +1257,23 @@
             osc.start();
             osc.stop(this.ctx.currentTime + 1.7);
           });
+          
+          // 80s Synth bassline note
+          const bassOsc = this.ctx.createOscillator();
+          const bassGain = this.ctx.createGain();
+          bassOsc.type = 'sawtooth';
+          bassOsc.frequency.setValueAtTime(currentChord[0] / 2, this.ctx.currentTime);
+          bassGain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+          bassGain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.7);
+          bassOsc.connect(bassGain);
+          bassGain.connect(this.ctx.destination);
+          bassOsc.start();
+          bassOsc.stop(this.ctx.currentTime + 0.7);
+
           step++;
         };
-        play();
-        this.radioInterval = setInterval(play, 1600);
+        playBar();
+        this.radioInterval = setInterval(playBar, 1600);
       }
 
       stopRadio() {
@@ -977,229 +1285,182 @@
       }
     }
 
-    const sound = new ViceGameAudio();
-    function playRealGtaSound() { sound.playClick(); }
+    const sound = new ViceAudioEngine();
 
     // ---------------------------------------------------------------------------
-    // Game World Engine Constants & Setup
+    // Live Clock System
     // ---------------------------------------------------------------------------
-    const canvas = document.getElementById('game-canvas');
-    const ctx = canvas.getContext('2d');
-    const radarCanvas = document.getElementById('radar-canvas');
-    const radarCtx = radarCanvas.getContext('2d');
-
-    const WORLD_W = 2000;
-    const WORLD_H = 2000;
-
-    // Persistent offscreen canvas for tire skid marks
-    const skidCanvas = document.createElement('canvas');
-    skidCanvas.width = WORLD_W;
-    skidCanvas.height = WORLD_H;
-    const skidCtx = skidCanvas.getContext('2d');
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    function updateClock() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const clockEl = document.getElementById('live-clock');
+      const pagerTimeEl = document.getElementById('pager-time');
+      if (clockEl) clockEl.textContent = `${hh}:${mm}`;
+      if (pagerTimeEl) pagerTimeEl.textContent = `${hh}:${mm} PM`;
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    setInterval(updateClock, 1000);
+    updateClock();
 
     // ---------------------------------------------------------------------------
-    // The 5 Portfolio Mission Markers
+    // Cash Counter System with Smooth Animation
     // ---------------------------------------------------------------------------
-    const MARKERS = [
-      { id: 'vercetti', name: 'VERCETTI ESTATE', x: 260, y: 280, blip: 'V', color: '#FF16EB', tab: 'vercetti' },
-      { id: 'malibu', name: 'MALIBU CLUB', x: 260, y: 680, blip: 'M', color: '#FFD700', tab: 'malibu' },
-      { id: 'ammunation', name: 'AMMU-NATION', x: 260, y: 1120, blip: 'A', color: '#FF4757', tab: 'ammunation' },
-      { id: 'hotel', name: 'OCEAN VIEW HOTEL', x: 260, y: 1520, blip: 'H', color: '#00FFFF', tab: 'hotel' },
-      { id: 'payphone', name: 'OCEAN DRIVE PAYPHONE', x: 260, y: 1880, blip: 'P', color: '#2ECC71', tab: 'payphone' },
-    ];
-
-    let currentNearMarker = null;
-
-    // ---------------------------------------------------------------------------
-    // Floating Pickups (Cash, Hidden Packages, Police Bribes)
-    // ---------------------------------------------------------------------------
-    const PICKUPS = [
-      // Cash pickups ($500)
-      { x: 620, y: 350, type: 'cash', value: 500, collected: false },
-      { x: 740, y: 550, type: 'cash', value: 500, collected: false },
-      { x: 620, y: 820, type: 'cash', value: 500, collected: false },
-      { x: 780, y: 1020, type: 'cash', value: 500, collected: false },
-      { x: 650, y: 1250, type: 'cash', value: 500, collected: false },
-      { x: 740, y: 1480, type: 'cash', value: 500, collected: false },
-      { x: 620, y: 1680, type: 'cash', value: 500, collected: false },
-      { x: 780, y: 1850, type: 'cash', value: 500, collected: false },
-      // Hidden packages ($2,500)
-      { x: 140, y: 440, type: 'package', value: 2500, collected: false },
-      { x: 140, y: 1280, type: 'package', value: 2500, collected: false },
-      { x: 1250, y: 600, type: 'package', value: 2500, collected: false },
-      // Police bribe star
-      { x: 540, y: 860, type: 'bribe', value: 0, collected: false },
-      { x: 540, y: 1720, type: 'bribe', value: 0, collected: false },
-    ];
-
-    // ---------------------------------------------------------------------------
-    // Player Vehicle: 1980s White Ferrari Testarossa / Panzer Tank
-    // ---------------------------------------------------------------------------
-    const player = {
-      x: 680,
-      y: 350,
-      w: 26,
-      h: 50,
-      angle: 0, // facing south (PI/2) initially
-      speed: 0,
-      maxSpeed: 8.5,
-      accel: 0.28,
-      friction: 0.965,
-      brake: 0.90,
-      turnSpeed: 0.052,
-      drift: 0,
-      isTank: false,
-      health: 100,
-      armor: 100,
-      cash: 25000,
-      wanted: 0
-    };
-
-    // ---------------------------------------------------------------------------
-    // AI Traffic Cars
-    // ---------------------------------------------------------------------------
-    const traffic = [
-      { x: 610, y: 200, speed: 3.2, dir: 1, color: '#FF6B6B', w: 26, h: 48 },
-      { x: 610, y: 900, speed: 2.8, dir: 1, color: '#4ECDC4', w: 26, h: 48 },
-      { x: 730, y: 1800, speed: 3.4, dir: -1, color: '#FFE66D', w: 26, h: 48 },
-      { x: 730, y: 1100, speed: 3.0, dir: -1, color: '#B5838D', w: 26, h: 48 },
-    ];
-
-    // ---------------------------------------------------------------------------
-    // Police Cruiser
-    // ---------------------------------------------------------------------------
-    const police = {
-      active: false,
-      x: 0,
-      y: 0,
-      angle: 0,
-      speed: 0,
-      w: 26,
-      h: 50,
-      sirenTimer: 0
-    };
-
-    // ---------------------------------------------------------------------------
-    // Input Handling (Keyboard + Mobile)
-    // ---------------------------------------------------------------------------
-    const keys = { up: false, down: false, left: false, right: false };
-
-    window.addEventListener('keydown', (e) => {
-      if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-      if (e.key === 'w' || e.key === 'W' || e.key === 'ArrowUp') keys.up = true;
-      if (e.key === 's' || e.key === 'S' || e.key === 'ArrowDown') keys.down = true;
-      if (e.key === 'a' || e.key === 'A' || e.key === 'ArrowLeft') keys.left = true;
-      if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') keys.right = true;
-
-      if (e.key === 'Enter') {
-        if (currentNearMarker && isModalClosed()) {
-          triggerCurrentMarkerModal();
-        }
-      }
-      if (e.key === 'Escape') {
-        const modal = document.getElementById('pause-modal');
-        if (modal && !modal.classList.contains('hidden')) {
-          closePauseMenu();
-        } else {
-          openPauseMenu('vercetti');
-        }
-      }
-    });
-
-    window.addEventListener('keyup', (e) => {
-      if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-      if (e.key === 'w' || e.key === 'W' || e.key === 'ArrowUp') keys.up = false;
-      if (e.key === 's' || e.key === 'S' || e.key === 'ArrowDown') keys.down = false;
-      if (e.key === 'a' || e.key === 'A' || e.key === 'ArrowLeft') keys.left = false;
-      if (e.key === 'd' || e.key === 'D' || e.key === 'ArrowRight') keys.right = false;
-    });
-
-    // Mobile touch buttons
-    function bindTouchBtn(id, keyName) {
-      const btn = document.getElementById(id);
-      if (!btn) return;
-      const setKey = (val) => (e) => { e.preventDefault(); keys[keyName] = val; };
-      btn.addEventListener('touchstart', setKey(true), { passive: false });
-      btn.addEventListener('touchend', setKey(false), { passive: false });
-      btn.addEventListener('mousedown', setKey(true));
-      btn.addEventListener('mouseup', setKey(false));
-      btn.addEventListener('mouseleave', setKey(false));
-    }
-    bindTouchBtn('btn-up', 'up');
-    bindTouchBtn('btn-down', 'down');
-    bindTouchBtn('btn-left', 'left');
-    bindTouchBtn('btn-right', 'right');
-
-    function isModalClosed() {
-      const modal = document.getElementById('pause-modal');
-      return !modal || modal.classList.contains('hidden');
-    }
-
-    // ---------------------------------------------------------------------------
-    // Cash System
-    // ---------------------------------------------------------------------------
-    function addGameCash(amount) {
-      player.cash += amount;
-      sound.playCash();
+    let currentCash = 25000;
+    function addCash(amount) {
+      const targetCash = currentCash + amount;
+      const startCash = currentCash;
+      currentCash = targetCash;
       const cashEl = document.getElementById('cash-counter');
-      if (cashEl) cashEl.textContent = String(player.cash).padStart(8, '0');
-    }
+      const duration = 600;
+      const startTime = performance.now();
 
-    // ---------------------------------------------------------------------------
-    // Wanted Level System
-    // ---------------------------------------------------------------------------
-    function setWantedLevel(level) {
-      player.wanted = Math.max(0, Math.min(5, level));
-      const stars = document.querySelectorAll('.star-item');
-      stars.forEach((s, idx) => {
-        if (idx < player.wanted) {
-          s.classList.remove('text-gray-700');
-          s.classList.add('text-[#FFD700]', 'drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]', 'animate-pulse');
-        } else {
-          s.classList.remove('text-[#FFD700]', 'drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]', 'animate-pulse');
-          s.classList.add('text-gray-700');
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = Math.floor(startCash + (targetCash - startCash) * progress);
+        if (cashEl) cashEl.textContent = String(value).padStart(8, '0');
+        if (progress < 1) {
+          requestAnimationFrame(step);
         }
-      });
-
-      if (player.wanted > 0 && !police.active) {
-        police.active = true;
-        police.x = player.x + (Math.random() > 0.5 ? 400 : -400);
-        police.y = player.y + (Math.random() > 0.5 ? 400 : -400);
-        police.speed = 0;
-      } else if (player.wanted === 0) {
-        police.active = false;
       }
+      requestAnimationFrame(step);
+    }
+
+    function playCashSound() {
+      sound.playCash();
     }
 
     // ---------------------------------------------------------------------------
-    // Weapon Box Skills
+    // Weapon Box Skill Selector & Missions Filter
     // ---------------------------------------------------------------------------
     const WEAPONS = [
-      { name: "Next.js", icon: "🔫", ammo: "999" },
-      { name: "TypeScript", icon: "🗡️", ammo: "999" },
-      { name: "Python ML", icon: "🎯", ammo: "750" },
-      { name: "Gemini AI", icon: "⚡", ammo: "500" },
-      { name: "Three.js", icon: "🎨", ammo: "300" }
+      { name: "Next.js", icon: "🔫", ammo: "999", tag: "Next.js" },
+      { name: "TypeScript", icon: "🗡️", ammo: "999", tag: "TypeScript" },
+      { name: "Python ML", icon: "🎯", ammo: "750", tag: "Python" },
+      { name: "AI Engine", icon: "⚡", ammo: "500", tag: "AI" },
+      { name: "Three.js", icon: "🎨", ammo: "300", tag: "Three.js" },
+      { name: "ALL GEAR", icon: "💼", ammo: "MAX", tag: "ALL" }
     ];
-    let weaponIdx = 0;
-    document.getElementById('weapon-box').addEventListener('click', () => {
+    let currentWeaponIdx = 0;
+
+    const weaponBox = document.getElementById('weapon-box');
+    weaponBox.addEventListener('click', () => {
       sound.playClick();
-      weaponIdx = (weaponIdx + 1) % WEAPONS.length;
-      document.getElementById('weapon-name').textContent = WEAPONS[weaponIdx].name;
-      document.getElementById('weapon-icon').textContent = WEAPONS[weaponIdx].icon;
-      document.getElementById('weapon-ammo').textContent = WEAPONS[weaponIdx].ammo;
-      addGameCash(250);
+      currentWeaponIdx = (currentWeaponIdx + 1) % WEAPONS.length;
+      applyWeaponFilter(WEAPONS[currentWeaponIdx]);
+      addCash(500);
     });
 
+    function applyWeaponFilter(weapon) {
+      document.getElementById('weapon-name').textContent = weapon.name;
+      document.getElementById('weapon-icon').textContent = weapon.icon;
+      document.getElementById('weapon-ammo').textContent = weapon.ammo;
+      
+      const badge = document.getElementById('active-filter-badge');
+      if (badge) badge.textContent = weapon.name;
+
+      const cards = document.querySelectorAll('.mission-card');
+      cards.forEach(card => {
+        const tags = card.getAttribute('data-weapon') || '';
+        if (weapon.tag === 'ALL' || tags.includes(weapon.tag)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function resetWeaponFilter() {
+      sound.playClick();
+      currentWeaponIdx = WEAPONS.length - 1;
+      applyWeaponFilter(WEAPONS[currentWeaponIdx]);
+    }
+
     // ---------------------------------------------------------------------------
-    // Radio Station Controls
+    // Wanted Stars System
+    // ---------------------------------------------------------------------------
+    let wantedLevel = 1;
+    const visitedTabs = new Set(['brief']);
+
+    function updateWantedStars() {
+      const stars = document.querySelectorAll('.star-item');
+      stars.forEach((star, idx) => {
+        if (idx < wantedLevel) {
+          star.classList.remove('text-gray-700');
+          star.classList.add('text-[#FFD700]', 'drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]', 'animate-pulse');
+        } else {
+          star.classList.remove('text-[#FFD700]', 'drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]', 'animate-pulse');
+          star.classList.add('text-gray-700');
+        }
+      });
+    }
+    updateWantedStars();
+
+    // ---------------------------------------------------------------------------
+    // Tab Navigation System
+    // ---------------------------------------------------------------------------
+    function switchTab(tabId) {
+      sound.playClick();
+      // Hide all contents
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.pause-tab').forEach(el => el.classList.remove('active'));
+
+      // Show chosen content
+      const targetContent = document.getElementById(`tab-${tabId}`);
+      const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+      if (targetContent) targetContent.classList.remove('hidden');
+      if (targetBtn) targetBtn.classList.add('active');
+
+      // Update wanted stars upon discovering new sections
+      if (!visitedTabs.has(tabId)) {
+        visitedTabs.add(tabId);
+        if (wantedLevel < 5) {
+          wantedLevel++;
+          updateWantedStars();
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ---------------------------------------------------------------------------
+    // Mission Completion & Passed Banner
+    // ---------------------------------------------------------------------------
+    function completeMission(name, payout) {
+      sound.playMissionPassed();
+      addCash(payout);
+      showMissionPassedBanner(`+$${payout.toLocaleString()}`);
+    }
+
+    function showMissionPassedBanner(rewardText) {
+      const banner = document.getElementById('mission-passed-banner');
+      const rewardEl = document.getElementById('mission-passed-reward');
+      if (rewardEl) rewardEl.textContent = rewardText;
+      if (banner) {
+        banner.classList.remove('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          banner.classList.add('opacity-0', 'pointer-events-none');
+        }, 2200);
+      }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Retro Pager Form Submit
+    // ---------------------------------------------------------------------------
+    function handlePagerSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('pager-name').value;
+      completeMission("PAGER TRANSMISSION", 5000);
+      document.getElementById('pager-form').reset();
+      
+      const lcd = document.querySelector('#tab-contact .neon-green-text');
+      if (lcd) {
+        lcd.textContent = `PAGE RECEIVED FROM: "${name.toUpperCase()}". TRANSMISSION CONFIRMED!`;
+      }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Radio Station Controller
     // ---------------------------------------------------------------------------
     const STATIONS = ['Flash FM (ON)', 'Emotion 98.3 (ON)', 'Fever 105 (ON)', 'RADIO OFF (MUTE)'];
     let stationIdx = 0;
@@ -1207,7 +1468,6 @@
     const radioToggleBtn = document.getElementById('radio-toggle-btn');
 
     radioBtn.addEventListener('click', () => {
-      sound.playClick();
       stationIdx = (stationIdx + 1) % STATIONS.length;
       radioBtn.textContent = STATIONS[stationIdx];
       const name = STATIONS[stationIdx].split(' ')[0];
@@ -1231,702 +1491,119 @@
     });
 
     // ---------------------------------------------------------------------------
-    // Cheat Codes Engine
+    // Cheat Codes Engine (ASPIRINE, PANZER, LEAVEMEALONE, PRECIOUSPROTECTION)
     // ---------------------------------------------------------------------------
-    let cheatBuffer = '';
+    let keyBuffer = '';
     const CHEATS = {
+      ASPIRINE: () => {
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: HEALTH RESTORED (ASPIRINE)');
+        const healthBar = document.getElementById('health-bar');
+        if (healthBar) healthBar.style.width = '100%';
+        addCash(1000);
+        document.body.classList.add('neon-pink-box');
+        setTimeout(() => document.body.classList.remove('neon-pink-box'), 1000);
+      },
       PANZER: () => {
-        sound.playCheat();
-        player.isTank = !player.isTank;
-        triggerCheatNotification(player.isTank ? 'RHINO TANK ACTIVATED (PANZER)' : 'TESTAROSSA RESTORED');
-        addGameCash(2000);
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: RHINO TANK SPAWNED (PANZER)');
+        const tank = document.getElementById('tank-container');
+        if (tank) {
+          tank.classList.remove('hidden');
+          tank.classList.add('tank-animate');
+          setTimeout(() => {
+            tank.classList.remove('tank-animate');
+            tank.classList.add('hidden');
+          }, 7000);
+        }
+        addCash(2000);
       },
       LEAVEMEALONE: () => {
-        sound.playCheat();
-        setWantedLevel(0);
-        triggerCheatNotification('WANTED LEVEL CLEARED (LEAVEMEALONE)');
-      },
-      ASPIRINE: () => {
-        sound.playCheat();
-        player.health = 100;
-        document.getElementById('health-bar').style.width = '100%';
-        triggerCheatNotification('HEALTH RESTORED (ASPIRINE)');
-        addGameCash(1000);
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: WANTED LEVEL CLEARED (LEAVEMEALONE)');
+        wantedLevel = 0;
+        updateWantedStars();
       },
       PRECIOUSPROTECTION: () => {
-        sound.playCheat();
-        player.armor = 100;
-        document.getElementById('armor-bar').style.width = '100%';
-        triggerCheatNotification('ARMOR MAXED (PRECIOUSPROTECTION)');
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: ARMOR MAXED (PRECIOUSPROTECTION)');
+        const armorBar = document.getElementById('armor-bar');
+        if (armorBar) armorBar.style.width = '100%';
+        addCash(1000);
+      },
+      BIGBANG: () => {
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: BIG BANG!');
+        document.body.classList.add('screen-shake');
+        setTimeout(() => document.body.classList.remove('screen-shake'), 600);
+        addCash(5000);
       }
     };
 
     window.addEventListener('keydown', (e) => {
+      // Don't trigger cheats while typing inside input or textarea
       if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-      cheatBuffer += e.key.toUpperCase();
-      if (cheatBuffer.length > 20) cheatBuffer = cheatBuffer.slice(-20);
-      for (const [code, fn] of Object.entries(CHEATS)) {
-        if (cheatBuffer.endsWith(code)) {
-          fn();
-          cheatBuffer = '';
+      
+      keyBuffer += e.key.toUpperCase();
+      if (keyBuffer.length > 20) keyBuffer = keyBuffer.slice(-20);
+
+      for (const [code, action] of Object.entries(CHEATS)) {
+        if (keyBuffer.endsWith(code)) {
+          action();
+          keyBuffer = '';
           break;
         }
       }
     });
 
-    function triggerCheatNotification(msg) {
+    function triggerCheatAlert(msg) {
       const alert = document.getElementById('cheat-alert');
       if (alert) {
         alert.textContent = msg;
         alert.classList.remove('opacity-0');
-        setTimeout(() => alert.classList.add('opacity-0'), 2500);
+        setTimeout(() => alert.classList.add('opacity-0'), 2200);
       }
     }
 
     // ---------------------------------------------------------------------------
-    // Modal & Marker Interaction
+    // Loading Screen Simulation
     // ---------------------------------------------------------------------------
-    function triggerCurrentMarkerModal() {
-      if (!currentNearMarker) return;
-      sound.playClick();
-      openPauseMenu(currentNearMarker.tab);
-    }
+    const loadingScreen = document.getElementById('loading-screen');
+    const loadingBar = document.getElementById('loading-bar');
+    const loadingPct = document.getElementById('loading-pct');
+    const skipBtn = document.getElementById('skip-load-btn');
 
-    function openPauseMenu(tabName) {
-      sound.playClick();
-      const modal = document.getElementById('pause-modal');
-      if (modal) modal.classList.remove('hidden');
-      switchModalTab(tabName || 'vercetti');
-    }
+    let loadProgress = 0;
+    const loadInterval = setInterval(() => {
+      loadProgress += 10;
+      if (loadingBar) loadingBar.style.width = `${loadProgress}%`;
+      if (loadingPct) loadingPct.textContent = `${loadProgress}%`;
 
-    function closePauseMenu() {
-      sound.playClick();
-      const modal = document.getElementById('pause-modal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function switchModalTab(tabId) {
-      sound.playClick();
-      document.querySelectorAll('.modal-section').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.pause-tab').forEach(el => el.classList.remove('active'));
-
-      const targetSection = document.getElementById('modal-tab-' + tabId);
-      const targetBtn = document.getElementById('tab-btn-' + tabId);
-      if (targetSection) targetSection.classList.remove('hidden');
-      if (targetBtn) targetBtn.classList.add('active');
-    }
-
-    function completeGameMission(name, payout) {
-      sound.playMissionPassed();
-      addGameCash(payout);
-      const banner = document.getElementById('mission-passed-banner');
-      const reward = document.getElementById('mission-passed-reward');
-      if (reward) reward.textContent = '+$' + payout.toLocaleString();
-      if (banner) {
-        banner.classList.remove('opacity-0');
-        setTimeout(() => banner.classList.add('opacity-0'), 2400);
+      if (loadProgress >= 100) {
+        clearInterval(loadInterval);
+        dismissLoading();
       }
+    }, 160);
+
+    function dismissLoading() {
+      if (!loadingScreen) return;
+      loadingScreen.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        loadingScreen.remove();
+        sound.init();
+        sound.startRadio('Flash FM');
+      }, 700);
     }
 
-    function handleGameContactSubmit(e) {
-      e.preventDefault();
-      closePauseMenu();
-      completeGameMission('DISPATCH TRANSMISSION', 5000);
-      e.target.reset();
-    }
-
-    // ---------------------------------------------------------------------------
-    // Live Clock System
-    // ---------------------------------------------------------------------------
-    function updateClock() {
-      const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      const clockEl = document.getElementById('live-clock');
-      if (clockEl) clockEl.textContent = `${hh}:${mm}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // ---------------------------------------------------------------------------
-    // Physics & Game Loop
-    // ---------------------------------------------------------------------------
-    let lastTime = performance.now();
-    let waveOffset = 0;
-
-    function gameLoop(now) {
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
-
-      if (isModalClosed()) {
-        updatePhysics(dt);
-      }
-      render();
-      renderRadar();
-
-      requestAnimationFrame(gameLoop);
-    }
-
-    function updatePhysics(dt) {
-      // Acceleration & Steering
-      if (keys.up) {
-        player.speed = Math.min(player.speed + player.accel, player.maxSpeed);
-      } else if (keys.down) {
-        player.speed = Math.max(player.speed - player.accel * 0.8, -3.5);
-      } else {
-        player.speed *= player.friction;
-      }
-
-      // Steering with angular response
-      if (Math.abs(player.speed) > 0.1) {
-        const turnDirection = player.speed > 0 ? 1 : -1;
-        if (keys.left) player.angle -= player.turnSpeed * turnDirection;
-        if (keys.right) player.angle += player.turnSpeed * turnDirection;
-
-        // Tire skid marks on sharp turns
-        if ((keys.left || keys.right) && Math.abs(player.speed) > 4.5) {
-          drawSkidMarks();
-          sound.playSkid();
-        }
-      }
-
-      // Move player
-      player.x += Math.sin(player.angle) * player.speed;
-      player.y -= Math.cos(player.angle) * player.speed;
-
-      // Keep inside world boundaries
-      player.x = Math.max(40, Math.min(WORLD_W - 40, player.x));
-      player.y = Math.max(40, Math.min(WORLD_H - 40, player.y));
-
-      // Check Mission Markers collision
-      let nearAny = null;
-      for (const m of MARKERS) {
-        const dx = player.x - m.x;
-        const dy = player.y - m.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < 55) {
-          nearAny = m;
-          break;
-        }
-      }
-      currentNearMarker = nearAny;
-      const prompt = document.getElementById('marker-prompt');
-      const nameDisp = document.getElementById('marker-name-display');
-      if (currentNearMarker) {
-        prompt.classList.remove('hidden');
-        if (nameDisp) nameDisp.textContent = currentNearMarker.name;
-      } else {
-        prompt.classList.add('hidden');
-      }
-
-      // Check Pickups collision
-      for (const p of PICKUPS) {
-        if (!p.collected) {
-          const dist = Math.hypot(player.x - p.x, player.y - p.y);
-          if (dist < 32) {
-            p.collected = true;
-            if (p.type === 'bribe') {
-              setWantedLevel(0);
-              triggerCheatNotification('POLICE BRIBE COLLECTED! WANTED LEVEL 0');
-              sound.playCheat();
-            } else {
-              addGameCash(p.value);
-            }
-          }
-        }
-      }
-
-      // Update AI Traffic
-      traffic.forEach(car => {
-        car.y += car.speed * car.dir;
-        if (car.dir === 1 && car.y > WORLD_H - 100) car.y = 100;
-        if (car.dir === -1 && car.y < 100) car.y = WORLD_H - 100;
-
-        // Collision with player car
-        const dist = Math.hypot(player.x - car.x, player.y - car.y);
-        if (dist < 42) {
-          // Bump & wanted star
-          player.speed *= -0.5;
-          if (player.isTank) {
-            car.y = car.dir === 1 ? WORLD_H + 200 : -200; // Tank destroys car
-            addGameCash(1000);
-          } else {
-            setWantedLevel(player.wanted + 1);
-          }
-          document.body.classList.add('screen-shake');
-          setTimeout(() => document.body.classList.remove('screen-shake'), 400);
-        }
-      });
-
-      // Update Police Pursuit
-      if (police.active) {
-        const pdx = player.x - police.x;
-        const pdy = player.y - police.y;
-        police.angle = Math.atan2(pdx, -pdy);
-        police.speed = Math.min(police.speed + 0.15, 6.8);
-        police.x += Math.sin(police.angle) * police.speed;
-        police.y -= Math.cos(police.angle) * police.speed;
-
-        // Police ram player
-        const dist = Math.hypot(player.x - police.x, player.y - police.y);
-        if (dist < 45) {
-          player.speed *= 0.5;
-          player.health = Math.max(10, player.health - 5);
-          document.getElementById('health-bar').style.width = player.health + '%';
-        }
-      }
-    }
-
-    function drawSkidMarks() {
-      const cos = Math.cos(player.angle);
-      const sin = Math.sin(player.angle);
-      const rlX = player.x - sin * 18 - cos * 10;
-      const rlY = player.y + cos * 18 - sin * 10;
-      const rrX = player.x - sin * 18 + cos * 10;
-      const rrY = player.y + cos * 18 + sin * 10;
-
-      skidCtx.fillStyle = 'rgba(15, 5, 25, 0.28)';
-      skidCtx.beginPath();
-      skidCtx.arc(rlX, rlY, 3, 0, Math.PI * 2);
-      skidCtx.arc(rrX, rrY, 3, 0, Math.PI * 2);
-      skidCtx.fill();
-    }
-
-    // ---------------------------------------------------------------------------
-    // Rendering the 2000x2000 Open World
-    // ---------------------------------------------------------------------------
-    function render() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Camera centered on player
-      const camX = canvas.width / 2 - player.x;
-      const camY = canvas.height / 2 - player.y;
-
-      ctx.save();
-      ctx.translate(camX, camY);
-
-      // 1. Base Map Grounds
-      // Left City Sidewalks & Blocks (x: 0 to 520)
-      ctx.fillStyle = '#17042a';
-      ctx.fillRect(0, 0, 520, WORLD_H);
-
-      // Ocean Drive Boulevard (x: 520 to 920)
-      ctx.fillStyle = '#181224';
-      ctx.fillRect(520, 0, 400, WORLD_H);
-
-      // Beach Boardwalk (x: 920 to 1000)
-      ctx.fillStyle = '#220838';
-      ctx.fillRect(920, 0, 80, WORLD_H);
-
-      // Sandy Ocean Beach (x: 1000 to 1480)
-      ctx.fillStyle = '#d99f57';
-      ctx.fillRect(1000, 0, 480, WORLD_H);
-
-      // Turquoise Ocean Waves (x: 1480 to 2000)
-      ctx.fillStyle = '#0f6e8c';
-      ctx.fillRect(1480, 0, 520, WORLD_H);
-
-      // Animated Shoreline Foam Ripples
-      waveOffset = (waveOffset + 0.03) % (Math.PI * 2);
-      ctx.fillStyle = '#65d6ce';
-      for (let y = 0; y < WORLD_H; y += 40) {
-        const waveX = 1480 + Math.sin(y * 0.05 + waveOffset) * 12;
-        ctx.fillRect(waveX - 4, y, 6, 30);
-      }
-
-      // Cross Streets (y: 420, 860, 1300, 1720)
-      [420, 860, 1300, 1720].forEach(sy => {
-        ctx.fillStyle = '#181224';
-        ctx.fillRect(0, sy, 920, 100);
-
-        // Cross street stripes
-        ctx.strokeStyle = '#FFD700';
-        ctx.setLineDash([12, 12]);
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(0, sy + 50);
-        ctx.lineTo(520, sy + 50);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      });
-
-      // Road Lane Dividers on Ocean Drive
-      ctx.strokeStyle = '#FFD400';
-      ctx.lineWidth = 4;
-      ctx.setLineDash([20, 20]);
-      ctx.beginPath();
-      ctx.moveTo(720, 0); // Center yellow divider
-      ctx.lineTo(720, WORLD_H);
-      ctx.stroke();
-
-      // White lane dashes
-      ctx.strokeStyle = '#e0d6eb';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([15, 25]);
-      ctx.beginPath();
-      ctx.moveTo(620, 0);
-      ctx.lineTo(620, WORLD_H);
-      ctx.moveTo(820, 0);
-      ctx.lineTo(820, WORLD_H);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // 2. Render Skid Marks
-      ctx.drawImage(skidCanvas, 0, 0);
-
-      // 3. Buildings & Landmarks
-      renderBuildings();
-
-      // 4. Mission Markers (Pulsating Neon Circles on Asphalt)
-      renderMissionMarkers();
-
-      // 5. Floating Pickups
-      renderPickups();
-
-      // 6. AI Traffic Cars
-      renderTraffic();
-
-      // 7. Police Cruiser
-      if (police.active) {
-        renderPolice();
-      }
-
-      // 8. Player Vehicle (Testarossa / Panzer Tank)
-      renderPlayerCar();
-
-      ctx.restore();
-    }
-
-    function renderBuildings() {
-      // Vercetti Estate Grounds (top left)
-      ctx.fillStyle = '#2a0845';
-      ctx.fillRect(40, 60, 380, 320);
-      ctx.strokeStyle = '#FF16EB';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(40, 60, 380, 320);
-      ctx.fillStyle = '#FF16EB';
-      ctx.font = 'bold 16px Anton';
-      ctx.fillText('VERCETTI ESTATE', 60, 100);
-
-      // Malibu Club (x: 40, y: 560)
-      ctx.fillStyle = '#3a0654';
-      ctx.fillRect(40, 560, 380, 260);
-      ctx.strokeStyle = '#FFD700';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(40, 560, 380, 260);
-      ctx.fillStyle = '#FFD700';
-      ctx.font = 'bold 18px Anton';
-      ctx.fillText('MALIBU CLUB', 60, 600);
-
-      // Ammu-Nation (x: 40, y: 1000)
-      ctx.fillStyle = '#45062a';
-      ctx.fillRect(40, 1000, 380, 260);
-      ctx.strokeStyle = '#FF4757';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(40, 1000, 380, 260);
-      ctx.fillStyle = '#FF4757';
-      ctx.font = 'bold 18px Anton';
-      ctx.fillText('AMMU-NATION', 60, 1040);
-
-      // Ocean View Hotel (x: 40, y: 1440)
-      ctx.fillStyle = '#10354a';
-      ctx.fillRect(40, 1440, 380, 240);
-      ctx.strokeStyle = '#00FFFF';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(40, 1440, 380, 240);
-      ctx.fillStyle = '#00FFFF';
-      ctx.font = 'bold 18px Anton';
-      ctx.fillText('OCEAN VIEW HOTEL', 60, 1480);
-
-      // Payphone Booth (x: 40, y: 1840)
-      ctx.fillStyle = '#0a2e1d';
-      ctx.fillRect(40, 1840, 380, 120);
-      ctx.strokeStyle = '#2ECC71';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(40, 1840, 380, 120);
-      ctx.fillStyle = '#2ECC71';
-      ctx.font = 'bold 16px Anton';
-      ctx.fillText('OCEAN DRIVE PAYPHONE', 60, 1875);
-
-      // Beach Umbrellas and Palm Trees on Beach
-      for (let y = 100; y < WORLD_H; y += 180) {
-        // Umbrella
-        ctx.beginPath();
-        ctx.arc(1140, y, 16, 0, Math.PI * 2);
-        ctx.fillStyle = y % 360 === 0 ? '#FF16EB' : '#00FFFF';
-        ctx.fill();
-        ctx.strokeStyle = '#fef5ff';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // Palm tree on boardwalk
-        ctx.fillStyle = '#080112';
-        ctx.beginPath();
-        ctx.arc(960, y + 40, 12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#1b7a42';
-        ctx.beginPath();
-        ctx.arc(960, y + 40, 8, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    function renderMissionMarkers() {
-      const pulse = (Math.sin(performance.now() * 0.005) + 1) * 0.5; // 0 to 1
-      MARKERS.forEach(m => {
-        ctx.save();
-        ctx.translate(m.x, m.y);
-
-        // Outer glow circle
-        ctx.beginPath();
-        ctx.arc(0, 0, 36 + pulse * 10, 0, Math.PI * 2);
-        ctx.strokeStyle = m.color;
-        ctx.lineWidth = 3;
-        ctx.stroke();
-
-        // Inner solid pad
-        ctx.beginPath();
-        ctx.arc(0, 0, 24, 0, Math.PI * 2);
-        ctx.fillStyle = m.color;
-        ctx.globalAlpha = 0.35 + pulse * 0.25;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        // Label blip
-        ctx.fillStyle = '#120822';
-        ctx.font = 'bold 16px Anton';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(m.blip, 0, 1);
-
-        // Overhead marker floating text
-        ctx.fillStyle = '#fef5ff';
-        ctx.font = 'bold 11px Chakra Petch';
-        ctx.fillText(m.name, 0, -42);
-
-        ctx.restore();
-      });
-    }
-
-    function renderPickups() {
-      const bob = Math.sin(performance.now() * 0.006) * 4;
-      PICKUPS.forEach(p => {
-        if (!p.collected) {
-          ctx.save();
-          ctx.translate(p.x, p.y + bob);
-          if (p.type === 'cash') {
-            ctx.fillStyle = '#2ECC71';
-            ctx.font = 'bold 22px Anton';
-            ctx.textAlign = 'center';
-            ctx.fillText('$', 0, 8);
-          } else if (p.type === 'package') {
-            ctx.fillStyle = '#FF16EB';
-            ctx.fillRect(-8, -8, 16, 16);
-            ctx.strokeStyle = '#00FFFF';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(-8, -8, 16, 16);
-          } else if (p.type === 'bribe') {
-            ctx.fillStyle = '#FFD700';
-            ctx.font = 'bold 20px Chakra Petch';
-            ctx.textAlign = 'center';
-            ctx.fillText('★', 0, 7);
-          }
-          ctx.restore();
-        }
-      });
-    }
-
-    function renderTraffic() {
-      traffic.forEach(car => {
-        ctx.save();
-        ctx.translate(car.x, car.y);
-        ctx.fillStyle = car.color;
-        ctx.fillRect(-car.w / 2, -car.h / 2, car.w, car.h);
-
-        // Windshields
-        ctx.fillStyle = '#120822';
-        ctx.fillRect(-car.w / 2 + 3, -12, car.w - 6, 10);
-        ctx.fillRect(-car.w / 2 + 3, 6, car.w - 6, 8);
-
-        // Headlights / taillights
-        if (car.dir === 1) {
-          ctx.fillStyle = '#FFD400';
-          ctx.fillRect(-car.w / 2 + 2, car.h / 2 - 2, 5, 2);
-          ctx.fillRect(car.w / 2 - 7, car.h / 2 - 2, 5, 2);
-        } else {
-          ctx.fillStyle = '#FFD400';
-          ctx.fillRect(-car.w / 2 + 2, -car.h / 2, 5, 2);
-          ctx.fillRect(car.w / 2 - 7, -car.h / 2, 5, 2);
-        }
-        ctx.restore();
-      });
-    }
-
-    function renderPolice() {
-      ctx.save();
-      ctx.translate(police.x, police.y);
-      ctx.rotate(police.angle);
-
-      // Police cruiser body (Vice City Green & White)
-      ctx.fillStyle = '#fef5ff';
-      ctx.fillRect(-police.w / 2, -police.h / 2, police.w, police.h);
-      ctx.fillStyle = '#1b7a42';
-      ctx.fillRect(-police.w / 2, -10, police.w, 20);
-
-      // Roof lightbar (flashing Red and Blue)
-      const flash = Math.floor(performance.now() / 120) % 2 === 0;
-      ctx.fillStyle = flash ? '#FF0055' : '#00FFFF';
-      ctx.fillRect(-8, -4, 7, 8);
-      ctx.fillStyle = flash ? '#00FFFF' : '#FF0055';
-      ctx.fillRect(1, -4, 7, 8);
-
-      ctx.restore();
-    }
-
-    function renderPlayerCar() {
-      ctx.save();
-      ctx.translate(player.x, player.y);
-      ctx.rotate(player.angle);
-
-      // Headlight Beams Shining on Asphalt
-      const beamGrad = ctx.createRadialGradient(0, -player.h / 2 - 80, 10, 0, -player.h / 2, 140);
-      beamGrad.addColorStop(0, 'rgba(255, 255, 200, 0.45)');
-      beamGrad.addColorStop(1, 'rgba(255, 255, 200, 0)');
-      ctx.fillStyle = beamGrad;
-      ctx.beginPath();
-      ctx.moveTo(-15, -player.h / 2);
-      ctx.lineTo(-65, -player.h / 2 - 160);
-      ctx.lineTo(65, -player.h / 2 - 160);
-      ctx.lineTo(15, -player.h / 2);
-      ctx.fill();
-
-      if (player.isTank) {
-        // Rhino Tank Body
-        ctx.fillStyle = '#2e263d';
-        ctx.fillRect(-18, -26, 36, 52);
-        ctx.strokeStyle = '#00FFFF';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(-18, -26, 36, 52);
-
-        // Tank Treads
-        ctx.fillStyle = '#FF16EB';
-        ctx.fillRect(-22, -28, 6, 56);
-        ctx.fillRect(16, -28, 6, 56);
-
-        // Turret & Cannon
-        ctx.fillStyle = '#4a0e6b';
-        ctx.beginPath();
-        ctx.arc(0, 0, 12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#00FFFF';
-        ctx.fillRect(-3, -34, 6, 26);
-      } else {
-        // 1980s White Ferrari Testarossa (Top-Down Wedge)
-        // Shadow
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-        ctx.fillRect(-player.w / 2 + 3, -player.h / 2 + 3, player.w, player.h);
-
-        // Crisp White Body
-        ctx.fillStyle = '#fef5ff';
-        ctx.fillRect(-player.w / 2, -player.h / 2, player.w, player.h);
-        ctx.strokeStyle = '#d4c7e6';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(-player.w / 2, -player.h / 2, player.w, player.h);
-
-        // Dark Tinted Windshield
-        ctx.fillStyle = '#17042a';
-        ctx.fillRect(-player.w / 2 + 3, -12, player.w - 6, 12);
-
-        // Iconic Testarossa Rear Engine Louver Slats
-        ctx.fillStyle = '#240438';
-        for (let sl = 6; sl < 20; sl += 4) {
-          ctx.fillRect(-player.w / 2 + 4, sl, player.w - 8, 2);
-        }
-
-        // Pop-up headlights (amber/yellow)
-        ctx.fillStyle = '#FFD700';
-        ctx.fillRect(-player.w / 2 + 2, -player.h / 2, 6, 3);
-        ctx.fillRect(player.w / 2 - 8, -player.h / 2, 6, 3);
-
-        // Red taillight strip across the back
-        ctx.fillStyle = '#FF0055';
-        ctx.fillRect(-player.w / 2 + 2, player.h / 2 - 3, player.w - 4, 3);
-
-        // Side mirrors
-        ctx.fillStyle = '#fef5ff';
-        ctx.fillRect(-player.w / 2 - 3, -10, 3, 4);
-        ctx.fillRect(player.w / 2, -10, 3, 4);
-      }
-
-      ctx.restore();
-    }
-
-    // ---------------------------------------------------------------------------
-    // Render Live Circular Radar (Bottom-Left)
-    // ---------------------------------------------------------------------------
-    function renderRadar() {
-      radarCtx.clearRect(0, 0, radarCanvas.width, radarCanvas.height);
-
-      const rW = radarCanvas.width;
-      const rH = radarCanvas.height;
-      const rScale = 0.16; // zoom level of nearby area
-
-      radarCtx.save();
-      radarCtx.translate(rW / 2, rH / 2);
-
-      // Render nearby road
-      radarCtx.fillStyle = '#181224';
-      radarCtx.fillRect((520 - player.x) * rScale, (0 - player.y) * rScale, 400 * rScale, WORLD_H * rScale);
-
-      // Render Mission Blips on Radar
-      MARKERS.forEach(m => {
-        const bx = (m.x - player.x) * rScale;
-        const by = (m.y - player.y) * rScale;
-        const dist = Math.hypot(bx, by);
-        const maxR = rW / 2 - 10;
-
-        let drawX = bx;
-        let drawY = by;
-        if (dist > maxR) {
-          // Clamp blip to radar perimeter edge
-          drawX = (bx / dist) * maxR;
-          drawY = (by / dist) * maxR;
-        }
-
-        radarCtx.fillStyle = m.color;
-        radarCtx.beginPath();
-        radarCtx.arc(drawX, drawY, 5, 0, Math.PI * 2);
-        radarCtx.fill();
-
-        radarCtx.fillStyle = '#120822';
-        radarCtx.font = 'bold 8px Anton';
-        radarCtx.textAlign = 'center';
-        radarCtx.textBaseline = 'middle';
-        radarCtx.fillText(m.blip, drawX, drawY + 0.5);
-      });
-
-      // Render Police blip if chasing
-      if (police.active) {
-        const px = (police.x - player.x) * rScale;
-        const py = (police.y - player.y) * rScale;
-        const flash = Math.floor(performance.now() / 150) % 2 === 0;
-        radarCtx.fillStyle = flash ? '#FF0055' : '#00FFFF';
-        radarCtx.beginPath();
-        radarCtx.arc(px, py, 4, 0, Math.PI * 2);
-        radarCtx.fill();
-      }
-
-      radarCtx.restore();
-
-      // Rotate player arrow to match car orientation
-      const markerEl = document.getElementById('radar-player-marker');
-      if (markerEl) {
-        markerEl.style.transform = `rotate(${player.angle}rad)`;
-      }
-    }
-
-    // Start Open-World Game Loop
-    requestAnimationFrame(gameLoop);
+    skipBtn.addEventListener('click', () => {
+      clearInterval(loadInterval);
+      dismissLoading();
+    });
+
+    // Button Hover Sounds across all buttons & links
+    document.querySelectorAll('button, a').forEach(el => {
+      el.addEventListener('mouseenter', () => sound.playHover());
+    });
   </script>
 </body>
 </html>
