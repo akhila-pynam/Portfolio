@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  /* Default: Dark GTA theme */
+  /* Default: Dark Mode (Yellow & Black GTA style) */
   --midnight: #080808;
   --charcoal: #141414;
   --yellow-street: #FFD400;
@@ -15,8 +15,19 @@
   --border-gray: #292929;
 }
 
-/* Light / Toggle Mode: GTA Vice City Neon Theme (inspired by francesco-longo.com) */
+/* Mode 2: Light Mode (Clean Sunlit Daylight Minimalist theme) */
 html.light {
+  --midnight: #F4F4F6;
+  --charcoal: #FFFFFF;
+  --yellow-street: #D99B00;
+  --yellow-gold: #B28000;
+  --soft-white: #111113;
+  --muted-gray: #55555C;
+  --border-gray: #E0E0E6;
+}
+
+/* Mode 3: GTA Mode (Vice City Retro-Neon Synthwave theme) */
+html.gta-theme {
   --midnight: #170025;      /* Deep Vice City Neon Purple background */
   --charcoal: #240438;      /* Deep velvet violet card surface */
   --yellow-street: #FF16EB; /* Iconic Vice City Neon Hot Pink / Magenta */
@@ -68,14 +79,54 @@ body {
   background: var(--yellow-gold);
 }
 
+html.light ::-webkit-scrollbar-track {
+  background: #F4F4F6;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #D99B00;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #B28000;
+}
+
+html.gta-theme ::-webkit-scrollbar-track {
+  background: #170025;
+}
+html.gta-theme ::-webkit-scrollbar-thumb {
+  background: #FF16EB;
+}
+html.gta-theme ::-webkit-scrollbar-thumb:hover {
+  background: #00F0FF;
+}
+
 /* Selection */
 ::selection {
   background: rgba(255, 212, 0, 0.3);
   color: var(--soft-white);
 }
 
+html.light ::selection {
+  background: rgba(217, 155, 0, 0.25);
+  color: #111113;
+}
+
+html.gta-theme ::selection {
+  background: rgba(255, 22, 235, 0.4);
+  color: #FEF5FF;
+}
+
 /* Focus visible ring */
 :focus-visible {
+  outline: 2px solid var(--yellow-street);
+  outline-offset: 2px;
+}
+
+html.light :focus-visible {
+  outline: 2px solid var(--yellow-street);
+  outline-offset: 2px;
+}
+
+html.gta-theme :focus-visible {
   outline: 2px solid var(--yellow-street);
   outline-offset: 2px;
 }
@@ -95,17 +146,11 @@ body {
 }
 
 html.light .grain-overlay {
+  opacity: 0.015;
+}
+
+html.gta-theme .grain-overlay {
   opacity: 0.035;
-}
-
-html.light ::selection {
-  background: rgba(255, 22, 235, 0.4);
-  color: #FEF5FF;
-}
-
-html.light :focus-visible {
-  outline: 2px solid var(--yellow-street);
-  outline-offset: 2px;
 }
 
 @keyframes grain {
@@ -131,10 +176,18 @@ html.light :focus-visible {
 }
 
 html.light .yellow-text-glow {
-  text-shadow: 0 0 8px rgba(255, 106, 217, 0.9), 0 0 20px rgba(255, 22, 235, 0.7), 0 0 40px rgba(0, 240, 255, 0.5);
+  text-shadow: 0 0 20px rgba(217, 155, 0, 0.25);
 }
 
 html.light .yellow-glow {
+  box-shadow: 0 0 20px rgba(217, 155, 0, 0.15), 0 0 40px rgba(217, 155, 0, 0.05);
+}
+
+html.gta-theme .yellow-text-glow {
+  text-shadow: 0 0 8px rgba(255, 106, 217, 0.9), 0 0 20px rgba(255, 22, 235, 0.7), 0 0 40px rgba(0, 240, 255, 0.5);
+}
+
+html.gta-theme .yellow-glow {
   box-shadow: 0 0 20px rgba(255, 22, 235, 0.35), 0 0 45px rgba(0, 240, 255, 0.2);
 }
 
@@ -173,21 +226,27 @@ html.light .yellow-glow {
 
 html.light .card-hover:hover {
   border-color: var(--yellow-street) !important;
+  box-shadow: 0 0 15px rgba(217, 155, 0, 0.2), 0 4px 20px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+html.gta-theme .card-hover:hover {
+  border-color: var(--yellow-street) !important;
   box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.35), 0 0 24px rgba(255, 22, 235, 0.4), 0 0 50px rgba(0, 240, 255, 0.2);
   transform: translateY(-2px);
 }
 
 /* Vice City ambient section glows */
-html.light .hero-radial-glow {
+html.gta-theme .hero-radial-glow {
   background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255, 22, 235, 0.16) 0%, rgba(0, 240, 255, 0.04) 50%, transparent 100%) !important;
 }
 
-html.light .hero-grid-pattern {
+html.gta-theme .hero-grid-pattern {
   background-image: linear-gradient(rgba(255, 22, 235, 0.45) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.35) 1px, transparent 1px) !important;
   opacity: 0.05 !important;
 }
 
-html.light .contact-radial-glow {
+html.gta-theme .contact-radial-glow {
   background: radial-gradient(ellipse 60% 40% at 50% 70%, rgba(255, 22, 235, 0.15) 0%, rgba(0, 240, 255, 0.04) 60%, transparent 100%) !important;
 }
 
