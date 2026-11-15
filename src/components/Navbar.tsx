@@ -13,79 +13,39 @@ const NAV_ITEMS = [
   { label: "Contact", href: "#contact" },
 ];
 
-type Mode = "dark" | "light" | "gta";
+type BaseMode = "dark" | "light";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("#home");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
-  const [mode, setMode] = useState<Mode>("dark");
-  const [previousBaseTheme, setPreviousBaseTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<BaseMode>("dark");
 
   useEffect(() => {
     setSoundOn(soundManager.isEnabled());
 
-    // Check stored mode preference
-    const storedMode = localStorage.getItem("portfolio_mode") as Mode | null;
-    const storedBase = (localStorage.getItem("portfolio_base_theme") as "dark" | "light" | null) || "dark";
-    setPreviousBaseTheme(storedBase);
-
-    if (storedMode === "gta") {
-      setMode("gta");
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("gta-theme");
-    } else if (storedMode === "light" || (!storedMode && localStorage.getItem("gta_theme") === "light")) {
-      setMode("light");
-      setPreviousBaseTheme("light");
-      document.documentElement.classList.remove("gta-theme");
+    // Check stored theme preference (default: dark)
+    const storedTheme = localStorage.getItem("portfolio_theme") as BaseMode | null;
+    if (storedTheme === "light") {
+      setTheme("light");
       document.documentElement.classList.add("light");
     } else {
-      setMode("dark");
-      setPreviousBaseTheme("dark");
-      document.documentElement.classList.remove("light", "gta-theme");
+      setTheme("dark");
+      document.documentElement.classList.remove("light");
     }
   }, []);
 
   const toggleDarkLight = () => {
     soundManager.playClick();
-    if (mode === "light") {
-      setMode("dark");
-      setPreviousBaseTheme("dark");
-      document.documentElement.classList.remove("light", "gta-theme");
-      localStorage.setItem("portfolio_mode", "dark");
-      localStorage.setItem("portfolio_base_theme", "dark");
-    } else {
-      setMode("light");
-      setPreviousBaseTheme("light");
-      document.documentElement.classList.remove("gta-theme");
-      document.documentElement.classList.add("light");
-      localStorage.setItem("portfolio_mode", "light");
-      localStorage.setItem("portfolio_base_theme", "light");
-    }
-  };
-
-  const toggleGtaMode = () => {
-    soundManager.playClick();
-    if (mode === "gta") {
-      // Exit GTA mode -> return to previous base theme (dark or light)
-      const targetTheme = previousBaseTheme === "light" ? "light" : "dark";
-      setMode(targetTheme);
-      document.documentElement.classList.remove("gta-theme");
-      if (targetTheme === "light") {
-        document.documentElement.classList.add("light");
-      } else {
-        document.documentElement.classList.remove("light");
-      }
-      localStorage.setItem("portfolio_mode", targetTheme);
-    } else {
-      // Enter GTA mode
-      setPreviousBaseTheme(mode);
-      localStorage.setItem("portfolio_base_theme", mode);
-      setMode("gta");
+    if (theme === "light") {
+      setTheme("dark");
       document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("gta-theme");
-      localStorage.setItem("portfolio_mode", "gta");
+      localStorage.setItem("portfolio_theme", "dark");
+    } else {
+      setTheme("light");
+      document.documentElement.classList.add("light");
+      localStorage.setItem("portfolio_theme", "light");
     }
   };
 
@@ -162,34 +122,31 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Right actions: Dark/Light toggle, GTA Mode toggle, SFX Mute button & CTA */}
+          {/* Right actions: Dark/Light toggle, GTA Mode button, SFX Mute button & CTA */}
           <div className="hidden md:flex items-center gap-2.5">
             {/* Dark / Light Toggle Button */}
             <button
               onClick={toggleDarkLight}
               onMouseEnter={() => soundManager.playHover()}
               className="p-2 text-muted-gray hover:text-yellow-street border border-border-gray hover:border-yellow-street/50 rounded-sm transition-all focus-visible:outline-yellow-street cursor-pointer bg-charcoal/50"
-              title={mode === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-              aria-label={mode === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+              aria-label={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
             >
-              {mode === "light" ? <Moon size={16} /> : <Sun size={16} />}
+              {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
             </button>
 
-            {/* GTA Mode Button */}
-            <button
-              onClick={toggleGtaMode}
+            {/* GTA Mode Button (Launches Gamified Vice City 1986/2002 Experience) */}
+            <a
+              href="/gta.html"
               onMouseEnter={() => soundManager.playHover()}
-              className={`px-3 py-1.5 text-xs font-grotesk font-black tracking-wider rounded-sm border transition-all duration-200 cursor-pointer flex items-center gap-1.5 focus-visible:outline-yellow-street ${
-                mode === "gta"
-                  ? "bg-yellow-street text-midnight border-yellow-street shadow-[0_0_15px_rgba(255,22,235,0.6)]"
-                  : "bg-charcoal/50 text-muted-gray border-border-gray hover:text-yellow-street hover:border-yellow-street/50"
-              }`}
-              title={mode === "gta" ? "Exit GTA Mode" : "Activate GTA Mode"}
-              aria-label="Toggle GTA Mode"
+              onClick={() => soundManager.playClick()}
+              className="px-3 py-1.5 text-xs font-grotesk font-black tracking-wider rounded-sm border transition-all duration-200 cursor-pointer flex items-center gap-1.5 focus-visible:outline-yellow-street bg-charcoal/50 text-muted-gray border-border-gray hover:text-yellow-street hover:border-yellow-street/50 hover:shadow-[0_0_15px_rgba(255,22,235,0.4)]"
+              title="Launch GTA Vice City Mode"
+              aria-label="Launch GTA Vice City Mode"
             >
-              <Gamepad2 size={14} className={mode === "gta" ? "text-midnight" : "text-yellow-street"} />
+              <Gamepad2 size={14} className="text-yellow-street" />
               <span>GTA MODE</span>
-            </button>
+            </a>
 
             {/* Sound Toggle */}
             <button
@@ -216,24 +173,20 @@ export default function Navbar() {
             <button
               onClick={toggleDarkLight}
               className="p-2 text-muted-gray hover:text-yellow-street border border-border-gray rounded-sm bg-charcoal/50"
-              aria-label={mode === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-              title={mode === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+              aria-label={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
             >
-              {mode === "light" ? <Moon size={16} /> : <Sun size={16} />}
+              {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
             </button>
-            <button
-              onClick={toggleGtaMode}
-              className={`px-2 py-1 text-[11px] font-grotesk font-black tracking-wider rounded-sm border transition-all flex items-center gap-1 ${
-                mode === "gta"
-                  ? "bg-yellow-street text-midnight border-yellow-street shadow-[0_0_10px_rgba(255,22,235,0.5)]"
-                  : "bg-charcoal/50 text-muted-gray border-border-gray hover:text-yellow-street"
-              }`}
-              aria-label="Toggle GTA Mode"
-              title={mode === "gta" ? "Exit GTA Mode" : "Activate GTA Mode"}
+            <a
+              href="/gta.html"
+              className="px-2 py-1 text-[11px] font-grotesk font-black tracking-wider rounded-sm border transition-all flex items-center gap-1 bg-charcoal/50 text-muted-gray border-border-gray hover:text-yellow-street hover:border-yellow-street/50"
+              aria-label="Launch GTA Vice City Mode"
+              title="Launch GTA Vice City Mode"
             >
-              <Gamepad2 size={12} className={mode === "gta" ? "text-midnight" : "text-yellow-street"} />
+              <Gamepad2 size={12} className="text-yellow-street" />
               <span>GTA</span>
-            </button>
+            </a>
             <button
               onClick={toggleSfx}
               className="p-2 text-muted-gray hover:text-yellow-street border border-border-gray rounded-sm bg-charcoal/50"

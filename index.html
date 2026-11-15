@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akhila Pynam — GTA: Vice City Gamified Portfolio (1986 / 2002 Edition)</title>
+  <meta name="description" content="Gamified GTA Vice City portfolio for Akhila Pynam — Computer Science student, software engineer, and AI developer.">
+  
+  <!-- Google Fonts: Anton (Pricedown-style bold HUD), Yellowtail (Vice City cursive neon), Chakra Petch (PS2 HUD & digital clock) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Yellowtail&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            vice: {
+              bg: '#120822',
+              card: '#1e0836',
+              surface: '#290647',
+              pink: '#FF6EC7',
+              hotpink: '#FF16EB',
+              cyan: '#00FFFF',
+              green: '#2ECC71',
+              gold: '#FFD700',
+              purple: '#38065f',
+              border: '#4A0E6B'
+            }
+          },
+          fontFamily: {
+            anton: ['Anton', 'Impact', 'sans-serif'],
+            script: ['Yellowtail', 'cursive'],
+            hud: ['"Chakra Petch"', 'monospace', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom CRT scanline & retro glow styling */
+    body {
+      background-color: #120822;
+      color: #fef5ff;
+      font-family: '"Chakra Petch"', monospace, sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Subtle CRT Scanline overlay */
+    .crt-overlay {
+      background: linear-gradient(rgba(18, 8, 34, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    /* Neon glow utilities */
+    .neon-pink-text {
+      text-shadow: 0 0 6px rgba(255, 110, 199, 0.9), 0 0 18px rgba(255, 22, 235, 0.7), 0 0 35px rgba(255, 22, 235, 0.4);
+    }
+    .neon-cyan-text {
+      text-shadow: 0 0 6px rgba(0, 255, 255, 0.9), 0 0 18px rgba(0, 240, 255, 0.7), 0 0 35px rgba(0, 240, 255, 0.4);
+    }
+    .neon-gold-text {
+      text-shadow: 0 0 6px rgba(255, 215, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+    .neon-green-text {
+      text-shadow: 0 0 6px rgba(46, 204, 113, 0.9), 0 0 16px rgba(46, 204, 113, 0.6);
+    }
+
+    .neon-pink-box {
+      box-shadow: 0 0 15px rgba(255, 22, 235, 0.4), inset 0 0 10px rgba(255, 22, 235, 0.2);
+    }
+    .neon-cyan-box {
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
+    /* Radar sweep animation */
+    @keyframes radarSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .radar-line {
+      animation: radarSweep 3.5s linear infinite;
+      transform-origin: bottom center;
+    }
+
+    /* Palm tree wind animation */
+    @keyframes palmSway {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(1.2deg); }
+    }
+    .palm-sway-left {
+      animation: palmSway 5s ease-in-out infinite;
+      transform-origin: bottom left;
+    }
+    .palm-sway-right {
+      animation: palmSway 5.5s ease-in-out infinite reverse;
+      transform-origin: bottom right;
+    }
+
+    /* Slanted Pause Menu Tabs */
+    .pause-tab {
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .pause-tab.active {
+      background: linear-gradient(135deg, #FF16EB 0%, #00FFFF 100%);
+      color: #120822;
+      font-weight: 700;
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 0 20px rgba(255, 22, 235, 0.6);
+    }
+
+    /* Custom Vice City Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #120822;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FF16EB;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00FFFF;
+    }
+
+    /* Tank animation for cheat code PANZER */
+    @keyframes tankRoll {
+      0% { transform: translateX(-150px); }
+      100% { transform: translateX(calc(100vw + 200px)); }
+    }
+    .tank-animate {
+      animation: tankRoll 7s linear forwards;
+    }
+
+    /* Screen shake */
+    @keyframes screenShake {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-10px, 8px); }
+      40% { transform: translate(10px, -8px); }
+      60% { transform: translate(-8px, -6px); }
+      80% { transform: translate(8px, 6px); }
+    }
+    .screen-shake {
+      animation: screenShake 0.5s ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="relative min-h-screen bg-[#120822] text-[#fef5ff] selection:bg-[#FF16EB]/40 selection:text-[#fef5ff]">
+
+  <!-- CRT Scanline Texture Overlay -->
+  <div class="crt-overlay fixed inset-0 z-40 pointer-events-none opacity-40"></div>
+
+  <!-- ========================================================================= -->
+  <!-- 1. BOOT-UP / LOADING SCREEN (2-Second PS2 Vice City Intro) -->
+  <!-- ========================================================================= -->
+  <div id="loading-screen" class="fixed inset-0 z-50 bg-[#120822] flex flex-col items-center justify-center p-6 transition-opacity duration-700">
+    <div class="relative z-10 text-center max-w-lg w-full">
+      <!-- Vice City Neon Title -->
+      <h2 class="font-script text-4xl sm:text-5xl md:text-6xl text-[#FF6EC7] neon-pink-text mb-1 tracking-wider">
+        Akhila Pynam&apos;s
+      </h2>
+      <h1 class="font-anton text-6xl sm:text-7xl md:text-8xl text-[#fef5ff] tracking-wider leading-none uppercase drop-shadow-[0_0_25px_rgba(0,255,255,0.7)] mb-4">
+        VICE CITY
+      </h1>
+      <p class="font-hud text-xs sm:text-sm text-[#00FFFF] tracking-[0.3em] uppercase mb-8 neon-cyan-text">
+        PORTFOLIO EDITION • 1986 / 2002 PS2
+      </p>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-[#240438] h-3.5 rounded-sm p-0.5 border border-[#FF16EB]/60 neon-pink-box mb-4 overflow-hidden">
+        <div id="loading-bar" class="h-full bg-gradient-to-r from-[#FF16EB] via-[#FF6EC7] to-[#00FFFF] w-0 transition-all duration-200"></div>
+      </div>
+      <div class="flex justify-between items-center font-hud text-xs text-[#d99de7] px-1">
+        <span id="loading-text">LOADING ASSETS &amp; WEAPONS...</span>
+        <span id="loading-pct" class="text-[#00FFFF] font-bold">0%</span>
+      </div>
+
+      <!-- Skip Button -->
+      <button id="skip-load-btn" class="mt-8 px-6 py-2 bg-[#240438] hover:bg-[#FF16EB] text-[#00FFFF] hover:text-[#120822] border border-[#00FFFF] hover:border-[#FF16EB] font-hud text-xs font-bold tracking-widest uppercase transition-all duration-200 cursor-pointer">
+        START GAME (SKIP) ▶
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. BACKGROUND ART (Miami Sunset Skyline & Palm Trees Inline SVG) -->
+  <!-- ========================================================================= -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <!-- Sunset Gradient Sky -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#090117] via-[#1f053a] via-[#3a0654] via-[#651062] to-[#120822] opacity-80"></div>
+
+    <!-- Synthwave Horizon Grid -->
+    <div class="absolute bottom-0 left-0 right-0 h-72 opacity-25" 
+         style="background-image: linear-gradient(rgba(255, 22, 235, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.3) 1px, transparent 1px); background-size: 40px 40px; transform: perspective(300px) rotateX(65deg); transform-origin: bottom center;">
+    </div>
+
+    <!-- Distant Miami Ocean Drive Skyline Silhouette SVG -->
+    <svg class="absolute bottom-16 sm:bottom-20 left-0 w-full h-44 sm:h-56 opacity-35" viewBox="0 0 1440 260" preserveAspectRatio="none" fill="none">
+      <path d="M0,260 L0,200 L40,200 L40,160 L70,160 L70,200 L110,200 L110,130 L150,130 L150,210 L190,210 L190,100 L210,80 L230,100 L230,220 L280,220 L280,150 L320,150 L320,190 L380,190 L380,120 L420,120 L420,230 L480,230 L480,90 L510,70 L540,90 L540,220 L600,220 L600,140 L650,140 L650,210 L720,210 L720,110 L760,110 L760,200 L820,200 L820,80 L850,50 L880,80 L880,220 L940,220 L940,160 L980,160 L980,200 L1040,200 L1040,130 L1090,130 L1090,230 L1160,230 L1160,100 L1200,100 L1200,190 L1260,190 L1260,150 L1320,150 L1320,210 L1380,210 L1380,120 L1440,120 L1440,260 Z" fill="#0b0217" />
+      <!-- Neon Window Highlights -->
+      <circle cx="210" cy="80" r="3" fill="#00FFFF" />
+      <circle cx="510" cy="70" r="3" fill="#FF16EB" />
+      <circle cx="850" cy="50" r="4" fill="#00FFFF" />
+    </svg>
+
+    <!-- Left Palm Tree SVG -->
+    <svg class="palm-sway-left absolute -bottom-10 -left-12 sm:-left-6 w-52 sm:w-80 h-80 sm:h-[480px] opacity-40" viewBox="0 0 300 450" fill="#080112">
+      <path d="M40,450 Q70,300 90,150 Q110,80 130,50 Q120,85 100,170 Q80,290 60,450 Z" />
+      <path d="M130,50 Q160,30 240,40 Q180,60 130,50 Z" />
+      <path d="M130,50 Q180,10 270,-10 Q200,40 130,50 Z" />
+      <path d="M130,50 Q140,-20 200,-80 Q160,-20 130,50 Z" />
+      <path d="M130,50 Q100,-30 80,-70 Q90,-10 130,50 Z" />
+      <path d="M130,50 Q70,0 20,-10 Q70,25 130,50 Z" />
+      <path d="M130,50 Q70,50 10,70 Q70,55 130,50 Z" />
+    </svg>
+
+    <!-- Right Palm Tree SVG -->
+    <svg class="palm-sway-right absolute -bottom-10 -right-12 sm:-right-6 w-52 sm:w-80 h-80 sm:h-[480px] opacity-40" viewBox="0 0 300 450" fill="#080112">
+      <path d="M260,450 Q230,300 210,150 Q190,80 170,50 Q180,85 200,170 Q220,290 240,450 Z" />
+      <path d="M170,50 Q140,30 60,40 Q120,60 170,50 Z" />
+      <path d="M170,50 Q120,10 30,-10 Q100,40 170,50 Z" />
+      <path d="M170,50 Q160,-20 100,-80 Q140,-20 170,50 Z" />
+      <path d="M170,50 Q200,-30 220,-70 Q210,-10 170,50 Z" />
+      <path d="M170,50 Q230,0 280,-10 Q230,25 170,50 Z" />
+      <path d="M170,50 Q230,50 290,70 Q230,55 170,50 Z" />
+    </svg>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. TOP-LEFT HUD: Radio Station & Back to Main Portfolio Button -->
+  <!-- ========================================================================= -->
+  <header class="fixed top-3 left-3 sm:top-5 sm:left-6 z-30 flex flex-col gap-2">
+    <!-- Return to Classic Portfolio -->
+    <a href="/" class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#170025]/90 hover:bg-[#FF16EB] border border-[#00FFFF] hover:border-[#FF16EB] text-[#00FFFF] hover:text-[#120822] font-hud text-[11px] sm:text-xs font-bold tracking-wider rounded-sm transition-all duration-200 shadow-[0_0_12px_rgba(0,255,255,0.3)]">
+      <span>⬅</span>
+      <span>BACK TO MAIN SITE</span>
+    </a>
+
+    <!-- Radio Station Selector -->
+    <div class="flex items-center gap-2 bg-[#1e0836]/90 border border-[#FF6EC7]/60 px-3 py-1.5 rounded-sm neon-pink-box">
+      <span class="text-sm">📻</span>
+      <div class="flex flex-col">
+        <span class="font-hud text-[9px] text-[#d99de7] tracking-widest leading-none">VICE CITY RADIO</span>
+        <button id="radio-station-btn" class="font-hud text-xs font-bold text-[#FF6EC7] hover:text-[#00FFFF] tracking-wider text-left transition-colors cursor-pointer">
+          Flash FM (ON)
+        </button>
+      </div>
+      <button id="radio-toggle-btn" class="ml-1 p-1 text-xs text-[#00FFFF] hover:text-[#FFD700] transition-colors" title="Toggle Radio Mute">
+        🔊
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 4. TOP-RIGHT HUD: Vice City Weapon Box, Clock, Cash, Health, Armor & Stars -->
+  <!-- ========================================================================= -->
+  <aside class="fixed top-3 right-3 sm:top-5 sm:right-6 z-30 flex flex-col items-end gap-2.5">
+    
+    <div class="flex items-start gap-3">
+      <!-- Live Clock & Cash Counter -->
+      <div class="flex flex-col items-end">
+        <!-- Live HH:MM Clock -->
+        <div id="live-clock" class="font-hud text-base sm:text-lg font-bold text-[#fef5ff] tracking-widest drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">
+          12:00
+        </div>
+        <!-- 8-Digit Cash Counter -->
+        <div class="flex items-center gap-1 font-anton text-2xl sm:text-3xl text-[#2ECC71] neon-green-text tracking-wider">
+          <span class="text-xl sm:text-2xl">$</span>
+          <span id="cash-counter">00025000</span>
+        </div>
+      </div>
+
+      <!-- Weapon Box (Skill Switcher & Filter) -->
+      <button id="weapon-box" 
+              class="w-16 h-16 sm:w-20 sm:h-20 bg-[#1e0836]/90 border-2 border-[#FF6EC7] rounded-sm p-1 flex flex-col items-center justify-between neon-pink-box cursor-pointer hover:border-[#00FFFF] hover:scale-105 transition-all duration-200"
+              title="Click to cycle weapon / filter skill">
+        <div class="w-full flex justify-between items-center text-[9px] text-[#00FFFF] font-hud px-1">
+          <span id="weapon-ammo">999</span>
+          <span class="text-[8px] text-[#d99de7]">TAP</span>
+        </div>
+        <div id="weapon-icon" class="text-xl sm:text-2xl">🔫</div>
+        <div id="weapon-name" class="font-hud text-[9px] sm:text-[10px] text-[#fef5ff] font-bold tracking-wider uppercase text-center leading-tight truncate w-full px-0.5">
+          Next.js
+        </div>
+      </button>
+    </div>
+
+    <!-- Health Bar (Pink) & Armor Bar (Cyan) -->
+    <div class="w-36 sm:w-44 flex flex-col gap-1.5 font-hud">
+      <!-- Health Bar (Open to Work Status) -->
+      <div class="flex items-center gap-2">
+        <span class="text-[#FF6EC7] text-xs font-bold tracking-wider">♥ 100</span>
+        <div class="flex-1 bg-[#240438] h-2.5 rounded-sm p-0.5 border border-[#FF6EC7]/60 overflow-hidden">
+          <div id="health-bar" class="h-full bg-gradient-to-r from-[#FF16EB] to-[#FF6EC7] w-full transition-all duration-300"></div>
+        </div>
+      </div>
+      <!-- Armor Bar (Caffeine Level) -->
+      <div class="flex items-center gap-2">
+        <span class="text-[#00FFFF] text-xs font-bold tracking-wider">🛡 100</span>
+        <div class="flex-1 bg-[#240438] h-2.5 rounded-sm p-0.5 border border-[#00FFFF]/60 overflow-hidden">
+          <div id="armor-bar" class="h-full bg-gradient-to-r from-[#0088cc] to-[#00FFFF] w-full transition-all duration-300"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wanted Stars (5 Stars) -->
+    <div id="wanted-stars-container" class="flex items-center gap-1 text-sm sm:text-base text-gray-700 select-none">
+      <span class="star-item transition-all duration-300">★</span>
+      <span class="star-item transition-all duration-300">★</span>
+      <span class="star-item transition-all duration-300">★</span>
+      <span class="star-item transition-all duration-300">★</span>
+      <span class="star-item transition-all duration-300">★</span>
+    </div>
+  </aside>
+
+  <!-- ========================================================================= -->
+  <!-- 5. BOTTOM-LEFT CIRCULAR MINIMAP (Radar with Clickable Blips) -->
+  <!-- ========================================================================= -->
+  <div class="fixed bottom-24 sm:bottom-28 left-4 sm:left-6 z-30 hidden sm:block">
+    <div class="relative w-32 h-32 rounded-full border-2 border-[#00FFFF] bg-[#0d011f]/95 overflow-hidden neon-cyan-box flex items-center justify-center">
+      <!-- Concentric Range Circles -->
+      <div class="absolute inset-2 rounded-full border border-[#00FFFF]/20"></div>
+      <div class="absolute inset-6 rounded-full border border-[#00FFFF]/20"></div>
+      <div class="absolute inset-10 rounded-full border border-[#00FFFF]/30"></div>
+
+      <!-- Rotating Scanner Line -->
+      <div class="radar-line absolute top-0 left-1/2 w-0.5 h-16 bg-gradient-to-t from-transparent via-[#00FFFF]/60 to-[#00FFFF]"></div>
+
+      <!-- Cardinal Directions -->
+      <span class="absolute top-1 text-[9px] font-bold text-[#00FFFF]">N</span>
+      <span class="absolute bottom-1 text-[9px] font-bold text-[#d99de7]/60">S</span>
+      <span class="absolute right-1.5 text-[9px] font-bold text-[#d99de7]/60">E</span>
+      <span class="absolute left-1.5 text-[9px] font-bold text-[#d99de7]/60">W</span>
+
+      <!-- Player Marker (Center Pink Arrow) -->
+      <div class="absolute text-xs text-[#FF16EB] drop-shadow-[0_0_6px_#FF16EB] animate-pulse">
+        ▲
+      </div>
+
+      <!-- Clickable Radar Blips -->
+      <!-- V: Brief (Top-Right) -->
+      <button onclick="switchTab('brief')" class="absolute top-5 right-6 w-5 h-5 rounded-full bg-[#FF16EB] text-[#120822] font-anton text-[10px] font-bold flex items-center justify-center shadow-[0_0_8px_#FF16EB] hover:scale-125 transition-transform cursor-pointer" title="Radar Blip: BRIEF">
+        V
+      </button>
+      <!-- M: Missions (Bottom-Right) -->
+      <button onclick="switchTab('missions')" class="absolute bottom-6 right-6 w-5 h-5 rounded-full bg-[#FFD700] text-[#120822] font-anton text-[10px] font-bold flex items-center justify-center shadow-[0_0_8px_#FFD700] hover:scale-125 transition-transform cursor-pointer" title="Radar Blip: MISSIONS">
+        M
+      </button>
+      <!-- S: Stats (Bottom-Left) -->
+      <button onclick="switchTab('stats')" class="absolute bottom-6 left-6 w-5 h-5 rounded-full bg-[#00FFFF] text-[#120822] font-anton text-[10px] font-bold flex items-center justify-center shadow-[0_0_8px_#00FFFF] hover:scale-125 transition-transform cursor-pointer" title="Radar Blip: STATS">
+        S
+      </button>
+      <!-- C: Contact (Top-Left) -->
+      <button onclick="switchTab('contact')" class="absolute top-5 left-6 w-5 h-5 rounded-full bg-[#2ECC71] text-[#120822] font-anton text-[10px] font-bold flex items-center justify-center shadow-[0_0_8px_#2ECC71] hover:scale-125 transition-transform cursor-pointer" title="Radar Blip: CONTACT">
+        C
+      </button>
+    </div>
+    <div class="font-hud text-[9px] text-[#00FFFF] tracking-widest text-center mt-1 uppercase">
+      VICE CITY RADAR
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 6. MAIN CONTENT AREA (The 4 Switchable Pause Views) -->
+  <!-- ========================================================================= -->
+  <main class="relative z-10 pt-32 sm:pt-36 pb-36 px-4 sm:px-8 max-w-6xl mx-auto min-h-screen">
+
+    <!-- ======================================================================= -->
+    <!-- TAB 1: BRIEF (Origin Story, Intel & Verified Bio) -->
+    <!-- ======================================================================= -->
+    <section id="tab-brief" class="tab-content block">
+      <div class="bg-[#1e0836]/90 border border-[#4A0E6B] rounded-sm p-6 sm:p-10 backdrop-blur-md neon-pink-box">
+        
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#4A0E6B] pb-4 mb-6 gap-2">
+          <div>
+            <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">MISSION BRIEFING // DOSSIER</span>
+            <h2 class="font-anton text-3xl sm:text-5xl text-[#fef5ff] tracking-wide uppercase">
+              AKHILA <span class="text-[#FF16EB] neon-pink-text">PYNAM</span>
+            </h2>
+          </div>
+          <div class="font-hud text-xs text-right">
+            <span class="px-2.5 py-1 bg-[#2ecc71]/20 text-[#2ECC71] border border-[#2ecc71]/40 rounded-sm font-bold tracking-wider">
+              CRIMINAL RATING: KINGPIN
+            </span>
+            <p class="text-[#d99de7] text-[11px] mt-1">CHENNAI SECTOR • VEL TECH UNIVERSITY</p>
+          </div>
+        </div>
+
+        <!-- Two Column Intel Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          
+          <!-- Left Column: Character Dialogue & Overview -->
+          <div class="lg:col-span-2 space-y-4 font-hud text-sm sm:text-base leading-relaxed text-[#fef5ff]/90">
+            <div class="p-4 bg-[#140226] border-l-4 border-[#FF16EB] rounded-r-sm">
+              <span class="text-xs text-[#FF6EC7] font-bold tracking-widest uppercase block mb-1">
+                ▶ INCOMING TRANSMISSION — VICE CITY INTELLIGENCE
+              </span>
+              <p>
+                &ldquo;I&apos;m <strong class="text-[#FF16EB]">Akhila Pynam</strong>, a Computer Science and Engineering undergraduate at 
+                <strong class="text-[#fef5ff]">Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology, Chennai (2025 &ndash; 2029)</strong>. 
+                I operate at the intersection of robust systems engineering and cutting-edge Generative AI.&rdquo;
+              </p>
+            </div>
+
+            <p class="text-[#d99de7]">
+              My operational weapons span daily competitive problem-solving across 
+              <strong class="text-[#00FFFF]">TUF+, Codeforces, and LeetCode</strong>, backed by foundational mastery in 
+              <strong class="text-[#fef5ff]">C, C++, Java, Python, and TypeScript</strong>. On the full-stack frontline, I construct high-performance web systems using 
+              <strong class="text-[#FF16EB]">Next.js, React, Tailwind CSS, Three.js, and Google Gemini API</strong>.
+            </p>
+
+            <p class="text-[#d99de7]">
+              When I&apos;m not architecting software or training ML pipelines, I&apos;m decoding Taylor Swift&apos;s lyrics, uncovering album easter eggs, and exploring creative synthwave designs.
+            </p>
+
+            <!-- Actions: Download Resume / Request on WhatsApp -->
+            <div class="pt-4 flex flex-wrap gap-4">
+              <a href="https://wa.me/918341743003?text=Hello%20Akhila%20Pynam%2C%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20request%20a%20copy%20of%20your%20resume." 
+                 target="_blank" rel="noopener noreferrer"
+                 onclick="addCash(2500); playCashSound();"
+                 class="px-6 py-3 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-sm sm:text-base tracking-wider uppercase rounded-sm transition-all duration-200 shadow-[0_0_15px_rgba(255,22,235,0.6)] cursor-pointer">
+                📄 GET MY RESUME (+$2,500)
+              </a>
+              <button onclick="switchTab('missions')" 
+                      class="px-6 py-3 bg-[#240438] hover:bg-[#340752] text-[#00FFFF] border border-[#00FFFF] font-anton text-sm sm:text-base tracking-wider uppercase rounded-sm transition-all duration-200 cursor-pointer">
+                VIEW MISSIONS LIST ▶
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Mission Cards Intel -->
+          <div class="space-y-3 font-hud text-xs">
+            <div class="p-3.5 bg-[#170025] border border-[#4A0E6B] rounded-sm">
+              <span class="text-[#FF16EB] font-bold block mb-1">🎓 EDUCATION INTEL</span>
+              <p class="text-[#fef5ff] font-semibold">Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology</p>
+              <p class="text-[#d99de7]">B.Tech in CSE (2025 &ndash; 2029) • Chennai</p>
+            </div>
+
+            <div class="p-3.5 bg-[#170025] border border-[#4A0E6B] rounded-sm">
+              <span class="text-[#00FFFF] font-bold block mb-1">⚔️ CORE DISCIPLINES</span>
+              <p class="text-[#fef5ff]">DSA, STL, OOP, DBMS, SQL, REST APIs</p>
+              <p class="text-[#d99de7]">350+ Problems Solved on TUF+ &amp; LeetCode</p>
+            </div>
+
+            <div class="p-3.5 bg-[#170025] border border-[#4A0E6B] rounded-sm">
+              <span class="text-[#FFD700] font-bold block mb-1">⚡ AI &amp; MACHINE LEARNING</span>
+              <p class="text-[#fef5ff]">Google Gemini API, NLP, Prompt Engineering</p>
+              <p class="text-[#d99de7]">Pandas, Scikit-learn, Streamlit</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 2: MISSIONS (Projects Dossier with Payouts & Start Buttons) -->
+    <!-- ======================================================================= -->
+    <section id="tab-missions" class="tab-content hidden">
+      <!-- Section Header & Filter Status -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
+        <div>
+          <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">VICE CITY COMMISSIONS // AVAILABLE CONTRACTS</span>
+          <h2 class="font-anton text-3xl sm:text-4xl text-[#fef5ff] tracking-wide uppercase">
+            ACTIVE <span class="text-[#FF16EB] neon-pink-text">MISSIONS</span>
+          </h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-hud text-xs text-[#d99de7]">FILTER:</span>
+          <span id="active-filter-badge" class="font-hud text-xs font-bold px-2.5 py-1 bg-[#FF16EB]/20 text-[#FF16EB] border border-[#FF16EB]/40 rounded-sm uppercase">
+            ALL MISSIONS
+          </span>
+          <button onclick="resetWeaponFilter()" class="font-hud text-[11px] text-[#00FFFF] hover:underline cursor-pointer">
+            (RESET)
+          </button>
+        </div>
+      </div>
+
+      <!-- Missions Grid -->
+      <div id="missions-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Mission 1: HashWriteMate AI -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#FF16EB] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,22,235,0.4)] flex flex-col justify-between"
+                 data-weapon="Next.js,TypeScript,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★★</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$25,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              HASHWRITEMATE AI
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">AI Grammar &amp; Dynamic Paragraph Assistant</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              AI-powered writing platform featuring real-time contextual grammar feedback, multi-tone expansion, and intelligent prompt chaining powered by Google Gemini API.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Next.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Gemini API</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">Tailwind CSS</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#2ECC71] font-bold">STATUS: LIVE</span>
+            <a href="https://github.com/akhila-pynam/hash-write-ai" target="_blank" rel="noopener noreferrer"
+               onclick="completeMission('HashWriteMate AI', 25000)"
+               class="px-4 py-1.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+              START MISSION ▶
+            </a>
+          </div>
+        </article>
+
+        <!-- Mission 2: Hash Hawk -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#00FFFF] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] flex flex-col justify-between"
+                 data-weapon="Python,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★☆</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$15,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              HASH HAWK
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">Real-Time Machine Learning Spam Message Detector</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              End-to-end ML classification pipeline utilizing natural language processing, vectorization, and supervised models to quarantine spam from legitimate inboxes.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Python</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Scikit-learn</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Streamlit</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">Pandas</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#2ECC71] font-bold">STATUS: LIVE</span>
+            <a href="https://github.com/akhila-pynam/hash-hawk-spam-message-detector" target="_blank" rel="noopener noreferrer"
+               onclick="completeMission('Hash Hawk', 15000)"
+               class="px-4 py-1.5 bg-[#00FFFF] hover:bg-[#FF16EB] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+              START MISSION ▶
+            </a>
+          </div>
+        </article>
+
+        <!-- Mission 3: EcoPulse AI -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#FF16EB] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,22,235,0.4)] flex flex-col justify-between"
+                 data-weapon="Next.js,TypeScript,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★★</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$20,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              ECOPULSE AI
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">Carbon Footprint Awareness &amp; Reduction Platform</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              Environmental awareness engine with an interactive carbon calculator, Gemini-driven personalized sustainability roadmap, and live visual analytics.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Next.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Gemini API</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">Recharts</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#2ECC71] font-bold">STATUS: LIVE</span>
+            <div class="flex gap-2">
+              <a href="https://eco-pulse-ai-nu.vercel.app/" target="_blank" rel="noopener noreferrer"
+                 onclick="completeMission('EcoPulse AI', 20000)"
+                 class="px-3.5 py-1.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+                DEMO ▶
+              </a>
+              <a href="https://github.com/akhila-pynam/EcoPulse-AI" target="_blank" rel="noopener noreferrer"
+                 class="px-2.5 py-1.5 bg-[#240438] text-[#00FFFF] border border-[#00FFFF] text-xs font-hud rounded-sm hover:bg-[#00FFFF] hover:text-[#120822]">
+                GIT
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Mission 4: GrowEasy AI CSV Importer -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#00FFFF] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] flex flex-col justify-between"
+                 data-weapon="Next.js,TypeScript,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★☆</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$18,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              GROWEASY AI CSV IMPORTER
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">Intelligent Schema Ingestion &amp; Error Correction</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              AI-assisted CSV validator that automatically detects column mismatches, cleans corrupt rows, and maps datasets with client-side zero-latency parsing.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Next.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">AI Engine</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">Tailwind</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#2ECC71] font-bold">STATUS: LIVE</span>
+            <div class="flex gap-2">
+              <a href="https://groweasy-ai-csv-importer-front.vercel.app/" target="_blank" rel="noopener noreferrer"
+                 onclick="completeMission('GrowEasy AI', 18000)"
+                 class="px-3.5 py-1.5 bg-[#00FFFF] hover:bg-[#FF16EB] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+                DEMO ▶
+              </a>
+              <a href="https://github.com/akhila-pynam/groweasy-ai-csv-importer" target="_blank" rel="noopener noreferrer"
+                 class="px-2.5 py-1.5 bg-[#240438] text-[#00FFFF] border border-[#00FFFF] text-xs font-hud rounded-sm hover:bg-[#00FFFF] hover:text-[#120822]">
+                GIT
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Mission 5: #Hashy.cs -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#FF16EB] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,22,235,0.4)] flex flex-col justify-between"
+                 data-weapon="Three.js,TypeScript,React">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★★</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$35,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              #HASHY.CS
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">3D Interactive Computer Science Algorithm Engine</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              Real-time 3D simulation canvas allowing students to visually step through operating system CPU scheduling, deadlock resolution, virtual memory, and SQL pipelines.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">React</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Three.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">React Flow</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#f39c12] font-bold">STATUS: IN PROGRESS</span>
+            <a href="https://github.com/akhila-pynam/hashy-cs" target="_blank" rel="noopener noreferrer"
+               onclick="completeMission('Hashy.cs', 35000)"
+               class="px-4 py-1.5 bg-[#FF16EB] hover:bg-[#00FFFF] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+              START MISSION ▶
+            </a>
+          </div>
+        </article>
+
+        <!-- Mission 6: AspireOS -->
+        <article class="mission-card bg-[#1e0836]/90 border border-[#4A0E6B] hover:border-[#00FFFF] rounded-sm p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] flex flex-col justify-between"
+                 data-weapon="Next.js,TypeScript,AI">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-hud text-xs text-[#FFD700] tracking-widest font-bold">★★★★★★</span>
+              <span class="font-anton text-lg text-[#2ECC71] neon-green-text">+$50,000</span>
+            </div>
+            <h3 class="font-anton text-2xl text-[#fef5ff] tracking-wide mb-1">
+              ASPIREOS
+            </h3>
+            <p class="font-hud text-xs text-[#00FFFF] mb-3">AI-Powered Virtual Desktop &amp; Automation Platform</p>
+            <p class="font-hud text-xs text-[#d99de7] leading-relaxed mb-4">
+              Browser-native operating system desktop environment featuring an integrated AI command shell, multi-task window manager, and background task automations.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">Next.js</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#00FFFF] rounded-sm font-hud">TypeScript</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#FF16EB] rounded-sm font-hud">Bun</span>
+              <span class="px-2 py-0.5 bg-[#120822] border border-[#4A0E6B] text-[10px] text-[#d99de7] rounded-sm font-hud">AI Shell</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-[#4A0E6B] flex items-center justify-between">
+            <span class="font-hud text-[11px] text-[#f39c12] font-bold">STATUS: IN PROGRESS</span>
+            <a href="https://github.com/akhila-pynam/aspire-os" target="_blank" rel="noopener noreferrer"
+               onclick="completeMission('AspireOS', 50000)"
+               class="px-4 py-1.5 bg-[#00FFFF] hover:bg-[#FF16EB] text-[#120822] font-anton text-xs tracking-wider uppercase rounded-sm transition-colors cursor-pointer">
+              START MISSION ▶
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 3: STATS (Criminal Rating, PS2 Weapon Skills & Record) -->
+    <!-- ======================================================================= -->
+    <section id="tab-stats" class="tab-content hidden">
+      <div class="bg-[#1e0836]/90 border border-[#4A0E6B] rounded-sm p-6 sm:p-10 backdrop-blur-md neon-pink-box">
+        
+        <!-- Header -->
+        <div class="border-b border-[#4A0E6B] pb-4 mb-6">
+          <span class="font-hud text-xs text-[#00FFFF] tracking-[0.3em] uppercase">VICE CITY POLICE DEPT // CRIMINAL RECORD</span>
+          <h2 class="font-anton text-3xl sm:text-5xl text-[#fef5ff] tracking-wide uppercase">
+            CAREER <span class="text-[#FF16EB] neon-pink-text">STATS</span>
+          </h2>
+          <div class="mt-2 flex flex-wrap items-center gap-4 text-xs font-hud">
+            <span class="text-[#FFD700] font-bold">CRIMINAL RATING: KINGPIN (3+ YEARS EXPERIENCE)</span>
+            <span class="text-[#2ECC71]">NET WORTH: $158,000+</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Column 1: PS2 Metric Log -->
+          <div class="space-y-3 font-hud text-xs sm:text-sm">
+            <h3 class="font-anton text-xl text-[#00FFFF] tracking-wider uppercase border-b border-[#4A0E6B] pb-2">
+              POLICE RECORD &amp; ACCOMPLISHMENTS
+            </h3>
+            
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Operating Base:</span>
+              <span class="text-[#fef5ff] font-bold">Chennai, Tamil Nadu, India</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Academic Syndicate:</span>
+              <span class="text-[#fef5ff] font-bold">Vel Tech R&amp;D Institute (2025&ndash;2029)</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Missions / Projects Shipped:</span>
+              <span class="text-[#2ECC71] font-bold">12+ Production Builds</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Algorithmic Targets Neutralized:</span>
+              <span class="text-[#00FFFF] font-bold">350+ Problems (TUF+ &amp; LeetCode)</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Software Bugs Busted:</span>
+              <span class="text-[#FF16EB] font-bold">487 Confirmed</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Late Night Commits:</span>
+              <span class="text-[#fef5ff] font-bold">1,240+ Commits</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Caffeine Armor Units:</span>
+              <span class="text-[#00FFFF] font-bold">890 Cups</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-[#4A0E6B]/50">
+              <span class="text-[#d99de7]">Taylor Swift Storylines Decoded:</span>
+              <span class="text-[#FFD700] font-bold">1,989 Easter Eggs</span>
+            </div>
+          </div>
+
+          <!-- Column 2: Weapon Skill Proficiency Bars -->
+          <div class="space-y-4 font-hud text-xs sm:text-sm">
+            <h3 class="font-anton text-xl text-[#FF16EB] tracking-wider uppercase border-b border-[#4A0E6B] pb-2">
+              WEAPON &amp; COMBAT PROFICIENCY
+            </h3>
+
+            <!-- Skill 1 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">Next.js &amp; React (Uzi)</span>
+                <span class="text-[#00FFFF] font-bold">95%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[95%]"></div>
+              </div>
+            </div>
+
+            <!-- Skill 2 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">TypeScript &amp; JavaScript (Katana)</span>
+                <span class="text-[#00FFFF] font-bold">92%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[92%]"></div>
+              </div>
+            </div>
+
+            <!-- Skill 3 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">C++ &amp; Data Structures (Rocket Launcher)</span>
+                <span class="text-[#00FFFF] font-bold">90%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[90%]"></div>
+              </div>
+            </div>
+
+            <!-- Skill 4 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">Google Gemini AI &amp; Prompt Engineering (Laser Cannon)</span>
+                <span class="text-[#00FFFF] font-bold">94%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[94%]"></div>
+              </div>
+            </div>
+
+            <!-- Skill 5 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">Python &amp; Machine Learning / NLP (Sniper Rifle)</span>
+                <span class="text-[#00FFFF] font-bold">88%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[88%]"></div>
+              </div>
+            </div>
+
+            <!-- Skill 6 -->
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-[#fef5ff] font-bold">Three.js &amp; Tailwind CSS (Spray Paint Can)</span>
+                <span class="text-[#00FFFF] font-bold">85%</span>
+              </div>
+              <div class="w-full bg-[#120822] h-3 rounded-sm p-0.5 border border-[#4A0E6B]">
+                <div class="h-full bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] w-[85%]"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 4: CONTACT (1980s Retro Vice City Pager) -->
+    <!-- ======================================================================= -->
+    <section id="tab-contact" class="tab-content hidden">
+      <div class="max-w-2xl mx-auto bg-[#170025] border-2 border-[#FF16EB] rounded-lg p-6 sm:p-8 neon-pink-box">
+        
+        <!-- Pager Shell Header -->
+        <div class="flex items-center justify-between border-b border-[#4A0E6B] pb-3 mb-6">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-[#2ECC71] animate-ping"></div>
+            <span class="font-hud text-xs font-bold text-[#00FFFF] tracking-widest uppercase">
+              VICE CITY MOTOROLA-86 PAGER // LIVE COMMS
+            </span>
+          </div>
+          <span class="font-hud text-[11px] text-[#d99de7]">FREQ: 98.3 MHZ</span>
+        </div>
+
+        <!-- LCD Screen Simulation -->
+        <div class="bg-[#0b1f14] border-2 border-[#1c4b2f] rounded p-4 mb-6 shadow-inner">
+          <div class="font-hud text-xs text-[#2ECC71] tracking-widest uppercase flex items-center justify-between mb-1">
+            <span>● 1 UNREAD TRANSMISSION</span>
+            <span id="pager-time">12:00 PM</span>
+          </div>
+          <div class="font-hud text-sm sm:text-base text-[#2ECC71] neon-green-text tracking-wider">
+            &ldquo;DIRECT MESSAGE: AKHILA PYNAM IS READY FOR SOFTWARE ENGINEERING &amp; AI MISSIONS.&rdquo;
+          </div>
+        </div>
+
+        <!-- Direct Socials Channels -->
+        <div class="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-hud text-xs">
+          <a href="https://wa.me/918341743003?text=Hello%20Akhila%20Pynam%2C%20I%20reviewed%20your%20portfolio%20and%20would%20like%20to%20request%20a%20copy%20of%20your%20resume." 
+             target="_blank" rel="noopener noreferrer"
+             class="p-2.5 bg-[#1e0836] hover:bg-[#2ECC71] text-[#2ECC71] hover:text-[#120822] border border-[#2ECC71]/40 rounded-sm text-center font-bold transition-all">
+            💬 WhatsApp
+          </a>
+          <a href="mailto:akhilapynam@gmail.com" 
+             class="p-2.5 bg-[#1e0836] hover:bg-[#00FFFF] text-[#00FFFF] hover:text-[#120822] border border-[#00FFFF]/40 rounded-sm text-center font-bold transition-all">
+            ✉️ Email Me
+          </a>
+          <a href="https://www.linkedin.com/in/akhila-pynam-ba0369338/" target="_blank" rel="noopener noreferrer"
+             class="p-2.5 bg-[#1e0836] hover:bg-[#FF16EB] text-[#FF16EB] hover:text-[#120822] border border-[#FF16EB]/40 rounded-sm text-center font-bold transition-all">
+            💼 LinkedIn
+          </a>
+          <a href="https://github.com/akhila-pynam" target="_blank" rel="noopener noreferrer"
+             class="p-2.5 bg-[#1e0836] hover:bg-[#FFD700] text-[#FFD700] hover:text-[#120822] border border-[#FFD700]/40 rounded-sm text-center font-bold transition-all">
+            🐙 GitHub
+          </a>
+        </div>
+
+        <!-- Interactive Pager Message Form -->
+        <form id="pager-form" onsubmit="handlePagerSubmit(event)" class="space-y-4 font-hud text-xs sm:text-sm">
+          <div>
+            <label class="block text-[#00FFFF] font-bold uppercase tracking-wider mb-1">
+              DISPATCHER NAME / COMPANY
+            </label>
+            <input type="text" id="pager-name" required placeholder="e.g. Ken Rosenberg / Tommy Vercetti" 
+                   class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3.5 py-2.5 rounded-sm outline-none transition-colors">
+          </div>
+
+          <div>
+            <label class="block text-[#00FFFF] font-bold uppercase tracking-wider mb-1">
+              RETURN FREQUENCY / EMAIL
+            </label>
+            <input type="email" id="pager-email" required placeholder="your.email@vicecity.com" 
+                   class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3.5 py-2.5 rounded-sm outline-none transition-colors">
+          </div>
+
+          <div>
+            <label class="block text-[#00FFFF] font-bold uppercase tracking-wider mb-1">
+              MISSION BRIEFING / MESSAGE INTEL
+            </label>
+            <textarea id="pager-msg" rows="3" required placeholder="Let's build an impactful software mission together..." 
+                      class="w-full bg-[#120822] border border-[#4A0E6B] focus:border-[#FF16EB] text-[#fef5ff] px-3.5 py-2.5 rounded-sm outline-none transition-colors resize-none"></textarea>
+          </div>
+
+          <button type="submit" 
+                  class="w-full py-3.5 bg-gradient-to-r from-[#FF16EB] to-[#00FFFF] hover:from-[#00FFFF] hover:to-[#FF16EB] text-[#120822] font-anton text-base tracking-wider uppercase rounded-sm transition-all duration-300 shadow-[0_0_20px_rgba(255,22,235,0.6)] cursor-pointer">
+            TRANSMIT PAGE (+$5,000 PAYOUT) 📟
+          </button>
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- 7. MISSION PASSED BANNER (Full-Screen Overlay on Form Submit / Cheats) -->
+  <!-- ========================================================================= -->
+  <div id="mission-passed-banner" class="fixed inset-0 z-50 pointer-events-none flex flex-col items-center justify-center opacity-0 transition-opacity duration-300 bg-[#120822]/80 backdrop-blur-sm">
+    <div class="relative transform -rotate-3 text-center px-8 py-6 bg-[#170025]/95 border-y-4 border-[#FFD700] w-full max-w-2xl shadow-[0_0_50px_rgba(255,215,0,0.6)]">
+      <h2 class="font-anton text-5xl sm:text-7xl md:text-8xl text-[#FFD700] neon-gold-text tracking-wider uppercase mb-2">
+        MISSION PASSED!
+      </h2>
+      <div class="font-anton text-3xl sm:text-4xl text-[#2ECC71] neon-green-text tracking-widest mb-1">
+        RESPECT +
+      </div>
+      <div id="mission-passed-reward" class="font-anton text-2xl sm:text-3xl text-[#00FFFF] neon-cyan-text">
+        +$5,000
+      </div>
+    </div>
+  </div>
+
+  <!-- Animated Panzer Tank SVG Container for Cheat -->
+  <div id="tank-container" class="fixed bottom-12 left-0 z-40 pointer-events-none hidden">
+    <svg class="w-32 h-20 text-[#00FFFF]" viewBox="0 0 160 80" fill="currentColor">
+      <!-- Tank Body -->
+      <rect x="20" y="45" width="120" height="25" rx="5" fill="#38065f" stroke="#00FFFF" stroke-width="2"/>
+      <rect x="40" y="25" width="70" height="22" rx="3" fill="#240438" stroke="#FF16EB" stroke-width="2"/>
+      <!-- Turret Gun -->
+      <rect x="100" y="32" width="55" height="6" fill="#00FFFF"/>
+      <!-- Wheels / Treads -->
+      <circle cx="35" cy="70" r="8" fill="#FF16EB"/>
+      <circle cx="60" cy="70" r="8" fill="#FF16EB"/>
+      <circle cx="85" cy="70" r="8" fill="#FF16EB"/>
+      <circle cx="110" cy="70" r="8" fill="#FF16EB"/>
+      <circle cx="130" cy="70" r="8" fill="#FF16EB"/>
+    </svg>
+  </div>
+
+  <!-- Cheat Code Alert Banner -->
+  <div id="cheat-alert" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-300 px-6 py-2 bg-[#170025] border-2 border-[#00FFFF] rounded-sm text-[#00FFFF] font-anton text-xl tracking-wider uppercase shadow-[0_0_20px_rgba(0,255,255,0.7)]">
+    CHEAT ACTIVATED!
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 8. THE 2002 PAUSE MENU NAVIGATION TABS (Fixed Bottom Bar) -->
+  <!-- ========================================================================= -->
+  <footer class="fixed bottom-0 left-0 right-0 z-40 bg-[#140226]/95 border-t border-[#4A0E6B] backdrop-blur-md px-3 sm:px-6 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between gap-1 sm:gap-4">
+      
+      <!-- Tab 1: Brief -->
+      <button onclick="switchTab('brief')" id="tab-btn-brief" 
+              class="pause-tab active flex-1 py-2 sm:py-2.5 px-2 bg-[#240438] hover:bg-[#340752] text-center font-hud text-xs sm:text-sm tracking-wider uppercase cursor-pointer">
+        [1] BRIEF
+      </button>
+
+      <!-- Tab 2: Missions -->
+      <button onclick="switchTab('missions')" id="tab-btn-missions" 
+              class="pause-tab flex-1 py-2 sm:py-2.5 px-2 bg-[#240438] hover:bg-[#340752] text-center font-hud text-xs sm:text-sm tracking-wider uppercase cursor-pointer">
+        [2] MISSIONS
+      </button>
+
+      <!-- Tab 3: Stats -->
+      <button onclick="switchTab('stats')" id="tab-btn-stats" 
+              class="pause-tab flex-1 py-2 sm:py-2.5 px-2 bg-[#240438] hover:bg-[#340752] text-center font-hud text-xs sm:text-sm tracking-wider uppercase cursor-pointer">
+        [3] STATS
+      </button>
+
+      <!-- Tab 4: Contact -->
+      <button onclick="switchTab('contact')" id="tab-btn-contact" 
+              class="pause-tab flex-1 py-2 sm:py-2.5 px-2 bg-[#240438] hover:bg-[#340752] text-center font-hud text-xs sm:text-sm tracking-wider uppercase cursor-pointer">
+        [4] PAGER
+      </button>
+
+    </div>
+
+    <!-- Subtle Cheat Codes Hint at the Bottom -->
+    <div class="text-center font-hud text-[10px] text-[#d99de7]/80 tracking-widest mt-1.5 uppercase">
+      ⌨ PS2 CHEAT CODES ENABLED: Try typing &ldquo;ASPIRINE&rdquo;, &ldquo;PANZER&rdquo;, or &ldquo;LEAVEMEALONE&rdquo;
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- 9. VANILLA JAVASCRIPT: State, Audio Synthesis, Cheat Codes & Navigation -->
+  <!-- ========================================================================= -->
+  <script>
+    // ---------------------------------------------------------------------------
+    // Web Audio API Retro Sound Synthesizer (No external MP3 dependencies)
+    // ---------------------------------------------------------------------------
+    class ViceAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        this.station = 'Flash FM';
+        this.radioInterval = null;
+        this.radioPlaying = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) this.ctx = new AudioContextClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playHover() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(650, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1100, this.ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.04);
+      }
+
+      playClick() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(450, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.07, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.08);
+      }
+
+      playCash() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        // Two-tone cheerful coin chime
+        [987.77, 1318.51].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
+          gain.gain.setValueAtTime(0.07, this.ctx.currentTime + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.08 + 0.22);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + idx * 0.08);
+          osc.stop(this.ctx.currentTime + idx * 0.08 + 0.22);
+        });
+      }
+
+      playMissionPassed() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        // Arpeggiated 80s synthesizer triumph fanfare
+        const notes = [
+          { f: 349.23, t: 0.0 },
+          { f: 440.00, t: 0.12 },
+          { f: 523.25, t: 0.24 },
+          { f: 659.25, t: 0.36 },
+          { f: 698.46, t: 0.48 },
+          { f: 880.00, t: 0.65 },
+          { f: 1046.50, t: 0.85 }
+        ];
+        notes.forEach(n => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const filter = this.ctx.createBiquadFilter();
+          osc.type = 'sawtooth';
+          filter.type = 'lowpass';
+          filter.frequency.value = 2200;
+          osc.frequency.setValueAtTime(n.f, this.ctx.currentTime + n.t);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime + n.t);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + n.t + 0.45);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + n.t);
+          osc.stop(this.ctx.currentTime + n.t + 0.45);
+        });
+      }
+
+      playCheatSound() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1400, this.ctx.currentTime + 0.25);
+        gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.3);
+      }
+
+      startRadio(stationName) {
+        this.station = stationName;
+        if (this.muted || stationName === 'MUTE') {
+          this.stopRadio();
+          return;
+        }
+        this.init();
+        this.stopRadio();
+        this.radioPlaying = true;
+        let step = 0;
+        const chords = [
+          [220, 261.63, 329.63],
+          [174.61, 220, 261.63],
+          [261.63, 329.63, 392],
+          [196, 246.94, 293.66],
+        ];
+        const playBar = () => {
+          if (!this.radioPlaying || this.muted || !this.ctx) return;
+          const currentChord = chords[step % chords.length];
+          currentChord.forEach(freq => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            gain.gain.setValueAtTime(0.012, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 1.7);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start();
+            osc.stop(this.ctx.currentTime + 1.7);
+          });
+          step++;
+        };
+        playBar();
+        this.radioInterval = setInterval(playBar, 1600);
+      }
+
+      stopRadio() {
+        this.radioPlaying = false;
+        if (this.radioInterval) {
+          clearInterval(this.radioInterval);
+          this.radioInterval = null;
+        }
+      }
+    }
+
+    const sound = new ViceAudioEngine();
+
+    // ---------------------------------------------------------------------------
+    // Live Clock System
+    // ---------------------------------------------------------------------------
+    function updateClock() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const clockEl = document.getElementById('live-clock');
+      const pagerTimeEl = document.getElementById('pager-time');
+      if (clockEl) clockEl.textContent = `${hh}:${mm}`;
+      if (pagerTimeEl) pagerTimeEl.textContent = `${hh}:${mm} PM`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // ---------------------------------------------------------------------------
+    // Cash Counter System with Smooth Animation
+    // ---------------------------------------------------------------------------
+    let currentCash = 25000;
+    function addCash(amount) {
+      const targetCash = currentCash + amount;
+      const startCash = currentCash;
+      currentCash = targetCash;
+      const cashEl = document.getElementById('cash-counter');
+      const duration = 600;
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = Math.floor(startCash + (targetCash - startCash) * progress);
+        if (cashEl) cashEl.textContent = String(value).padStart(8, '0');
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function playCashSound() {
+      sound.playCash();
+    }
+
+    // ---------------------------------------------------------------------------
+    // Weapon Box Skill Selector & Missions Filter
+    // ---------------------------------------------------------------------------
+    const WEAPONS = [
+      { name: "Next.js", icon: "🔫", ammo: "999", tag: "Next.js" },
+      { name: "TypeScript", icon: "🗡️", ammo: "999", tag: "TypeScript" },
+      { name: "Python ML", icon: "🎯", ammo: "750", tag: "Python" },
+      { name: "AI Engine", icon: "⚡", ammo: "500", tag: "AI" },
+      { name: "Three.js", icon: "🎨", ammo: "300", tag: "Three.js" },
+      { name: "ALL GEAR", icon: "💼", ammo: "MAX", tag: "ALL" }
+    ];
+    let currentWeaponIdx = 0;
+
+    const weaponBox = document.getElementById('weapon-box');
+    weaponBox.addEventListener('click', () => {
+      sound.playClick();
+      currentWeaponIdx = (currentWeaponIdx + 1) % WEAPONS.length;
+      applyWeaponFilter(WEAPONS[currentWeaponIdx]);
+      addCash(500);
+    });
+
+    function applyWeaponFilter(weapon) {
+      document.getElementById('weapon-name').textContent = weapon.name;
+      document.getElementById('weapon-icon').textContent = weapon.icon;
+      document.getElementById('weapon-ammo').textContent = weapon.ammo;
+      
+      const badge = document.getElementById('active-filter-badge');
+      if (badge) badge.textContent = weapon.name;
+
+      const cards = document.querySelectorAll('.mission-card');
+      cards.forEach(card => {
+        const tags = card.getAttribute('data-weapon') || '';
+        if (weapon.tag === 'ALL' || tags.includes(weapon.tag)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function resetWeaponFilter() {
+      sound.playClick();
+      currentWeaponIdx = WEAPONS.length - 1;
+      applyWeaponFilter(WEAPONS[currentWeaponIdx]);
+    }
+
+    // ---------------------------------------------------------------------------
+    // Wanted Stars System
+    // ---------------------------------------------------------------------------
+    let wantedLevel = 1;
+    const visitedTabs = new Set(['brief']);
+
+    function updateWantedStars() {
+      const stars = document.querySelectorAll('.star-item');
+      stars.forEach((star, idx) => {
+        if (idx < wantedLevel) {
+          star.classList.remove('text-gray-700');
+          star.classList.add('text-[#FFD700]', 'drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]', 'animate-pulse');
+        } else {
+          star.classList.remove('text-[#FFD700]', 'drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]', 'animate-pulse');
+          star.classList.add('text-gray-700');
+        }
+      });
+    }
+    updateWantedStars();
+
+    // ---------------------------------------------------------------------------
+    // Tab Navigation System
+    // ---------------------------------------------------------------------------
+    function switchTab(tabId) {
+      sound.playClick();
+      // Hide all contents
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.pause-tab').forEach(el => el.classList.remove('active'));
+
+      // Show chosen content
+      const targetContent = document.getElementById(`tab-${tabId}`);
+      const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+      if (targetContent) targetContent.classList.remove('hidden');
+      if (targetBtn) targetBtn.classList.add('active');
+
+      // Update wanted stars upon discovering new sections
+      if (!visitedTabs.has(tabId)) {
+        visitedTabs.add(tabId);
+        if (wantedLevel < 5) {
+          wantedLevel++;
+          updateWantedStars();
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ---------------------------------------------------------------------------
+    // Mission Completion & Passed Banner
+    // ---------------------------------------------------------------------------
+    function completeMission(name, payout) {
+      sound.playMissionPassed();
+      addCash(payout);
+      showMissionPassedBanner(`+$${payout.toLocaleString()}`);
+    }
+
+    function showMissionPassedBanner(rewardText) {
+      const banner = document.getElementById('mission-passed-banner');
+      const rewardEl = document.getElementById('mission-passed-reward');
+      if (rewardEl) rewardEl.textContent = rewardText;
+      if (banner) {
+        banner.classList.remove('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          banner.classList.add('opacity-0', 'pointer-events-none');
+        }, 2200);
+      }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Retro Pager Form Submit
+    // ---------------------------------------------------------------------------
+    function handlePagerSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('pager-name').value;
+      completeMission("PAGER TRANSMISSION", 5000);
+      document.getElementById('pager-form').reset();
+      
+      const lcd = document.querySelector('#tab-contact .neon-green-text');
+      if (lcd) {
+        lcd.textContent = `PAGE RECEIVED FROM: "${name.toUpperCase()}". TRANSMISSION CONFIRMED!`;
+      }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Radio Station Controller
+    // ---------------------------------------------------------------------------
+    const STATIONS = ['Flash FM (ON)', 'Emotion 98.3 (ON)', 'Fever 105 (ON)', 'RADIO OFF (MUTE)'];
+    let stationIdx = 0;
+    const radioBtn = document.getElementById('radio-station-btn');
+    const radioToggleBtn = document.getElementById('radio-toggle-btn');
+
+    radioBtn.addEventListener('click', () => {
+      stationIdx = (stationIdx + 1) % STATIONS.length;
+      radioBtn.textContent = STATIONS[stationIdx];
+      const name = STATIONS[stationIdx].split(' ')[0];
+      if (STATIONS[stationIdx].includes('MUTE')) {
+        sound.stopRadio();
+        radioToggleBtn.textContent = '🔇';
+      } else {
+        sound.startRadio(name);
+        radioToggleBtn.textContent = '🔊';
+      }
+    });
+
+    radioToggleBtn.addEventListener('click', () => {
+      sound.muted = !sound.muted;
+      radioToggleBtn.textContent = sound.muted ? '🔇' : '🔊';
+      if (sound.muted) {
+        sound.stopRadio();
+      } else {
+        sound.startRadio('Flash FM');
+      }
+    });
+
+    // ---------------------------------------------------------------------------
+    // Cheat Codes Engine (ASPIRINE, PANZER, LEAVEMEALONE, PRECIOUSPROTECTION)
+    // ---------------------------------------------------------------------------
+    let keyBuffer = '';
+    const CHEATS = {
+      ASPIRINE: () => {
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: HEALTH RESTORED (ASPIRINE)');
+        const healthBar = document.getElementById('health-bar');
+        if (healthBar) healthBar.style.width = '100%';
+        addCash(1000);
+        document.body.classList.add('neon-pink-box');
+        setTimeout(() => document.body.classList.remove('neon-pink-box'), 1000);
+      },
+      PANZER: () => {
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: RHINO TANK SPAWNED (PANZER)');
+        const tank = document.getElementById('tank-container');
+        if (tank) {
+          tank.classList.remove('hidden');
+          tank.classList.add('tank-animate');
+          setTimeout(() => {
+            tank.classList.remove('tank-animate');
+            tank.classList.add('hidden');
+          }, 7000);
+        }
+        addCash(2000);
+      },
+      LEAVEMEALONE: () => {
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: WANTED LEVEL CLEARED (LEAVEMEALONE)');
+        wantedLevel = 0;
+        updateWantedStars();
+      },
+      PRECIOUSPROTECTION: () => {
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: ARMOR MAXED (PRECIOUSPROTECTION)');
+        const armorBar = document.getElementById('armor-bar');
+        if (armorBar) armorBar.style.width = '100%';
+        addCash(1000);
+      },
+      BIGBANG: () => {
+        sound.playCheatSound();
+        triggerCheatAlert('CHEAT: BIG BANG!');
+        document.body.classList.add('screen-shake');
+        setTimeout(() => document.body.classList.remove('screen-shake'), 600);
+        addCash(5000);
+      }
+    };
+
+    window.addEventListener('keydown', (e) => {
+      // Don't trigger cheats while typing inside input or textarea
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+      
+      keyBuffer += e.key.toUpperCase();
+      if (keyBuffer.length > 20) keyBuffer = keyBuffer.slice(-20);
+
+      for (const [code, action] of Object.entries(CHEATS)) {
+        if (keyBuffer.endsWith(code)) {
+          action();
+          keyBuffer = '';
+          break;
+        }
+      }
+    });
+
+    function triggerCheatAlert(msg) {
+      const alert = document.getElementById('cheat-alert');
+      if (alert) {
+        alert.textContent = msg;
+        alert.classList.remove('opacity-0');
+        setTimeout(() => alert.classList.add('opacity-0'), 2200);
+      }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Loading Screen Simulation
+    // ---------------------------------------------------------------------------
+    const loadingScreen = document.getElementById('loading-screen');
+    const loadingBar = document.getElementById('loading-bar');
+    const loadingPct = document.getElementById('loading-pct');
+    const skipBtn = document.getElementById('skip-load-btn');
+
+    let loadProgress = 0;
+    const loadInterval = setInterval(() => {
+      loadProgress += 10;
+      if (loadingBar) loadingBar.style.width = `${loadProgress}%`;
+      if (loadingPct) loadingPct.textContent = `${loadProgress}%`;
+
+      if (loadProgress >= 100) {
+        clearInterval(loadInterval);
+        dismissLoading();
+      }
+    }, 160);
+
+    function dismissLoading() {
+      if (!loadingScreen) return;
+      loadingScreen.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        loadingScreen.remove();
+        sound.init();
+        sound.startRadio('Flash FM');
+      }, 700);
+    }
+
+    skipBtn.addEventListener('click', () => {
+      clearInterval(loadInterval);
+      dismissLoading();
+    });
+
+    // Button Hover Sounds across all buttons & links
+    document.querySelectorAll('button, a').forEach(el => {
+      el.addEventListener('mouseenter', () => sound.playHover());
+    });
+  </script>
+</body>
+</html>
