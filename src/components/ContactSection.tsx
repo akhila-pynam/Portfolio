@@ -57,7 +57,7 @@ export default function ContactSection() {
   return (
     <section id="contact" className="py-24 md:py-36 bg-midnight relative overflow-hidden" ref={ref}>
       {/* Background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_70%,rgba(255,212,0,0.06)_0%,transparent_100%)] pointer-events-none" />
+      <div className="contact-radial-glow absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_70%,rgba(255,212,0,0.06)_0%,transparent_100%)] pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-10 text-center">
         {/* Label */}

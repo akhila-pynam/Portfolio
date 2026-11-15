@@ -39,11 +39,11 @@ export default function HeroSection() {
       aria-label="Hero section"
     >
       {/* Radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(255,212,0,0.08)_0%,transparent_100%)] pointer-events-none" />
+      <div className="hero-radial-glow absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(255,212,0,0.08)_0%,transparent_100%)] pointer-events-none" />
 
       {/* Grid pattern */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        className="hero-grid-pattern absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage:
             "linear-gradient(rgba(255,212,0,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,212,0,0.5) 1px, transparent 1px)",

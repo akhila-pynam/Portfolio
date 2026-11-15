@@ -127,8 +127,8 @@ export default function Navbar() {
               onClick={toggleTheme}
               onMouseEnter={() => soundManager.playHover()}
               className="p-2 text-muted-gray hover:text-yellow-street border border-border-gray hover:border-yellow-street/50 rounded-sm transition-all focus-visible:outline-yellow-street cursor-pointer bg-charcoal/50"
-              title={theme === "dark" ? "Switch to Daylight Mode" : "Switch to Night GTA Mode"}
-              aria-label="Toggle light/dark theme"
+              title={theme === "dark" ? "Switch to Vice City Mode" : "Switch to Night GTA Mode"}
+              aria-label="Toggle Vice City theme"
             >
               {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
             </button>
@@ -158,7 +158,8 @@ export default function Navbar() {
             <button
               onClick={toggleTheme}
               className="p-2 text-muted-gray hover:text-yellow-street border border-border-gray rounded-sm bg-charcoal/50"
-              aria-label="Toggle light/dark theme"
+              aria-label="Toggle Vice City theme"
+              title={theme === "dark" ? "Switch to Vice City Mode" : "Switch to Night GTA Mode"}
             >
               {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
             </button>
